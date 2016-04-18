@@ -46,6 +46,7 @@ void Merge(population_t *A, int p, int q, int r) {
     /*A[k] = B[k-p];*/
     (A->pairs[k]) = (B[k-p]);
   }
+  free(B);
   return;
 }
 
