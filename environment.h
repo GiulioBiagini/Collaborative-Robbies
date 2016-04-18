@@ -14,7 +14,7 @@ typedef enum item {
 
 /* Action */
 
-typedef enum action {
+typedef enum __attribute__ ((__packed__)) action {
 	MOVE_UP = 0,
 	MOVE_DOWN = 1,
 	MOVE_LEFT = 2,

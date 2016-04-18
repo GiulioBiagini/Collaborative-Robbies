@@ -33,9 +33,39 @@ const int ACTIONS_PER_SESSION_NUMBER = 100;
 
 
 
+void evaluate_pair(pair_t *pair, environment_t *env) {
+	int s;
+	int a;
+	
+	for (s = 0; < SESSIONS_NUMBER; s++) {
+		for (a = 0; a < actions_number; a++) {
+			
+		}
+	}
+}
+
+void (population_t *population) {
+	int g;
+	int p;
+	environment_t *env;
+	
+	for (g = 0; g < GENERATIONS_NUMBER; g++) {
+		for (p = 0; p < population->pairs_number; p++) {
+			evaluate_pair(population->pairs[p], env);
+		}
+	}
+}
+
+
+
 /* main */
 
 int main(int argc, char **argv) {
+	
+	population_t *population;
+	init_random_population(population);
+	
+	f(population);
 	
 	return 0;
 }
