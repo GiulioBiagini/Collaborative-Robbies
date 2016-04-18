@@ -66,7 +66,6 @@ void print_population(population_t *A){
   }
 }
 
-
 int main(){
     population_t *A;
     init_random_population(A);
