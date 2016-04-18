@@ -3,22 +3,28 @@
 #include <math.h>
 
 #include "environment.h"
+#include "evolution.h"
 
+/*
+ A: Array
+ p: left
+ q: center
+ r: right*/
 void Merge(population_t *A, int p, int q, int r) {
   int i, j, k;
-  pair_t **B;
+  pair_t *B;
 
-  B = (pair_t**) malloc(A->pairs_number*sizeof(pair_t*));/*TODO solve the malloc things */
+  B = (pair_t*) malloc(A->pairs_number*sizeof(pair_t));/*TODO solve the malloc things */
   i = p;
   j = q+1;
   k = 0;
   while (i<=q && j<=r) {
     if (A->pairs[i].global_fitness<A->pairs[j].global_fitness) {
       /*B[k] = A[i];*/
-      B[k] = &(A->pairs[i]);
+      B[k] = (A->pairs[i]);
       i++;
     } else {
-      B[k] = &(A->pairs[j]);
+      B[k] = (A->pairs[j]);
       /*B[k] = A[j];*/
       j++;
     }
@@ -26,19 +32,21 @@ void Merge(population_t *A, int p, int q, int r) {
   }
   while (i<=q) {
     /*B[k] = A[i];*/
-    B[k] = &(A->pairs[i]);
+    B[k] = (A->pairs[i]);
     i++;
     k++;
   }
   while (j<=r) {
-    B[k] = &(A->pairs[j]);
+    B[k] = (A->pairs[j]);
     /*B[k] = A[j];*/
     j++;
     k++;
   }
-  for (k=p; k<=r; k++)
+  for (k=p; k<=r; k++){
     /*A[k] = B[k-p];*/
-    (A->pairs[k]) = *(B[k-p]);
+    (A->pairs[k]) = (B[k-p]);
+  }
+  free(B);
   return;
 }
 
@@ -61,17 +69,31 @@ void sort_by_fitness(population_t *A){
 
 void print_population(population_t *A){
   int i;
-  printf("Print the population!");
+  printf("Print the population!\n");
   for(i=0;i<A->pairs_number;i++){
-    printf("%i: %f",i,A->pairs[i].global_fitness);
+    printf("%i: %f\n",i,A->pairs[i].global_fitness);
   }
+}
+
+void generate_random_fitness(population_t *A){
+  int i;
+  printf("Add trash in fitness !\n");
+  for(i=0;i<A->pairs_number;i++){
+    A->pairs[i].global_fitness=rand()%100;
+  }
+}
+
+void filter_population(population_t *A, int survivor_percent){
+    for(i=survivor_percent;i<A->pairs_number;i++){
+        init_random_pair(&(A->pairs[i]));/*TODO not RANDOM MUST BE CROSSOVER!!! */
+    }
 }
 
 int main(){
     population_t *A;
-
     A=allocate_population(SINGLE_CROSS_VIEW,10);
     init_random_population(A);
+    generate_random_fitness(A);
     print_population(A);
     sort_by_fitness(A);
     print_population(A);
