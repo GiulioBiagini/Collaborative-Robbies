@@ -63,12 +63,14 @@ void print_population(population_t *A){
   int i;
   printf("Print the population!");
   for(i=0;i<A->pairs_number;i++){
-    printf("%i: %d",i,A->pairs[i].global_fitness);
+    printf("%i: %f",i,A->pairs[i].global_fitness);
   }
 }
 
 int main(){
     population_t *A;
+
+    A=allocate_population(SINGLE_CROSS_VIEW,10);
     init_random_population(A);
     print_population(A);
     sort_by_fitness(A);
