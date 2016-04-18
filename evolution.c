@@ -75,19 +75,25 @@ void print_population(population_t *A){
   }
 }
 
-void trashing_fitness(population_t *A){
+void generate_random_fitness(population_t *A){
   int i;
   printf("Add trash in fitness !\n");
   for(i=0;i<A->pairs_number;i++){
     A->pairs[i].global_fitness=rand()%100;
   }
 }
+
+void filter_population(population_t *A, int survivor_percent){
+    for(i=survivor_percent;i<A->pairs_number;i++){
+        init_random_pair(&(A->pairs[i]));/*TODO not RANDOM MUST BE CROSSOVER!!! */
+    }
+}
+
 int main(){
     population_t *A;
-
     A=allocate_population(SINGLE_CROSS_VIEW,10);
     init_random_population(A);
-    trashing_fitness(A);
+    generate_random_fitness(A);
     print_population(A);
     sort_by_fitness(A);
     print_population(A);

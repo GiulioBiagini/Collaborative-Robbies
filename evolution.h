@@ -1,7 +1,4 @@
 
-
-
-
 void Merge(population_t *A, int p, int q, int r);
 
 void MergeSort(population_t *A, int p, int r);
