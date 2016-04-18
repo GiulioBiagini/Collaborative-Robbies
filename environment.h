@@ -6,30 +6,30 @@
 /* Item */
 
 typedef enum item {
-	empty = 0,
-	can = 1,
-	wall = 2,
-	robby = 3
+	EMPTY = 0,
+	CAN = 1,
+	WALL = 2,
+	ROBBY = 3
 } item_t;
 
 /* Action */
 
 typedef enum action {
-	move_up = 0,
-	move_down = 1,
-	move_left = 2,
-	move_right = 3,
-	stay_put = 4,
-	pick_up_can = 5,
-	random = 6
+	MOVE_UP = 0,
+	MOVE_DOWN = 1,
+	MOVE_LEFT = 2,
+	MOVE_RIGHT = 3,
+	STAY_PUT = 4,
+	PICK_UP = 5,
+	RANDOM_ACTION = 6
 } action_t;
 
 /* View Type */
 
 typedef enum view_type {
-	single_cross_view = 5,
-	single_square_view = 9,
-	double_cross_view = 10
+	SINGLE_CROSS_VIEW = 5,
+	SINGLE_SQUARE_VIEW = 9,
+	DOUBLE_CROSS_VIEW = 10
 } view_type_t;
 
 
@@ -67,7 +67,10 @@ typedef struct robby {
 
 typedef struct pair {
 	robby_t *robby_1;		/* the first robby */
+	double fitness_1;		/* the fitness value fo the first robby */
 	robby_t *robby_2;		/* the second robby */
+	double fitness_2;		/* the fitness value of the second robby */
+	double global_fitness;	/* to average fitness of the pair */
 } pair_t;
 
 typedef struct population {
@@ -94,9 +97,9 @@ typedef struct environment {
 #define ITEMS_NUMBER 4
 
 #define PRINT_ITEM(item) (\
-	(item) == empty ? ' ' : (\
-	(item) == can ? 'o' : (\
-	(item) == wall ? '#' :\
+	(item) == EMPTY ? ' ' : (\
+	(item) == CAN ? 'o' : (\
+	(item) == WALL ? '#' :\
 	'r'))\
 )
 
@@ -131,17 +134,59 @@ void init_random_map(map_t *map);
 )
 
 #define GET_ITEM_INTO_MAP_1(map, pos_x, pos_y) (\
-	IS_POSITION_INTO_MAP(pos_x, pos_y, map) ? (map)->items[pos_x][pos_y] : wall\
+	IS_POSITION_INTO_MAP(pos_x, pos_y, map) ? (map)->items[pos_x][pos_y] : WALL\
 )
 
 #define GET_ITEM_INTO_MAP_2(map, pos_x, pos_y, friend_pos_x, friend_pos_y) (\
-	IS_SAME_POSITION(pos_x, pos_y, friend_pos_x, friend_pos_y) ? robby :\
+	IS_SAME_POSITION(pos_x, pos_y, friend_pos_x, friend_pos_y) ? ROBBY :\
 	GET_ITEM_INTO_MAP_1(map, pos_x, pos_y)\
 )
 
 /* View */
 
 view_t *allocate_view(view_type_t view_type);
+
+#define UPDATE_SINGLE_CROSS_VIEW(view, map, pos_x, pos_y, o_pos_x, o_pos_y)\
+	(view)->items[0] = GET_ITEM_INTO_MAP_2(map, pos_x, pos_y - 1, o_pos_x, o_pos_y);\
+	(view)->items[1] = GET_ITEM_INTO_MAP_2(map, pos_x - 1, pos_y, o_pos_x, o_pos_y);\
+	(view)->items[2] = GET_ITEM_INTO_MAP_2(map, pos_x, pos_y, o_pos_x, o_pos_y);\
+	(view)->items[3] = GET_ITEM_INTO_MAP_2(map, pos_x + 1, pos_y, o_pos_x, o_pos_y);\
+	(view)->items[4] = GET_ITEM_INTO_MAP_2(map, pos_x, pos_y + 1, o_pos_x, o_pos_y);
+
+#define UPDATE_SINGLE_SQUARE_VIEW(view, map, pos_x, pos_y, o_pos_x, o_pos_y)\
+	(view)->items[0] = GET_ITEM_INTO_MAP_2(map, pos_x - 1, pos_y - 1, o_pos_x, o_pos_y);\
+	(view)->items[1] = GET_ITEM_INTO_MAP_2(map, pos_x, pos_y - 1, o_pos_x, o_pos_y);\
+	(view)->items[2] = GET_ITEM_INTO_MAP_2(map, pos_x + 1, pos_y - 1, o_pos_x, o_pos_y);\
+	(view)->items[3] = GET_ITEM_INTO_MAP_2(map, pos_x - 1, pos_y, o_pos_x, o_pos_y);\
+	(view)->items[4] = GET_ITEM_INTO_MAP_2(map, pos_x, pos_y, o_pos_x, o_pos_y);\
+	(view)->items[5] = GET_ITEM_INTO_MAP_2(map, pos_x + 1, pos_y, o_pos_x, o_pos_y);\
+	(view)->items[6] = GET_ITEM_INTO_MAP_2(map, pos_x - 1, pos_y + 1, o_pos_x, o_pos_y);\
+	(view)->items[7] = GET_ITEM_INTO_MAP_2(map, pos_x, pos_y + 1, o_pos_x, o_pos_y);\
+	(view)->items[8] = GET_ITEM_INTO_MAP_2(map, pos_x + 1, pos_y + 1, o_pos_x, o_pos_y);
+
+#define UPDATE_DOUBLE_CROSS_VIEW(view, map, pos_x, pos_y, o_pos_x, o_pos_y)\
+	(view)->items[0] = GET_ITEM_INTO_MAP_2(map, pos_x, pos_y - 1, o_pos_x, o_pos_y);\
+	(view)->items[1] = GET_ITEM_INTO_MAP_2(map, pos_x - 1, pos_y, o_pos_x, o_pos_y);\
+	(view)->items[2] = GET_ITEM_INTO_MAP_2(map, pos_x, pos_y, o_pos_x, o_pos_y);\
+	(view)->items[3] = GET_ITEM_INTO_MAP_2(map, pos_x + 1, pos_y, o_pos_x, o_pos_y);\
+	(view)->items[4] = GET_ITEM_INTO_MAP_2(map, pos_x, pos_y + 1, o_pos_x, o_pos_y);\
+	(view)->items[5] = GET_ITEM_INTO_MAP_2(map, o_pos_x, o_pos_y - 1, pos_x, pos_y);\
+	(view)->items[6] = GET_ITEM_INTO_MAP_2(map, o_pos_x - 1, o_pos_y, pos_x, pos_y);\
+	(view)->items[7] = GET_ITEM_INTO_MAP_2(map, o_pos_x, o_pos_y, pos_x, pos_y);\
+	(view)->items[8] = GET_ITEM_INTO_MAP_2(map, o_pos_x + 1, o_pos_y, pos_x, pos_y);\
+	(view)->items[9] = GET_ITEM_INTO_MAP_2(map, o_pos_x, o_pos_y + 1, pos_x, pos_y);
+
+#define UPDATE_VIEW(view, map, pos_x, pos_y, o_pos_x, o_pos_y)\
+	switch (view->type) {\
+		case SINGLE_CROSS_VIEW:\
+			UPDATE_SINGLE_CROSS_VIEW(view, map, pos_x, pos_y, o_pos_x, o_pos_y);\
+			break;\
+		case SINGLE_SQUARE_VIEW:\
+			UPDATE_SINGLE_SQUARE_VIEW(view, map, pos_x, pos_y, o_pos_x, o_pos_y);\
+			break;\
+		default:\
+			UPDATE_DOUBLE_CROSS_VIEW(view, map, pos_x, pos_y, o_pos_x, o_pos_y);\
+	}
 
 /* Dna */
 
