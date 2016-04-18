@@ -43,12 +43,12 @@ void init_random_map(map_t *map) {
 	
 	for (x = 0; x < map->width; x++)
 		for (y = 0; y < map->height; y++)
-			map->items[x][y] = empty;
+			map->items[x][y] = EMPTY;
 	for (c = 0; c < map->cans_number; ) {
 		x = rand() % map->width;
 		y = rand() % map->height;
-		if (map->items[x][y] == empty) {
-			map->items[x][y] = can;
+		if (map->items[x][y] == EMPTY) {
+			map->items[x][y] = CAN;
 			c++;
 		}
 	}
@@ -144,57 +144,24 @@ void init_random_population(population_t *population) {
 		init_random_pair(&(population->pairs[i]));
 }
 
+/*
+ * example:
+ * view size = 5 & items number = 3 -> |0|2|0|1|2|
+ *
+ * conversion algorithm from base "items number" to base "10":
+ * (2 * 3^0) + (1 * 3^1) + (0 * 3^2) + (2 * 3^3) + (0 * 3^4) = 57
+ */
 void update_robby(robby_t *robby, map_t *map, int pos_x, int pos_y, int o_pos_x, int o_pos_y) {
 	int i;
-	item_t *view;
 	int index;
 	
-	view = robby->view->items;
-	switch (robby->view->type) {
-		single_cross_view:
-			view[0] = GET_ITEM_INTO_MAP_2(map, pos_x, pos_y - 1, o_pos_x, o_pos_y);
-			view[1] = GET_ITEM_INTO_MAP_2(map, pos_x - 1, pos_y, o_pos_x, o_pos_y);
-			view[2] = GET_ITEM_INTO_MAP_2(map, pos_x, pos_y, o_pos_x, o_pos_y);
-			view[3] = GET_ITEM_INTO_MAP_2(map, pos_x + 1, pos_y, o_pos_x, o_pos_y);
-			view[4] = GET_ITEM_INTO_MAP_2(map, pos_x, pos_y + 1, o_pos_x, o_pos_y);
-			break;
-		single_square_view:
-			view[0] = GET_ITEM_INTO_MAP_2(map, pos_x - 1, pos_y - 1, o_pos_x, o_pos_y);
-			view[1] = GET_ITEM_INTO_MAP_2(map, pos_x, pos_y - 1, o_pos_x, o_pos_y);
-			view[2] = GET_ITEM_INTO_MAP_2(map, pos_x + 1, pos_y - 1, o_pos_x, o_pos_y);
-			view[3] = GET_ITEM_INTO_MAP_2(map, pos_x - 1, pos_y, o_pos_x, o_pos_y);
-			view[4] = GET_ITEM_INTO_MAP_2(map, pos_x, pos_y, o_pos_x, o_pos_y);
-			view[5] = GET_ITEM_INTO_MAP_2(map, pos_x + 1, pos_y, o_pos_x, o_pos_y);
-			view[6] = GET_ITEM_INTO_MAP_2(map, pos_x - 1, pos_y + 1, o_pos_x, o_pos_y);
-			view[7] = GET_ITEM_INTO_MAP_2(map, pos_x, pos_y + 1, o_pos_x, o_pos_y);
-			view[8] = GET_ITEM_INTO_MAP_2(map, pos_x + 1, pos_y + 1, o_pos_x, o_pos_y);
-			break;
-		default:
-			view[0] = GET_ITEM_INTO_MAP_2(map, pos_x, pos_y - 1, o_pos_x, o_pos_y);
-			view[1] = GET_ITEM_INTO_MAP_2(map, pos_x - 1, pos_y, o_pos_x, o_pos_y);
-			view[2] = GET_ITEM_INTO_MAP_2(map, pos_x, pos_y, o_pos_x, o_pos_y);
-			view[3] = GET_ITEM_INTO_MAP_2(map, pos_x + 1, pos_y, o_pos_x, o_pos_y);
-			view[4] = GET_ITEM_INTO_MAP_2(map, pos_x, pos_y + 1, o_pos_x, o_pos_y);
-			view[5] = GET_ITEM_INTO_MAP_2(map, o_pos_x, o_pos_y - 1, pos_x, pos_y);
-			view[6] = GET_ITEM_INTO_MAP_2(map, o_pos_x - 1, o_pos_y, pos_x, pos_y);
-			view[7] = GET_ITEM_INTO_MAP_2(map, o_pos_x, o_pos_y, pos_x, pos_y);
-			view[8] = GET_ITEM_INTO_MAP_2(map, o_pos_x + 1, o_pos_y, pos_x, pos_y);
-			view[9] = GET_ITEM_INTO_MAP_2(map, 0_pos_x, o_pos_y + 1, pos_x, pos_y);
-	}
-	
-	/*
-	 * example:
-	 * view size = 5 & items number = 3 -> |0|2|0|1|2|
-	 *
-	 * conversion algorithm from base "items number" to base "10":
-	 * (2 * 3^0) + (1 * 3^1) + (0 * 3^2) + (2 * 3^3) + (0 * 3^4) = 57
-	 */
+	UPDATE_VIEW(robby->view, map, pos_x, pos_y, o_pos_x, o_pos_y);
 	
 	index = 0;
 	for (i = robby->view->type - 1; i >= 0; i--)
-		index += (view[i] * pow(ITEMS_NUMBER, robby->view->type - i - 1));
+		index += (robby->view->items[i] * pow(ITEMS_NUMBER, robby->view->type - i - 1));
 	
-	robby->action = *(robby->dna->actions[index]);
+	robby->action = &(robby->dna->actions[index]);
 }
 
 
@@ -226,12 +193,8 @@ void set_pair(environment_t *env, pair_t *pair) {
 }
 
 void update_environment(environment_t *env) {
-	update_robby(
-		env->robby_1, env->map, env->pos_x_1, env->pos_y_1, env->pos_x_2, env->pos_y_2
-	);
-	update_robby(
-		env->robby_2, env->map, env->pos_x_2, env->pos_y_2, env->pos_x_1, env->pos_y_1
-	);
+	update_robby(env->robby_1, env->map, env->pos_x_1, env->pos_y_1, env->pos_x_2, env->pos_y_2);
+	update_robby(env->robby_2, env->map, env->pos_x_2, env->pos_y_2, env->pos_x_1, env->pos_y_1);
 }
 
 void execute_environment(environment_t *env) {
@@ -249,9 +212,9 @@ void print_environment(environment_t *env) {
 	for (x = 0; x < env->map->width; x++) {
 		for (y = 0; y < env->map->height; y++) {
 			if (IS_SAME_POSITION(x, y, env->pos_x_1, env->pos_y_1))
-				printf((GET_ITEM_INTO_MAP_1(env->map, x, y)) == can ? "U" : "u");
+				printf((GET_ITEM_INTO_MAP_1(env->map, x, y)) == CAN ? "U" : "u");
 			else if (IS_SAME_POSITION(x, y, env->pos_x_2, env->pos_y_2))
-				printf((GET_ITEM_INTO_MAP_1(env->map, x, y)) == can ? "D" : "d");
+				printf((GET_ITEM_INTO_MAP_1(env->map, x, y)) == CAN ? "D" : "d");
 			else
 				printf("|%c", PRINT_ITEM(env->map->items[x][y]));
 		}
@@ -262,8 +225,8 @@ void print_environment(environment_t *env) {
 	other_view = env->robby_2->view;
 	for (i = 1; i < 3; i++) {
 		printf("Robby %d:\n", i);
-		switch (view->type) {
-			case single_cross_view:
+		switch (subject_view->type) {
+			case SINGLE_CROSS_VIEW:
 				printf(
 					"| |%c| |\n|%c|%c|%c|\n| |%c| |\n",
 					PRINT_ITEM(subject_view->items[0]),
@@ -273,7 +236,7 @@ void print_environment(environment_t *env) {
 					PRINT_ITEM(subject_view->items[4])
 				);
 				break;
-			case single_square_view:
+			case SINGLE_SQUARE_VIEW:
 				printf(
 					"|%c|%c|%c|\n|%c|%c|%c|\n|%c|%c|%c|\n",
 					PRINT_ITEM(subject_view->items[0]),
