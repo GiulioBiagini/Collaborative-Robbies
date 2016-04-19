@@ -84,13 +84,26 @@ void print_dna(robby_t *r){
     }
     printf("\n");
 }
+void print_dna_short(robby_t *r){
+    int j;
+    printf("DNA: ");
+    for(j=0;j<5;j++){
+        printf("%d",r->dna->actions[j]);
+    }
+    printf("~");
+    for(j=r->dna->size-5;j<r->dna->size;j++){
+        printf("%d",r->dna->actions[j]);
+    }
+    printf("\n");
+}
 void print_population_dna(population_t *A){
   int i;
   printf("Print the population!\n");
   for(i=0;i<A->pairs_number;i++){
     printf("ROBOT %i: %f\n",i,A->pairs[i].global_fitness);
-    print_dna(A->pairs[i].robby_1);
-    print_dna(A->pairs[i].robby_2);
+    print_dna_short(A->pairs[i].robby_1);
+    print_dna_short(A->pairs[i].robby_2);
+    printf("\n");
   }
 }
 
@@ -107,17 +120,18 @@ void crossing_over_pair(pair_t *A1, pair_t *A2, pair_t *B1, pair_t *B2){
     int cut_point= rand()%A1->robby_1->dna->size;
     printf("cut_point: %d\n",cut_point);
 
-    memcpy(A1->robby_1->dna->actions,B1->robby_1->dna->actions,cut_point);
-    memcpy(A2->robby_1->dna->actions + cut_point,B1->robby_1->dna->actions + cut_point,A1->robby_1->dna->size - cut_point);
+    printf("DIMENSIONE: %li\n",sizeof(action_t));
+    memcpy(B1->robby_1->dna->actions,A1->robby_1->dna->actions,cut_point);
+    memcpy(B1->robby_1->dna->actions + cut_point,A2->robby_1->dna->actions + cut_point,A1->robby_1->dna->size - cut_point);
 
-    memcpy(A2->robby_1->dna->actions,B2->robby_1->dna->actions,cut_point);
-    memcpy(A1->robby_1->dna->actions + cut_point,B2->robby_1->dna->actions + cut_point,A1->robby_1->dna->size - cut_point);
+    memcpy(B2->robby_1->dna->actions,A2->robby_1->dna->actions,cut_point);
+    memcpy(B2->robby_1->dna->actions + cut_point,A1->robby_1->dna->actions + cut_point,A1->robby_1->dna->size - cut_point);
 
-    memcpy(A1->robby_2->dna->actions,B1->robby_2->dna->actions,cut_point);
-    memcpy(A2->robby_2->dna->actions + cut_point,B1->robby_2->dna->actions + cut_point,A1->robby_2->dna->size - cut_point);
+    memcpy(B1->robby_2->dna->actions,A1->robby_2->dna->actions,cut_point);
+    memcpy(B1->robby_2->dna->actions + cut_point,A2->robby_2->dna->actions + cut_point,A1->robby_2->dna->size - cut_point);
 
-    memcpy(A2->robby_2->dna->actions,B2->robby_2->dna->actions,cut_point);
-    memcpy(A1->robby_2->dna->actions + cut_point,B2->robby_2->dna->actions + cut_point,A1->robby_2->dna->size - cut_point);
+    memcpy(B2->robby_2->dna->actions,A2->robby_2->dna->actions,cut_point);
+    memcpy(B2->robby_2->dna->actions + cut_point,A1->robby_2->dna->actions + cut_point,A1->robby_2->dna->size - cut_point);
 
 }
 
@@ -138,8 +152,8 @@ void crossing_over_population(population_t *A, population_t *B, int mutation_rat
     int i,j,k;
     for(i=0;i<A->pairs_number;i=i+2){
       /*A->pairs[i].global_fitness=rand()%100;*/
+      j=get_chosed_index(rand()%(A->pairs_number/2*(A->pairs_number+1)),A->pairs_number);
       do{
-          j=get_chosed_index(rand()%(A->pairs_number/2*(A->pairs_number+1)),A->pairs_number);
           k=get_chosed_index(rand()%(A->pairs_number/2*(A->pairs_number+1)),A->pairs_number);
           printf("i: %d // J e K: %d %d\n",i,j,k);
       }while(j==k);
@@ -148,7 +162,7 @@ void crossing_over_population(population_t *A, population_t *B, int mutation_rat
 }
 
 int main(){
-    int pop_leng=2;
+    int pop_leng=10;
     population_t *A;
     population_t *B;
     A=allocate_population(SINGLE_CROSS_VIEW,pop_leng);
