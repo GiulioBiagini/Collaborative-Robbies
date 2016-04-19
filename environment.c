@@ -145,7 +145,7 @@ void update_robby(robby_t *robby, map_t *map, int pos_x, int pos_y, int o_pos_x,
 	for (i = robby->view->type - 1; i >= 0; i--)
 		index += (robby->view->items[i] * pow(ITEMS_NUMBER, robby->view->type - i - 1));
 	
-	robby->action = &(robby->dna->actions[index]);
+	robby->action = robby->dna->actions[index];
 }
 
 
@@ -172,5 +172,63 @@ void init_random_environment(environment_t *env) {
 }
 
 void perform_actions(environment_t *env) {
+	int new_pos_x_1;
+	int new_pos_y_1;
+	int new_pos_x_2;
+	int new_pos_y_2;
 	
+	new_pos_x_1 = env->pos_x_1;
+	new_pos_y_1 = env->pos_y_1;
+	new_pos_x_2 = env->pos_x_2;
+	new_pos_y_2 = env->pos_y_2;
+	
+	EVALUATE_ROBBY_1: switch (env->pair->robby_1->action) {
+		case MOVE_UP:
+			PERFORM_MOVE_UP(&new_pos_x_1, &new_pos_y_1);
+			break;
+		case MOVE_DOWN:
+			PERFORM_MOVE_DOWN(&new_pos_x_1, &new_pos_y_1);
+			break;
+		case MOVE_LEFT:
+			PERFORM_MOVE_LEFT(&new_pos_x_1, &new_pos_y_1);
+			break;
+		case MOVE_RIGHT:
+			PERFORM_MOVE_RIGHT(&new_pos_x_1, &new_pos_y_1);
+			break;
+		case STAY_PUT:
+			break;
+		case PICK_UP:
+			if (env->map->items[new_pos_x_1][new_pos_y_1] == CAN)
+				env->map->items[new_pos_x_1][new_pos_y_1] = EMPTY;
+			break;
+		default:
+			env->pair->robby_1->action = GET_RANDOM_ACTION();
+			goto EVALUATE_ROBBY_1;
+	}
+	
+	EVALUATE_ROBBY_2: switch (env->pair->robby_2->action) {
+		case MOVE_UP:
+			PERFORM_MOVE_UP(&new_pos_x_2, &new_pos_y_2);
+			break;
+		case MOVE_DOWN:
+			PERFORM_MOVE_DOWN(&new_pos_x_2, &new_pos_y_2);
+			break;
+		case MOVE_LEFT:
+			PERFORM_MOVE_LEFT(&new_pos_x_2, &new_pos_y_2);
+			break;
+		case MOVE_RIGHT:
+			PERFORM_MOVE_RIGHT(&new_pos_x_2, &new_pos_y_2);
+			break;
+		case STAY_PUT:
+			break;
+		case PICK_UP:
+			if (env->map->items[new_pos_x_2][new_pos_y_2] == CAN)
+				env->map->items[new_pos_x_2][new_pos_y_2] = EMPTY;
+			break;
+		default:
+			env->pair->robby_2->action = GET_RANDOM_ACTION();
+			goto EVALUATE_ROBBY_2;
+	}
+	
+	/* TODO -> continue evaluating robbies (same positions?) */
 }
