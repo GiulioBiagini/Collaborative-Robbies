@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
+#include <string.h>
 
 #include "environment.h"
 #include "evolution.h"
@@ -19,7 +20,7 @@ void Merge(population_t *A, int p, int q, int r) {
   j = q+1;
   k = 0;
   while (i<=q && j<=r) {
-    if (A->pairs[i].global_fitness<A->pairs[j].global_fitness) {
+    if (A->pairs[i].global_fitness>A->pairs[j].global_fitness) {
       /*B[k] = A[i];*/
       B[k] = (A->pairs[i]);
       i++;
@@ -75,6 +76,24 @@ void print_population(population_t *A){
   }
 }
 
+void print_dna(robby_t *r){
+    int j;
+    printf("DNA \n");
+    for(j=0;j<r->dna->size;j++){
+        printf("%d",r->dna->actions[j]);
+    }
+    printf("\n");
+}
+void print_population_dna(population_t *A){
+  int i;
+  printf("Print the population!\n");
+  for(i=0;i<A->pairs_number;i++){
+    printf("%i: %f\n",i,A->pairs[i].global_fitness);
+    print_dna(A->pairs[i].robby_1);
+    print_dna(A->pairs[i].robby_2);
+  }
+}
+
 void generate_random_fitness(population_t *A){
   int i;
   printf("Add trash in fitness !\n");
@@ -85,42 +104,60 @@ void generate_random_fitness(population_t *A){
 
 
 void crossing_over_pair(pair_t *A1, pair_t *A2, pair_t *B1, pair_t *B2){
-    int cut_point= random()%A1->robby_1->dna->size;
+    int cut_point= rand()%A1->robby_1->dna->size;
 
     memcpy(A1->robby_1->dna->actions,B1->robby_1->dna->actions,cut_point);
-    memcpy(A2->robby_1->dna->actions + cut_point,B1->robby_1->dna->actions + cut_point,A1->robby_1->dna->size - cut_point;
+    memcpy(A2->robby_1->dna->actions + cut_point,B1->robby_1->dna->actions + cut_point,A1->robby_1->dna->size - cut_point);
 
     memcpy(A2->robby_1->dna->actions,B2->robby_1->dna->actions,cut_point);
-    memcpy(A1->robby_1->dna->actions + cut_point,B2->robby_1->dna->actions + cut_point,A1->robby_1->dna->size - cut_point;
+    memcpy(A1->robby_1->dna->actions + cut_point,B2->robby_1->dna->actions + cut_point,A1->robby_1->dna->size - cut_point);
 
     memcpy(A1->robby_2->dna->actions,B1->robby_2->dna->actions,cut_point);
-    memcpy(A2->robby_2->dna->actions + cut_point,B1->robby_2->dna->actions + cut_point,A1->robby_2->dna->size - cut_point;
+    memcpy(A2->robby_2->dna->actions + cut_point,B1->robby_2->dna->actions + cut_point,A1->robby_2->dna->size - cut_point);
 
     memcpy(A2->robby_2->dna->actions,B2->robby_2->dna->actions,cut_point);
-    memcpy(A1->robby_2->dna->actions + cut_point,B2->robby_2->dna->actions + cut_point,A1->robby_2->dna->size - cut_point;
+    memcpy(A1->robby_2->dna->actions + cut_point,B2->robby_2->dna->actions + cut_point,A1->robby_2->dna->size - cut_point);
 
 }
 
+int get_chosed_index(int p,int size){
+        int i;
+        int k;
+        i=0;
+        k=0;
+        while(i<p){
+            i=i+size;
+            size--;
+            k++;
+        }
+        return k;
+}
 
 void crossing_over_population(population_t *A, population_t *B, int mutation_rate){
+    int i,j,k;
     for(i=0;i<A->pairs_number;i=i+2){
       /*A->pairs[i].global_fitness=rand()%100;*/
-
-      int p= rand()%(A->pairs_number/2*(A->pairs_number+1));
-      
-
-      crossing_over_pair(A->pair[],A->pair[],B->pair[i],B->pair[i+1]);
-
+      do{
+          j=get_chosed_index(rand()%(A->pairs_number/2*(A->pairs_number+1)),A->pairs_number);
+          k=get_chosed_index(rand()%(A->pairs_number/2*(A->pairs_number+1)),A->pairs_number);
+      }while(j==k);
+      crossing_over_pair(&(A->pairs[j]),&(A->pairs[k]),&(B->pairs[i]),&(B->pairs[i+1]));
     }
 }
 
 int main(){
+    int pop_leng=2;
     population_t *A;
-    A=allocate_population(SINGLE_CROSS_VIEW,10);
+    population_t *B;
+    A=allocate_population(SINGLE_CROSS_VIEW,pop_leng);
     init_random_population(A);
     generate_random_fitness(A);
     print_population(A);
     sort_by_fitness(A);
     print_population(A);
+    B=allocate_population(SINGLE_CROSS_VIEW,pop_leng);
+    print_population_dna(A);
+    crossing_over_population(A,B,10);
+    print_population_dna(B);
     return 0;
 }
