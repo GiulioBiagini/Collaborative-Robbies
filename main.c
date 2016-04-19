@@ -55,7 +55,7 @@ int main(int argc, char **argv) {
 		/* for each pair */
 		for (p = 0; p < population->pairs_number; p++) {
 			/* clear fitness values */
-			RESET_PAIR(&(population->pairs[p]));
+			RESET_PAIR_FITNESS(&(population->pairs[p]));
 			/* set pair into the environment */
 			SET_PAIR(env, &(population->pairs[p]));
 			
