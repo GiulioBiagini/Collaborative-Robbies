@@ -58,6 +58,7 @@ int main(int argc, char **argv) {
 			RESET_PAIR(&(population->pairs[p]));
 			/* set pair into the environment */
 			SET_PAIR(env, &(population->pairs[p]));
+			
 			/* for each cleanin session */
 			for (s = 0; s < SESSIONS_NUMBER; s++) {
 				/* init random map and robbies position */
@@ -67,11 +68,12 @@ int main(int argc, char **argv) {
 					/* update robbies views and relative actions */
 					UPDATE_ENVIRONMENT(env);
 					/* evaluate robbies actions */
-					
+					/*if (env)->*/
 					/* perform robbies actions */
 					perform_actions(env);
 				}
 			}
+			
 		}
 		/* TODO -> EVOLVE POPULATION */
 	}

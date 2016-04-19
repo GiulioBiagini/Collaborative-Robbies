@@ -84,10 +84,9 @@ typedef struct environment {
 	map_t *map;				/* the map */
 	int pos_x_1;			/* the x position of the first robby */
 	int pos_y_1;			/* the y position of the first robby */
-	robby_t *robby_1;		/* the first robby */
 	int pos_x_2;			/* the x position of the second robby */
 	int pos_y_2;			/* the y position of the second robby */
-	robby_t *robby_2;		/* the second robby */
+	pair_t *pair;			/* the pair of robbies */
 } environment_t;
 
 
@@ -225,27 +224,26 @@ void init_random_population(population_t *population);
 
 void update_robby(robby_t *robby, map_t *map, int pos_x, int pos_y, int o_pos_x, int o_pos_y);
 
+#define UPDATE_PAIR(pair, map, pos_x_1, pos_y_1, pos_x_2, pos_y_2)\
+	update_robby((pair)->robby_1, map, pos_x_1, pos_y_1, pos_x_2, pos_y_2);\
+	update_robby((pair)->robby_2, map, pos_x_2, pos_y_2, pos_x_1, pos_y_1)
+
 /* Environment */
 
 environment_t *allocate_environment(int map_width, int map_height, int cans_number);
 
 void init_random_environment(environment_t *env);
 
-#define SET_PAIR(env, pair)\
-	(env)->robby_1 = (pair)->robby_1;\
-	(env)->robby_2 = (pair)->robby_2
+#define SET_PAIR(env, new_pair) (\
+	(env)->pair = new_pair\
+)
 
 #define UPDATE_ENVIRONMENT(env)\
-	update_robby(\
-		(env)->robby_1, (env)->map,\
+	UPDATE_PAIR(\
+		(env)->pair, (env)->map,\
 		(env)->pos_x_1, (env)->pos_y_1,\
 		(env)->pos_x_2, (env)->pos_y_2\
-	);\
-	update_robby(\
-		(env)->robby_2, (env)->map,\
-		(env)->pos_x_2, (env)->pos_y_2,\
-		(env)->pos_x_1, (env)->pos_y_1\
-	)
+	);
 
 void perform_actions(environment_t *env);
 
