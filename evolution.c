@@ -135,6 +135,16 @@ void crossing_over_pair(pair_t *A1, pair_t *A2, pair_t *B1, pair_t *B2){
 
 }
 
+void mutate_pair(pair_t *pair,int mutation_rate){
+    int i;
+    for(i=0;i<mutation_rate;i++){
+        int p=rand()%pair->robby_1->dna->size;
+        pair->robby_1->dna->actions[p]=GENERATE_RANDOM_ACTION();
+        p=rand()%pair->robby_1->dna->size;
+        pair->robby_2->dna->actions[p]=GENERATE_RANDOM_ACTION();
+    }
+}
+
 int get_chosed_index(int p,int size){
         int i;
         int k;
@@ -158,6 +168,7 @@ void crossing_over_population(population_t *A, population_t *B, int mutation_rat
           printf("i: %d // J e K: %d %d\n",i,j,k);
       }while(j==k);
       crossing_over_pair(&(A->pairs[j]),&(A->pairs[k]),&(B->pairs[i]),&(B->pairs[i+1]));
+      mutate_pair(&(B->pairs[i]),&(B->pairs[i+1]));
     }
 }
 
