@@ -117,7 +117,9 @@ typedef struct environment {
 
 /* Position */
 
-void init_random_position(int *pos_x, int *pos_y, map_t *map);
+#define INIT_RANDOM_POSITION(pos_x, pos_y, map)\
+	*(pos_x) = rand() % (map)->width;\
+	*(pos_y) = rand() % (map)->height;
 
 #define IS_SAME_POSITION(pos_x_1, pos_y_1, pos_x_2, pos_y_2) (\
 	(pos_x_1) == (pos_x_2) && (pos_y_1) == (pos_y_2)\
@@ -151,7 +153,7 @@ view_t *allocate_view(view_type_t view_type);
 	(view)->items[1] = GET_ITEM_INTO_MAP_2(map, pos_x - 1, pos_y, o_pos_x, o_pos_y);\
 	(view)->items[2] = GET_ITEM_INTO_MAP_2(map, pos_x, pos_y, o_pos_x, o_pos_y);\
 	(view)->items[3] = GET_ITEM_INTO_MAP_2(map, pos_x + 1, pos_y, o_pos_x, o_pos_y);\
-	(view)->items[4] = GET_ITEM_INTO_MAP_2(map, pos_x, pos_y + 1, o_pos_x, o_pos_y);
+	(view)->items[4] = GET_ITEM_INTO_MAP_2(map, pos_x, pos_y + 1, o_pos_x, o_pos_y)
 
 #define UPDATE_SINGLE_SQUARE_VIEW(view, map, pos_x, pos_y, o_pos_x, o_pos_y)\
 	(view)->items[0] = GET_ITEM_INTO_MAP_2(map, pos_x - 1, pos_y - 1, o_pos_x, o_pos_y);\
@@ -162,7 +164,7 @@ view_t *allocate_view(view_type_t view_type);
 	(view)->items[5] = GET_ITEM_INTO_MAP_2(map, pos_x + 1, pos_y, o_pos_x, o_pos_y);\
 	(view)->items[6] = GET_ITEM_INTO_MAP_2(map, pos_x - 1, pos_y + 1, o_pos_x, o_pos_y);\
 	(view)->items[7] = GET_ITEM_INTO_MAP_2(map, pos_x, pos_y + 1, o_pos_x, o_pos_y);\
-	(view)->items[8] = GET_ITEM_INTO_MAP_2(map, pos_x + 1, pos_y + 1, o_pos_x, o_pos_y);
+	(view)->items[8] = GET_ITEM_INTO_MAP_2(map, pos_x + 1, pos_y + 1, o_pos_x, o_pos_y)
 
 #define UPDATE_DOUBLE_CROSS_VIEW(view, map, pos_x, pos_y, o_pos_x, o_pos_y)\
 	(view)->items[0] = GET_ITEM_INTO_MAP_2(map, pos_x, pos_y - 1, o_pos_x, o_pos_y);\
@@ -174,7 +176,7 @@ view_t *allocate_view(view_type_t view_type);
 	(view)->items[6] = GET_ITEM_INTO_MAP_2(map, o_pos_x - 1, o_pos_y, pos_x, pos_y);\
 	(view)->items[7] = GET_ITEM_INTO_MAP_2(map, o_pos_x, o_pos_y, pos_x, pos_y);\
 	(view)->items[8] = GET_ITEM_INTO_MAP_2(map, o_pos_x + 1, o_pos_y, pos_x, pos_y);\
-	(view)->items[9] = GET_ITEM_INTO_MAP_2(map, o_pos_x, o_pos_y + 1, pos_x, pos_y);
+	(view)->items[9] = GET_ITEM_INTO_MAP_2(map, o_pos_x, o_pos_y + 1, pos_x, pos_y)
 
 #define UPDATE_VIEW(view, map, pos_x, pos_y, o_pos_x, o_pos_y)\
 	switch (view->type) {\
@@ -210,9 +212,16 @@ population_t *allocate_population(view_type_t view_type, int pairs_number);
 	init_random_dna((robby)->dna)\
 )
 
-void init_random_pair(pair_t *pair);
+#define INIT_RANDOM_PAIR(pair)\
+	INIT_RANDOM_ROBBY((pair)->robby_1);\
+	INIT_RANDOM_ROBBY((pair)->robby_2)
 
 void init_random_population(population_t *population);
+
+#define RESET_PAIR(pair)\
+	(pair)->fitness_1 = 0;\
+	(pair)->fitness_2 = 0;\
+	(pair)->global_fitness = 0
 
 void update_robby(robby_t *robby, map_t *map, int pos_x, int pos_y, int o_pos_x, int o_pos_y);
 
@@ -222,13 +231,23 @@ environment_t *allocate_environment(int map_width, int map_height, int cans_numb
 
 void init_random_environment(environment_t *env);
 
-void set_pair(environment_t *env, pair_t *pair);
+#define SET_PAIR(env, pair)\
+	(env)->robby_1 = (pair)->robby_1;\
+	(env)->robby_2 = (pair)->robby_2
 
-void update_environment(environment_t *env);
+#define UPDATE_ENVIRONMENT(env)\
+	update_robby(\
+		(env)->robby_1, (env)->map,\
+		(env)->pos_x_1, (env)->pos_y_1,\
+		(env)->pos_x_2, (env)->pos_y_2\
+	);\
+	update_robby(\
+		(env)->robby_2, (env)->map,\
+		(env)->pos_x_2, (env)->pos_y_2,\
+		(env)->pos_x_1, (env)->pos_y_1\
+	)
 
-void execute_environment(environment_t *env);
-
-void print_environment(environment_t *env);
+void perform_actions(environment_t *env);
 
 
 
