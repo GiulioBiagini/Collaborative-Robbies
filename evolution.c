@@ -83,15 +83,34 @@ void generate_random_fitness(population_t *A){
   }
 }
 
-void init_genetic_pair(pair_t *dad,pair_t *mom,pair_t *child){
-    child->robby_1->dna=dad->robby_1->dna;/*MUST BE COPIED! */
-    child->robby_2->dna=dad->robby_2->dna;
+
+void crossing_over_pair(pair_t *A1, pair_t *A2, pair_t *B1, pair_t *B2){
+    int cut_point= random()%A1->robby_1->dna->size;
+
+    memcpy(A1->robby_1->dna->actions,B1->robby_1->dna->actions,cut_point);
+    memcpy(A2->robby_1->dna->actions + cut_point,B1->robby_1->dna->actions + cut_point,A1->robby_1->dna->size - cut_point;
+
+    memcpy(A2->robby_1->dna->actions,B2->robby_1->dna->actions,cut_point);
+    memcpy(A1->robby_1->dna->actions + cut_point,B2->robby_1->dna->actions + cut_point,A1->robby_1->dna->size - cut_point;
+
+    memcpy(A1->robby_2->dna->actions,B1->robby_2->dna->actions,cut_point);
+    memcpy(A2->robby_2->dna->actions + cut_point,B1->robby_2->dna->actions + cut_point,A1->robby_2->dna->size - cut_point;
+
+    memcpy(A2->robby_2->dna->actions,B2->robby_2->dna->actions,cut_point);
+    memcpy(A1->robby_2->dna->actions + cut_point,B2->robby_2->dna->actions + cut_point,A1->robby_2->dna->size - cut_point;
+
 }
 
-void filter_population(population_t *A, int survivor_percent){
 
-    for(i=survivor_percent;i<A->pairs_number;i++){
-        init_genetic_pair(&(A->pairs[i]));/*TODO not RANDOM MUST BE CROSSOVER!!! */
+void crossing_over_population(population_t *A, population_t *B, int mutation_rate){
+    for(i=0;i<A->pairs_number;i=i+2){
+      /*A->pairs[i].global_fitness=rand()%100;*/
+
+      int p= rand()%(A->pairs_number/2*(A->pairs_number+1));
+      
+
+      crossing_over_pair(A->pair[],A->pair[],B->pair[i],B->pair[i+1]);
+
     }
 }
 
