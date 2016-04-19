@@ -88,7 +88,7 @@ void print_population_dna(population_t *A){
   int i;
   printf("Print the population!\n");
   for(i=0;i<A->pairs_number;i++){
-    printf("%i: %f\n",i,A->pairs[i].global_fitness);
+    printf("ROBOT %i: %f\n",i,A->pairs[i].global_fitness);
     print_dna(A->pairs[i].robby_1);
     print_dna(A->pairs[i].robby_2);
   }
@@ -140,6 +140,7 @@ void crossing_over_population(population_t *A, population_t *B, int mutation_rat
       do{
           j=get_chosed_index(rand()%(A->pairs_number/2*(A->pairs_number+1)),A->pairs_number);
           k=get_chosed_index(rand()%(A->pairs_number/2*(A->pairs_number+1)),A->pairs_number);
+          printf("J e K: %d %d\n",j,k);
       }while(j==k);
       crossing_over_pair(&(A->pairs[j]),&(A->pairs[k]),&(B->pairs[i]),&(B->pairs[i+1]));
     }
@@ -151,12 +152,12 @@ int main(){
     population_t *B;
     A=allocate_population(SINGLE_CROSS_VIEW,pop_leng);
     init_random_population(A);
+    print_population_dna(A);
     generate_random_fitness(A);
     print_population(A);
     sort_by_fitness(A);
     print_population(A);
     B=allocate_population(SINGLE_CROSS_VIEW,pop_leng);
-    print_population_dna(A);
     crossing_over_population(A,B,10);
     print_population_dna(B);
     return 0;
