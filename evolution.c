@@ -105,6 +105,7 @@ void generate_random_fitness(population_t *A){
 
 void crossing_over_pair(pair_t *A1, pair_t *A2, pair_t *B1, pair_t *B2){
     int cut_point= rand()%A1->robby_1->dna->size;
+    printf("cut_point: %d\n",cut_point);
 
     memcpy(A1->robby_1->dna->actions,B1->robby_1->dna->actions,cut_point);
     memcpy(A2->robby_1->dna->actions + cut_point,B1->robby_1->dna->actions + cut_point,A1->robby_1->dna->size - cut_point);
@@ -140,7 +141,7 @@ void crossing_over_population(population_t *A, population_t *B, int mutation_rat
       do{
           j=get_chosed_index(rand()%(A->pairs_number/2*(A->pairs_number+1)),A->pairs_number);
           k=get_chosed_index(rand()%(A->pairs_number/2*(A->pairs_number+1)),A->pairs_number);
-          printf("J e K: %d %d\n",j,k);
+          printf("i: %d // J e K: %d %d\n",i,j,k);
       }while(j==k);
       crossing_over_pair(&(A->pairs[j]),&(A->pairs[k]),&(B->pairs[i]),&(B->pairs[i+1]));
     }
