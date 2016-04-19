@@ -7,17 +7,6 @@
 
 
 /*
- * Position
- */
-
-void init_random_position(int *pos_x, int *pos_y, map_t *map) {
-	*pos_x = rand() % map->width;
-	*pos_y = rand() % map->height;
-}
-
-
-
-/*
  * Map
  */
 
@@ -132,16 +121,11 @@ population_t *allocate_population(view_type_t view_type, int pairs_number) {
 	return population;
 }
 
-void init_random_pair(pair_t *pair) {
-	INIT_RANDOM_ROBBY(pair->robby_1);
-	INIT_RANDOM_ROBBY(pair->robby_2);
-}
-
 void init_random_population(population_t *population) {
 	int i;
 	
 	for (i = 0; i < population->pairs_number; i++)
-		init_random_pair(&(population->pairs[i]));
+		INIT_RANDOM_PAIR(&(population->pairs[i]));
 }
 
 /*
@@ -181,91 +165,12 @@ environment_t *allocate_environment(int map_width, int map_height, int cans_numb
 
 void init_random_environment(environment_t *env) {
 	init_random_map(env->map);
-	init_random_position(&(env->pos_x_1), &(env->pos_y_1), env->map);
+	INIT_RANDOM_POSITION(&(env->pos_x_1), &(env->pos_y_1), env->map);
 	do {
-		init_random_position(&(env->pos_x_2), &(env->pos_y_2), env->map);
+		INIT_RANDOM_POSITION(&(env->pos_x_2), &(env->pos_y_2), env->map);
 	} while (IS_SAME_POSITION(env->pos_x_1, env->pos_y_1, env->pos_x_2, env->pos_y_2));
 }
 
-void set_pair(environment_t *env, pair_t *pair) {
-	env->robby_1 = pair->robby_1;
-	env->robby_2 = pair->robby_2;
-}
-
-void update_environment(environment_t *env) {
-	update_robby(env->robby_1, env->map, env->pos_x_1, env->pos_y_1, env->pos_x_2, env->pos_y_2);
-	update_robby(env->robby_2, env->map, env->pos_x_2, env->pos_y_2, env->pos_x_1, env->pos_y_1);
-}
-
-void execute_environment(environment_t *env) {
-	/* TODO */
-}
-
-void print_environment(environment_t *env) {
-	int x;
-	int y;
-	int i;
-	view_t *subject_view;
-	view_t *other_view;
+void perform_actions(environment_t *env) {
 	
-	printf("Map:\n");
-	for (x = 0; x < env->map->width; x++) {
-		for (y = 0; y < env->map->height; y++) {
-			if (IS_SAME_POSITION(x, y, env->pos_x_1, env->pos_y_1))
-				printf((GET_ITEM_INTO_MAP_1(env->map, x, y)) == CAN ? "U" : "u");
-			else if (IS_SAME_POSITION(x, y, env->pos_x_2, env->pos_y_2))
-				printf((GET_ITEM_INTO_MAP_1(env->map, x, y)) == CAN ? "D" : "d");
-			else
-				printf("|%c", PRINT_ITEM(env->map->items[x][y]));
-		}
-		printf("|\n");
-	}
-	
-	subject_view = env->robby_1->view;
-	other_view = env->robby_2->view;
-	for (i = 1; i < 3; i++) {
-		printf("Robby %d:\n", i);
-		switch (subject_view->type) {
-			case SINGLE_CROSS_VIEW:
-				printf(
-					"| |%c| |\n|%c|%c|%c|\n| |%c| |\n",
-					PRINT_ITEM(subject_view->items[0]),
-					PRINT_ITEM(subject_view->items[1]),
-					PRINT_ITEM(subject_view->items[2]),
-					PRINT_ITEM(subject_view->items[3]),
-					PRINT_ITEM(subject_view->items[4])
-				);
-				break;
-			case SINGLE_SQUARE_VIEW:
-				printf(
-					"|%c|%c|%c|\n|%c|%c|%c|\n|%c|%c|%c|\n",
-					PRINT_ITEM(subject_view->items[0]),
-					PRINT_ITEM(subject_view->items[1]),
-					PRINT_ITEM(subject_view->items[2]),
-					PRINT_ITEM(subject_view->items[3]),
-					PRINT_ITEM(subject_view->items[4]),
-					PRINT_ITEM(subject_view->items[5]),
-					PRINT_ITEM(subject_view->items[6]),
-					PRINT_ITEM(subject_view->items[7]),
-					PRINT_ITEM(subject_view->items[8])
-				);
-				break;
-			default:
-				printf(
-					"| |%c| || |%c| |\n|%c|%c|%c||%c|%c|%c|\n| |%c| || |%c| |\n",
-					PRINT_ITEM(subject_view->items[0]),
-					PRINT_ITEM(subject_view->items[1]),
-					PRINT_ITEM(subject_view->items[2]),
-					PRINT_ITEM(subject_view->items[3]),
-					PRINT_ITEM(subject_view->items[4]),
-					PRINT_ITEM(other_view->items[0]),
-					PRINT_ITEM(other_view->items[1]),
-					PRINT_ITEM(other_view->items[2]),
-					PRINT_ITEM(other_view->items[3]),
-					PRINT_ITEM(other_view->items[4])
-				);
-		}
-		subject_view = env->robby_2->view;
-		other_view = env->robby_1->view;
-	}
 }
