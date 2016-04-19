@@ -83,9 +83,15 @@ void generate_random_fitness(population_t *A){
   }
 }
 
+void init_genetic_pair(pair_t *dad,pair_t *mom,pair_t *child){
+    child->robby_1->dna=dad->robby_1->dna;/*MUST BE COPIED! */
+    child->robby_2->dna=dad->robby_2->dna;
+}
+
 void filter_population(population_t *A, int survivor_percent){
+
     for(i=survivor_percent;i<A->pairs_number;i++){
-        init_random_pair(&(A->pairs[i]));/*TODO not RANDOM MUST BE CROSSOVER!!! */
+        init_genetic_pair(&(A->pairs[i]));/*TODO not RANDOM MUST BE CROSSOVER!!! */
     }
 }
 
