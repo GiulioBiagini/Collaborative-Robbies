@@ -1,5 +1,6 @@
 #include <stdlib.h>
 
+#include "item.h"
 #include "map.h"
 
 

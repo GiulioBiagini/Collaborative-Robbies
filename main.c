@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include "entity/view.h"
 #include "environment.h"
 
 
@@ -15,7 +16,7 @@ const int CANS_NUMBER = 10;
 
 /* population */
 
-const view_type_t VIEW_TYPE = SINGLE_CROSS_VIEW;
+const view_type_t VIEW_TYPE = UNCOLLABORATIVE_SINGLE_CROSS_VIEW;
 
 const int PAIRS_NUMBER = 100;
 
@@ -54,26 +55,18 @@ int main(int argc, char **argv) {
 	for (g = 0; g < GENERATIONS_NUMBER; g++) {
 		/* for each pair */
 		for (p = 0; p < population->pairs_number; p++) {
-			/* clear fitness values */
-			RESET_PAIR_FITNESS(&(population->pairs[p]));
 			/* set pair into the environment */
 			SET_PAIR(env, &(population->pairs[p]));
-			
 			/* for each cleanin session */
 			for (s = 0; s < SESSIONS_NUMBER; s++) {
-				/* init random map and robbies position */
+				/* reset pair fitness, init random map and robbies position */
 				init_random_environment(env);
 				/* for each action */
 				for (a = 0; a < ACTIONS_PER_SESSION_NUMBER; a++) {
-					/* update robbies views and relative actions */
-					UPDATE_ENVIRONMENT(env);
-					/* evaluate robbies actions */
-					/*if (env)->*/
-					/* perform robbies actions */
-					perform_actions(env);
+					/* update robbies views, relative actions and perform them */
+					execute_step(env);
 				}
 			}
-			
 		}
 		/* TODO -> EVOLVE POPULATION */
 	}

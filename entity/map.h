@@ -3,7 +3,9 @@
 
 
 
-#include "entity.h"
+#include <stdlib.h>
+
+#include "item.h"
 
 
 
@@ -41,7 +43,11 @@ void init_random_map(map_t *map);
 	pos_x_1 == pos_x_2 && pos_y_1 == pos_y_2\
 )
 
-#define IS_SAME_POSITION_2(pos_1, pos_2) (\
+#define IS_SAME_POSITION_2(pos, pos_x, pos_y) (\
+	IS_SAME_POSITION_1((pos)->x, (pos)->y, pos_x, pos_y)\
+)
+
+#define IS_SAME_POSITION_3(pos_1, pos_2) (\
 	IS_SAME_POSITION_1((pos_1)->x, (pos_1)->y, (pos_2)->x, (pos_2)->y)\
 )
 
