@@ -110,7 +110,6 @@ void print_population_dna(population_t *A){
 
 void generate_random_fitness(population_t *A){
   int i;
-  printf("Add trash in fitness !\n");
   for(i=0;i<A->pairs_number;i++){
     A->pairs[i].global_fitness=rand()%100;
   }
@@ -119,9 +118,7 @@ void generate_random_fitness(population_t *A){
 
 void crossing_over_pair(pair_t *A1, pair_t *A2, pair_t *B1, pair_t *B2){
     int cut_point= rand()%A1->robby_1->dna->size;
-    printf("cut_point: %d\n",cut_point);
 
-    printf("DIMENSIONE: %li\n",sizeof(action_t));
     memcpy(B1->robby_1->dna->actions,A1->robby_1->dna->actions,cut_point);
     memcpy(B1->robby_1->dna->actions + cut_point,A2->robby_1->dna->actions + cut_point,A1->robby_1->dna->size - cut_point);
 
@@ -176,7 +173,6 @@ void crossing_over_population(population_t *A, population_t *B, float mutation_p
       j=get_chosed_index(rand()%(A->pairs_number/2*(A->pairs_number+1)),A->pairs_number);
       do{
           k=get_chosed_index(rand()%(A->pairs_number/2*(A->pairs_number+1)),A->pairs_number);
-          printf("i: %d // J e K: %d %d\n",i,j,k);
       }while(j==k);
       crossing_over_pair(&(A->pairs[j]),&(A->pairs[k]),&(B->pairs[i]),&(B->pairs[i+1]));
       mutate_pair(&(B->pairs[i]),mutation_probability);
@@ -196,11 +192,14 @@ void evolve(population_t *src, population_t *dst, float mutation_probability){
 }
 
 int main(){
-    int pop_leng=10;
+    int i;
+    float p;
+    int pop_leng=100;
+    population_t *C;
     population_t *A;
     population_t *B;
     A=allocate_population(SINGLE_CROSS_VIEW,pop_leng);
-    init_random_population(A);
+    /*init_random_population(A);
     print_population_dna(A);
     generate_random_fitness(A);
     print_population(A);
@@ -208,7 +207,20 @@ int main(){
     print_population(A);
     B=allocate_population(SINGLE_CROSS_VIEW,pop_leng);
     crossing_over_population(A,B,10);
-    print_population_dna(B);
+    print_population_dna(B);*/
+
+
+    B=allocate_population(SINGLE_CROSS_VIEW,pop_leng);
+
+    init_random_population(A);
+    for(i=0;i<1000;i++){
+        generate_random_fitness(A);
+        p=rand()%10+rand()/2;
+        evolve(A,B,p);
+        C=A;
+        A=B;
+        B=C;
+    }
 
     evolve(A,B,10);
     return 0;
