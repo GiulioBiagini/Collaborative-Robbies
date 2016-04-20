@@ -136,11 +136,11 @@ void crossing_over_pair(pair_t *A1, pair_t *A2, pair_t *B1, pair_t *B2){
 void mutate_pair(pair_t *pair,float mutation_probability){
     int i;
     for(i=0;i<pair->robby_1->dna->size;i++){
-        int p=rand()%100;
+        int p=rand();
         if(p<=mutation_probability){
             pair->robby_1->dna->actions[i]=GENERATE_RANDOM_ACTION();
         }
-        p=rand()%100;
+        p=rand();
         if(p<=mutation_probability){
             pair->robby_2->dna->actions[i]=GENERATE_RANDOM_ACTION();
         }
@@ -215,7 +215,7 @@ int main(){
     init_random_population(A);
     for(i=0;i<1000;i++){
         generate_random_fitness(A);
-        p=rand()%10+rand()/2;
+        p=rand();
         evolve(A,B,p);
         C=A;
         A=B;
