@@ -3,7 +3,8 @@
 #include <math.h>
 #include <string.h>
 
-#include "environment.h"
+#include "entity/map.h"
+#include "entity/robby.h"
 #include "evolution.h"
 
 /*
@@ -109,7 +110,6 @@ void print_population_dna(population_t *A){
 
 void generate_random_fitness(population_t *A){
   int i;
-  printf("Add trash in fitness !\n");
   for(i=0;i<A->pairs_number;i++){
     A->pairs[i].global_fitness=rand()%100;
   }
@@ -118,9 +118,7 @@ void generate_random_fitness(population_t *A){
 
 void crossing_over_pair(pair_t *A1, pair_t *A2, pair_t *B1, pair_t *B2){
     int cut_point= rand()%A1->robby_1->dna->size;
-    printf("cut_point: %d\n",cut_point);
 
-    printf("DIMENSIONE: %li\n",sizeof(action_t));
     memcpy(B1->robby_1->dna->actions,A1->robby_1->dna->actions,cut_point);
     memcpy(B1->robby_1->dna->actions + cut_point,A2->robby_1->dna->actions + cut_point,A1->robby_1->dna->size - cut_point);
 
@@ -135,14 +133,17 @@ void crossing_over_pair(pair_t *A1, pair_t *A2, pair_t *B1, pair_t *B2){
 
 }
 
-void mutate_pair(pair_t *pair,int mutation_rate){
+void mutate_pair(pair_t *pair,float mutation_probability){
     int i;
-    for(i=0;i<mutation_rate;i++){
-        /*TODO controllo ripetizioni dello stesso gene mutato */
-        int p=rand()%pair->robby_1->dna->size;
-        pair->robby_1->dna->actions[p]=GENERATE_RANDOM_ACTION();
-        p=rand()%pair->robby_1->dna->size;
-        pair->robby_2->dna->actions[p]=GENERATE_RANDOM_ACTION();
+    for(i=0;i<pair->robby_1->dna->size;i++){
+        int p=rand();
+        if(p<=mutation_probability){
+            pair->robby_1->dna->actions[i]=GENERATE_RANDOM_ACTION();
+        }
+        p=rand();
+        if(p<=mutation_probability){
+            pair->robby_2->dna->actions[i]=GENERATE_RANDOM_ACTION();
+        }
     }
 }
 
@@ -159,27 +160,46 @@ int get_chosed_index(int p,int size){
         return k;
 }
 
-void crossing_over_population(population_t *A, population_t *B, int mutation_rate){
+/*
+* A: popolazione di partenza
+* B: popolazione di destinazione
+* mutation_probability: tasso di mutazione, ovvero quante mutazioni applicare al dna di A
+* La funzione prende in input una popolazione ordinata A e ne restituisce la popolazione da lei evoluta in B
+*/
+void crossing_over_population(population_t *A, population_t *B, float mutation_probability){
     int i,j,k;
     for(i=0;i<A->pairs_number;i=i+2){
       /*A->pairs[i].global_fitness=rand()%100;*/
       j=get_chosed_index(rand()%(A->pairs_number/2*(A->pairs_number+1)),A->pairs_number);
       do{
           k=get_chosed_index(rand()%(A->pairs_number/2*(A->pairs_number+1)),A->pairs_number);
-          printf("i: %d // J e K: %d %d\n",i,j,k);
       }while(j==k);
       crossing_over_pair(&(A->pairs[j]),&(A->pairs[k]),&(B->pairs[i]),&(B->pairs[i+1]));
-      mutate_pair(&(B->pairs[i]),mutation_rate);
-      mutate_pair(&(B->pairs[i+1]),mutation_rate);
+      mutate_pair(&(B->pairs[i]),mutation_probability);
+      mutate_pair(&(B->pairs[i+1]),mutation_probability);
     }
 }
 
+/*
+* src: popolazione di partenza
+* dst: popolazione di destinazione
+* mutation_probability: tasso di mutazione, ovvero quante mutazioni applicare al dna di A
+* La funzione prende in input una popolazione qualsiasi A e ne restituisce la popolazione da lei evoluta in B
+*/
+void evolve(population_t *src, population_t *dst, float mutation_probability){
+    sort_by_fitness(src);
+    crossing_over_population(src,dst,mutation_probability);
+}
+
 int main(){
-    int pop_leng=10;
+    int i;
+    float p;
+    int pop_leng=100;
+    population_t *C;
     population_t *A;
     population_t *B;
     A=allocate_population(SINGLE_CROSS_VIEW,pop_leng);
-    init_random_population(A);
+    /*init_random_population(A);
     print_population_dna(A);
     generate_random_fitness(A);
     print_population(A);
@@ -187,6 +207,21 @@ int main(){
     print_population(A);
     B=allocate_population(SINGLE_CROSS_VIEW,pop_leng);
     crossing_over_population(A,B,10);
-    print_population_dna(B);
+    print_population_dna(B);*/
+
+
+    B=allocate_population(SINGLE_CROSS_VIEW,pop_leng);
+
+    init_random_population(A);
+    for(i=0;i<1000;i++){
+        generate_random_fitness(A);
+        p=rand();
+        evolve(A,B,p);
+        C=A;
+        A=B;
+        B=C;
+    }
+
+    evolve(A,B,10);
     return 0;
 }
