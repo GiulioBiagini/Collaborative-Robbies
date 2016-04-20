@@ -3,7 +3,8 @@
 #include <math.h>
 #include <string.h>
 
-#include "environment.h"
+#include "entity/map.h"
+#include "entity/robby.h"
 #include "evolution.h"
 
 /*
