@@ -19,9 +19,7 @@ typedef struct robby {
 typedef struct pair {
 	robby_t *robby_1;		/* the first robby */
 	robby_t *robby_2;		/* the second robby */
-	double fitness_1;		/* the fitness value fo the first robby */
-	double fitness_2;		/* the fitness value of the second robby */
-	double global_fitness;	/* to average fitness of the pair */
+	double fitness_value;	/* the fitness value of the pair */
 } pair_t;
 
 typedef struct population {
@@ -45,12 +43,6 @@ void init_random_robby(robby_t *robby);
 }
 
 void init_random_population(population_t *population);
-
-#define RESET_PAIR_FITNESS(pair) {\
-	(pair)->fitness_1 = 0;\
-	(pair)->fitness_2 = 0;\
-	(pair)->global_fitness = 0;\
-}
 
 
 

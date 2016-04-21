@@ -3,8 +3,8 @@
 
 #include "entity/item.h"
 #include "entity/action.h"
-#include "entity/view.h"
 #include "entity/map.h"
+#include "entity/view.h"
 #include "entity/robby.h"
 #include "environment.h"
 
@@ -22,7 +22,6 @@ environment_t *allocate_environment(int map_width, int map_height, int cans_numb
 }
 
 void init_random_environment(environment_t *env) {
-	RESET_PAIR_FITNESS(env->pair);
 	init_random_map(env->map);
 	INIT_RANDOM_POSITION(env->pos_1, env->map);
 	do {
@@ -36,6 +35,7 @@ void execute_step(environment_t *env) {
 	int x;
 	int y;
 #endif
+	
 	int action_index_1;
 	int action_index_2;
 	action_t action_1;
@@ -46,9 +46,8 @@ void execute_step(environment_t *env) {
 	position_t new_pos_2;
 	
 #ifdef DEBUG
-	printf("Map before:\n");
-	for (x = 0; x < env->map->width; x++) {
-		for (y = 0; y < env->map->height; y++) {
+	for (y = 0; y < env->map->height; y++) {
+		for (x = 0; x < env->map->width; x++) {
 			printf(
 				"|%c%c%c",
 				IS_SAME_POSITION_2(env->pos_1, x, y) ? '1' : ' ',
@@ -58,51 +57,72 @@ void execute_step(environment_t *env) {
 		}
 		printf("|\n");
 	}
-	printf("\nUpdate views...\n");
 #endif
+	
+	/* update robby 1 view and calculate corresponding action */
 	
 	UPDATE_VIEW(
 		env->pair->robby_1->view, env->pair->robby_1->view_type,
 		env->map, env->pos_1, env->pos_2
 	);
-	UPDATE_VIEW(
-		env->pair->robby_2->view, env->pair->robby_2->view_type,
-		env->map, env->pos_2, env->pos_1
-	);
-	
-	action_index_1 = get_action_index_from_view(
+	action_index_1 = GET_ACTION_INDEX_FROM_VIEW(
+		env->pair->robby_1->view_type,
 		env->pair->robby_1->view_size,
 		env->pair->robby_1->view
 	);
-	action_index_2 = get_action_index_from_view(
-		env->pair->robby_2->view_size,
-		env->pair->robby_2->view
-	);
-	
 	action_1 = env->pair->robby_1->dna[action_index_1];
-	action_2 = env->pair->robby_2->dna[action_index_2];
 	
 #ifdef DEBUG
 	printf("Robby 1: |");
 	for (i = 0; i < env->pair->robby_1->view_size; i++)
 		printf("%c|", PRINT_ITEM(env->pair->robby_1->view[i]));
-	printf(" -> %s\n", PRINT_ACTION(action_1));
+	printf(" -> %d -> %s", action_index_1, PRINT_ACTION(action_1));
+#endif
+	
+	if (action_1 == RANDOM_ACTION) {
+		action_1 = GET_RANDOM_ACTION();
+#ifdef DEBUG
+		printf(" -> %s\n", PRINT_ACTION(action_1));
+	} else {
+		printf("\n");
+#endif
+	}
+	
+	/* update robby 2 view and calculate corresponding action */
+	
+	UPDATE_VIEW(
+		env->pair->robby_2->view, env->pair->robby_2->view_type,
+		env->map, env->pos_2, env->pos_1
+	);
+	action_index_2 = GET_ACTION_INDEX_FROM_VIEW(
+		env->pair->robby_2->view_type,
+		env->pair->robby_2->view_size,
+		env->pair->robby_2->view
+	);
+	action_2 = env->pair->robby_2->dna[action_index_2];
+	
+#ifdef DEBUG
 	printf("Robby 2: |");
 	for (i = 0; i < env->pair->robby_2->view_size; i++)
 		printf("%c|", PRINT_ITEM(env->pair->robby_2->view[i]));
-	printf(" -> %s\n", PRINT_ACTION(action_2));
+	printf(" -> %d -> %s", action_index_2, PRINT_ACTION(action_2));
 #endif
 	
-	
+	if (action_2 == RANDOM_ACTION) {
+		action_2 = GET_RANDOM_ACTION();
 #ifdef DEBUG
-	
+		printf(" -> %s\n", PRINT_ACTION(action_2));
+	} else {
+		printf("\n");
 #endif
+	}
 	
-	/*
+	/* perform virtual movements */
+	
 	COPY_POSITION(env->pos_1, &new_pos_1);
 	COPY_POSITION(env->pos_2, &new_pos_2);
 	
-	EVALUATE_ROBBY_1: switch (env->pair->robby_1->action) {
+	switch (action_1) {
 		case MOVE_UP:
 			PERFORM_MOVE_UP(&new_pos_1);
 			robby_1_moved = 1;
@@ -119,18 +139,11 @@ void execute_step(environment_t *env) {
 			PERFORM_MOVE_RIGHT(&new_pos_1);
 			robby_1_moved = 1;
 			break;
-		case STAY_PUT:
-			break;
-		case PICK_UP:
-			if (GET_ITEM_INTO_MAP_2(env->map, &new_pos_1) == CAN)
-				SET_ITEM_INTO_MAP(env->map, &new_pos_1, EMPTY);
-			break;
 		default:
-			env->pair->robby_1->action = GET_RANDOM_ACTION();
-			goto EVALUATE_ROBBY_1;
+			break;
 	}
 	
-	EVALUATE_ROBBY_2: switch (env->pair->robby_2->action) {
+	switch (action_2) {
 		case MOVE_UP:
 			PERFORM_MOVE_UP(&new_pos_2);
 			robby_2_moved = 1;
@@ -147,18 +160,91 @@ void execute_step(environment_t *env) {
 			PERFORM_MOVE_RIGHT(&new_pos_2);
 			robby_2_moved = 1;
 			break;
-		case STAY_PUT:
-			break;
-		case PICK_UP:
-			if (GET_ITEM_INTO_MAP_2(env->map, &new_pos_2) == CAN)
-				SET_ITEM_INTO_MAP(env->map, &new_pos_2, EMPTY);
-			break;
 		default:
-			env->pair->robby_2->action = GET_RANDOM_ACTION();
-			goto EVALUATE_ROBBY_2;
-	}*/
-	/*
-	if (IS_SAME_POSITION_2(&new_pos_1, &new_pos_2)) {
-		if (robby_1_moved)
-	}*/
+			break;
+	}
+	
+	/* update fitness value and execute movements */
+	
+	if (!IS_POSITION_INTO_MAP_2(&new_pos_1, env->map)) {
+		env->pair->fitness_value -= 5;
+#ifdef DEBUG
+		printf("Robby 1: CRASH INTO WALL\n");
+#endif
+	} else if (
+		IS_SAME_POSITION_3(&new_pos_1, &new_pos_2) &&
+		IS_COLLABORATIVE_VIEW(env->pair->robby_1->view_type) &&
+		robby_1_moved
+	) {
+		env->pair->fitness_value -= 5;
+#ifdef DEBUG
+		printf("Robby 1: CRASH WITH ROBBY 2\n");
+#endif
+	} else if (robby_1_moved) {
+		COPY_POSITION(&new_pos_1, env->pos_1);
+#ifdef DEBUG
+		printf("Robby 1: ok\n");
+#endif
+	}
+	
+	if (!IS_POSITION_INTO_MAP_2(&new_pos_2, env->map)) {
+		env->pair->fitness_value -= 5;
+#ifdef DEBUG
+		printf("Robby 2: CRASH INTO WALL\n");
+#endif
+	} else if (
+		IS_SAME_POSITION_3(&new_pos_2, &new_pos_1) &&
+		IS_COLLABORATIVE_VIEW(env->pair->robby_2->view_type) &&
+		robby_2_moved
+	) {
+		env->pair->fitness_value -= 5;
+#ifdef DEBUG
+		printf("Robby 2: CRASH WITH ROBBY 1\n");
+#endif
+	} else if (robby_2_moved) {
+		COPY_POSITION(&new_pos_2, env->pos_2);
+#ifdef DEBUG
+		printf("Robby 2: ok\n");
+#endif
+	}
+	
+	/* perform pick up and update fitness values */
+	
+	if (action_1 == PICK_UP) {
+		if(GET_ITEM_INTO_MAP_2(env->map, &new_pos_1) == CAN) {
+			SET_ITEM_INTO_MAP(env->map, &new_pos_1, EMPTY);
+			env->pair->fitness_value += 10;
+#ifdef DEBUG
+			printf("Robby 1: ok\n");
+#endif
+		} else {
+			env->pair->fitness_value -= 1;
+#ifdef DEBUG
+			printf("Robby 1: NO CAN HERE\n");
+#endif
+		}
+	}
+	
+	if (action_2 == PICK_UP) {
+		if(GET_ITEM_INTO_MAP_2(env->map, &new_pos_2) == CAN) {
+			SET_ITEM_INTO_MAP(env->map, &new_pos_2, EMPTY);
+			env->pair->fitness_value += 10;
+#ifdef DEBUG
+			printf("Robby 2: ok\n");
+#endif
+		} else if (action_1 == PICK_UP && IS_SAME_POSITION_3(&new_pos_2, &new_pos_1)) {
+#ifdef DEBUG
+			printf("Robby 2: ok\n");
+#endif
+		} else {
+			env->pair->fitness_value -= 1;
+#ifdef DEBUG
+			printf("Robby 2: NO CAN HERE\n");
+#endif
+		}
+	}
+	
+#ifdef DEBUG
+	printf("Fitness: %f\n", env->pair->fitness_value);
+#endif
 }

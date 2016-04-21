@@ -52,7 +52,8 @@ void init_random_map(map_t *map);
 )
 
 #define IS_POSITION_INTO_MAP_1(pos_x, pos_y, map) (\
-	pos_x >= 0 && pos_x < (map)->width && pos_y >= 0 && pos_y < (map)->height\
+	(pos_x) >= 0 && (pos_x) < (map)->width &&\
+	(pos_y) >= 0 && (pos_y) < (map)->height\
 )
 
 #define IS_POSITION_INTO_MAP_2(pos, map) (\
@@ -60,7 +61,7 @@ void init_random_map(map_t *map);
 )
 
 #define GET_ITEM_INTO_MAP_1(map, pos_x, pos_y) (\
-	!IS_POSITION_INTO_MAP_1(pos_x, pos_y, map) ? WALL :\
+	(!IS_POSITION_INTO_MAP_1(pos_x, pos_y, map)) ? WALL :\
 	(map)->items[pos_x][pos_y]\
 )
 
@@ -74,7 +75,7 @@ void init_random_map(map_t *map);
 )
 
 #define SET_ITEM_INTO_MAP(map, pos, item)\
-	(map)->items[(pos)->x][(pos)->y] = item
+	(map)->items[(pos)->x][(pos)->y] = (item)
 
 #define PERFORM_MOVE_UP(pos)\
 	(pos)->y--
