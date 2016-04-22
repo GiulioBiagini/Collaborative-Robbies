@@ -3,6 +3,7 @@
 
 #include "entity/view.h"
 #include "environment.h"
+#include "evolution.h"
 
 
 
@@ -18,19 +19,19 @@ const int CANS_NUMBER = 10;
 
 const view_type_t VIEW_TYPE = UNCOLLABORATIVE_CROSS_VIEW;
 
-const int PAIRS_NUMBER = 2;
+const int PAIRS_NUMBER = 100;
 
 /* evolution */
 
-/* TODO */
+const float MUTATION_PROBABILITY = 0.005;
 
 /* simulation */
 
-const int GENERATIONS_NUMBER = 1;
+const int GENERATIONS_NUMBER = 500;
 
-const int SESSIONS_NUMBER = 5;
+const int SESSIONS_NUMBER = 200;
 
-const int ACTIONS_PER_SESSION_NUMBER = 5;
+const int ACTIONS_PER_SESSION_NUMBER = 200;
 
 /* seed */
 
@@ -47,12 +48,15 @@ int main(int argc, char **argv) {
 	int a;
 	
 	environment_t *env;
+	population_t *tmp;
 	population_t *population;
+	population_t *new_population;
 	
 	srand(SIMULATION_SEED);
 	
 	env = allocate_environment(MAP_WIDTH, MAP_HEIGHT, CANS_NUMBER);
 	population = allocate_population(VIEW_TYPE, PAIRS_NUMBER);
+	new_population = allocate_population(VIEW_TYPE, PAIRS_NUMBER);
 	init_random_population(population);
 	
 	/* for all generations */
@@ -82,10 +86,21 @@ int main(int argc, char **argv) {
 					execute_step(env);
 				}
 			}
+			env->pair->fitness_value /= SESSIONS_NUMBER;
+#ifndef DEBUG
+			printf(
+				"GENERATION %d/%d - PAIR %d/%d -> %f\n",
+				(g + 1), GENERATIONS_NUMBER,
+				(p + 1), population->pairs_number,
+				env->pair->fitness_value
+			);
 		}
-		
-		/* TODO -> EVOLVE POPULATION */
-		
+#endif
+		/* evolve population */
+		evolve(population, new_population, MUTATION_PROBABILITY);
+		tmp = population;
+		population = new_population;
+		new_population = tmp;
 	}
 	
 	return 0;

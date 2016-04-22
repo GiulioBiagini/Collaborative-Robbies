@@ -191,39 +191,3 @@ void evolve(population_t *src, population_t *dst, float mutation_probability){
     sort_by_fitness(src);
     crossing_over_population(src,dst,mutation_probability);
 }
-
-int main(){
-    int i;
-    float p;
-    int pop_leng=100;
-    population_t *C;
-    population_t *A;
-    population_t *B;
-    const view_type_t VIEW_TYPE = UNCOLLABORATIVE_CROSS_VIEW;
-    A=allocate_population(VIEW_TYPE,pop_leng);
-    /*init_random_population(A);
-    print_population_dna(A);
-    generate_random_fitness(A);
-    print_population(A);
-    sort_by_fitness(A);
-    print_population(A);
-    B=allocate_population(SINGLE_CROSS_VIEW,pop_leng);
-    crossing_over_population(A,B,10);
-    print_population_dna(B);*/
-
-
-    B=allocate_population(VIEW_TYPE,pop_leng);
-
-    init_random_population(A);
-    for(i=0;i<1000;i++){
-        generate_random_fitness(A);
-        p=rand();
-        evolve(A,B,p);
-        C=A;
-        A=B;
-        B=C;
-    }
-
-    evolve(A,B,10);
-    return 0;
-}

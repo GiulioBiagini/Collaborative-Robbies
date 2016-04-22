@@ -119,6 +119,8 @@ void execute_step(environment_t *env) {
 	
 	/* perform virtual movements */
 	
+	robby_1_moved = 0;
+	robby_2_moved = 0;
 	COPY_POSITION(env->pos_1, &new_pos_1);
 	COPY_POSITION(env->pos_2, &new_pos_2);
 	
@@ -244,6 +246,15 @@ void execute_step(environment_t *env) {
 		}
 	}
 	
+	/* stay put */
+	
+#ifdef DEBUG
+	if (action_1 == STAY_PUT)
+		printf("Robby 1: ok\n");
+	if (action_2 == STAY_PUT)
+		printf("Robby 2: ok\n");
+#endif
+
 #ifdef DEBUG
 	printf("Fitness: %f\n", env->pair->fitness_value);
 #endif
