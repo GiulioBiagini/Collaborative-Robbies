@@ -40,6 +40,13 @@ typedef enum __attribute__ ((__packed__)) action {
 	rand() % ((ACTIONS_NUMBER) - 1)\
 )
 
+#define IS_MOVEMENT_ACTION(action) (\
+	(action) == MOVE_UP ||\
+	(action) == MOVE_DOWN ||\
+	(action) == MOVE_LEFT ||\
+	(action) == MOVE_RIGHT\
+)
+
 
 
 #endif

@@ -17,9 +17,9 @@ const int CANS_NUMBER = 10;
 
 /* population */
 
-const view_type_t VIEW_TYPE = UNCOLLABORATIVE_CROSS_VIEW;
+const int PAIRS_NUMBER = 1;
 
-const int PAIRS_NUMBER = 100;
+const view_type_t VIEW_TYPE = COLLABORATIVE_CROSS_VIEW;
 
 /* evolution */
 
@@ -27,11 +27,11 @@ const float MUTATION_PROBABILITY = 0.005;
 
 /* simulation */
 
-const int GENERATIONS_NUMBER = 500;
+const int GENERATIONS_NUMBER = 1;
 
-const int SESSIONS_NUMBER = 200;
+const int SESSIONS_NUMBER = 1;
 
-const int ACTIONS_PER_SESSION_NUMBER = 200;
+const int ACTIONS_PER_SESSION_NUMBER = 10;
 
 /* seed */
 
@@ -86,6 +86,7 @@ int main(int argc, char **argv) {
 					execute_step(env);
 				}
 			}
+			/* calculate fitness average */
 			env->pair->fitness_value /= SESSIONS_NUMBER;
 #ifndef DEBUG
 			printf(
@@ -94,8 +95,8 @@ int main(int argc, char **argv) {
 				(p + 1), population->pairs_number,
 				env->pair->fitness_value
 			);
-		}
 #endif
+		}
 		/* evolve population */
 		evolve(population, new_population, MUTATION_PROBABILITY);
 		tmp = population;
