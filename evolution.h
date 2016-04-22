@@ -1,3 +1,7 @@
+#ifndef __EVOLUTION_H__
+#define __EVOLUTION_H__
+
+#include "entity/robby.h"
 
 void Merge(population_t *A, int p, int q, int r);
 
@@ -19,3 +23,5 @@ void mutate_pair(pair_t *pair,float mutation_probability);
 
 /* Pubblica */
 void evolve(population_t *src, population_t *dst, float mutation_probability);
+
+#endif
