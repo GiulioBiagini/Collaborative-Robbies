@@ -29,9 +29,9 @@ const float MUTATION_PROBABILITY = 0.005;
 
 const int GENERATIONS_NUMBER = 1;
 
-const int SESSIONS_NUMBER = 1;
+const int SESSIONS_NUMBER = 5;
 
-const int ACTIONS_PER_SESSION_NUMBER = 10;
+const int ACTIONS_PER_SESSION_NUMBER = 1;
 
 /* seed */
 

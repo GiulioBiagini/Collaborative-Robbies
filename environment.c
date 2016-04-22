@@ -142,7 +142,7 @@ void execute_step(environment_t *env) {
 	} else if (*tmp_action == PICK_UP) {
 		if (GET_ITEM_INTO_MAP_2(env->map, tmp_new_pos) == CAN) {
 			SET_ITEM_INTO_MAP(env->map, tmp_new_pos, EMPTY);
-			env->pair->fitness_value += 10;
+			env->pair->fitness_value += (action_2 == PICK_UP ? 11 : 10);
 		} else
 			env->pair->fitness_value -= 1;
 	}
