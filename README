@@ -1,0 +1,2 @@
+Installare Open MPI:
+	sudo apt-get install openmpi-bin
