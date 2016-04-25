@@ -10,10 +10,11 @@
 
 
 
-environment_t *allocate_environment(int map_width, int map_height, int cans_number) {
+environment_t *allocate_environment(view_type_t view_type, int map_width, int map_height, int cans_number) {
 	environment_t *env;
 	
 	env = (environment_t*) malloc(sizeof(environment_t));
+	env->pair = allocate_pair(view_type);
 	env->map = allocate_map(map_width, map_height, cans_number);
 	env->pos_1 = allocate_position();
 	env->pos_2 = allocate_position();

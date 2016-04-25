@@ -36,9 +36,9 @@ population_t *allocate_population(view_type_t view_type, int pairs_number) {
 	
 	population = (population_t*) malloc(pairs_number * sizeof(population_t));
 	population->pairs_number = pairs_number;
-	population->pairs = (pair_t*) malloc(population->pairs_number * sizeof(pair_t));
+	population->pairs = (pair_t**) malloc(population->pairs_number * sizeof(pair_t*));
 	for (i = 0; i < population->pairs_number; i++)
-		population->pairs[i] = *(allocate_pair(view_type));
+		population->pairs[i] = allocate_pair(view_type);
 	
 	return population;
 }
@@ -54,5 +54,5 @@ void init_random_population(population_t *population) {
 	int i;
 	
 	for (i = 0; i < population->pairs_number; i++)
-		INIT_RANDOM_PAIR(&(population->pairs[i]));
+		INIT_RANDOM_PAIR(population->pairs[i]);
 }

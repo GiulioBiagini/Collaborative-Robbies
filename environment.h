@@ -3,8 +3,6 @@
 
 
 
-#include "entity/item.h"
-#include "entity/action.h"
 #include "entity/map.h"
 #include "entity/view.h"
 #include "entity/robby.h"
@@ -20,7 +18,7 @@ typedef struct environment {
 
 
 
-environment_t *allocate_environment(int map_width, int map_height, int cans_number);
+environment_t *allocate_environment(view_type_t view_type, int map_width, int map_height, int cans_number);
 
 void init_random_environment(environment_t *env);
 

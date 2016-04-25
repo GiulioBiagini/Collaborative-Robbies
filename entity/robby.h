@@ -24,7 +24,7 @@ typedef struct pair {
 
 typedef struct population {
 	int pairs_number;		/* the number of the pairs in the population */
-	pair_t *pairs;			/* the population as a list of pairs */
+	pair_t **pairs;			/* the population as a list of pairs */
 } population_t;
 
 
