@@ -6,7 +6,7 @@
 
 #include "entity/view.h"
 #include "environment.h"
-/*#include "evolution.h"*/
+#include "evolution.h"
 
 
 
@@ -18,15 +18,15 @@ const int CANS_NUMBER = 10;
 
 const int VIEW_TYPE = UNCOLLABORATIVE_CROSS_VIEW;
 
-const int PAIRS_NUMBER = 10;
+const int PAIRS_NUMBER = 100;
 
 const int GENERATIONS_NUMBER = 100;
 
-const int SESSIONS_NUMBER = 10;
+const int SESSIONS_NUMBER = 200;
 
-const int ACTIONS_PER_SESSION_NUMBER = 10;
+const int ACTIONS_PER_SESSION_NUMBER = 200;
 
-const int MUTATION_PROBABILITY = 0.005;
+const double MUTATION_PROBABILITY = 0.005;
 
 const int SEED = 10;
 
@@ -89,14 +89,9 @@ int main(int argc, char **argv) {
 		int p;
 		int dest;
 		population_t *population;
-		population_t *new_population;
-		population_t *tmp;
 		
-		/* allocate population */
+		/* allocate population and init with random dna */
 		population = allocate_population(VIEW_TYPE, PAIRS_NUMBER);
-		new_population = allocate_population(VIEW_TYPE, PAIRS_NUMBER);
-		
-		/* init population with random dna */
 		init_random_population(population);
 		
 		for (g = 0; g < GENERATIONS_NUMBER; g++) {
@@ -133,12 +128,7 @@ int main(int argc, char **argv) {
 			}
 			
 			/* evolve population */
-			/*
-			evolve(population, new_population, MUTATION_PROBABILITY);
-			tmp = population;
-			population = new_population;
-			new_population = tmp;
-			*/
+			evolve(population, MUTATION_PROBABILITY);
 		}
 	} else {
 		int g;

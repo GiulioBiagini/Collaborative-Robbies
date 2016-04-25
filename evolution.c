@@ -8,67 +8,154 @@
 #include "entity/robby.h"
 #include "evolution.h"
 
+
+
 /*
- A: Array
- p: left
- q: center
- r: right*/
-void Merge(population_t *A, int p, int q, int r) {
-  int i, j, k;
-  pair_t *B;
+ * Merge Sort
+ */
 
-  B = (pair_t*) malloc(A->pairs_number*sizeof(pair_t));/*TODO solve the malloc things */
-  i = p;
-  j = q+1;
-  k = 0;
-  while (i<=q && j<=r) {
-    if (A->pairs[i].fitness_value>A->pairs[j].fitness_value) {
-      /*B[k] = A[i];*/
-      B[k] = (A->pairs[i]);
-      i++;
-    } else {
-      B[k] = (A->pairs[j]);
-      /*B[k] = A[j];*/
-      j++;
+void merge(population_t *A, pair_t **B, int left, int center, int right) {
+	int i, j, k;
+	
+	i = left;
+	j = center + 1;
+	k = 0;
+	
+	while (i <= center && j <= right)
+		if (A->pairs[i]->fitness_value > A->pairs[j]->fitness_value)
+			B[k++] = A->pairs[i++];/*B[k] = A[i];*/
+		else
+			B[k++] = A->pairs[j++];/*B[k] = A[j];*/
+	
+	while (i <= center)
+		B[k++] = A->pairs[i++];/*B[k] = A[i];*/
+	
+	while (j <= right)
+		B[k++] = A->pairs[j++];/*B[k] = A[j];*/
+	
+	for (k = left; k <= right; k++)
+		A->pairs[k] = B[k - left];/*A[k] = B[k-p];*/
+}
+
+void merge_sort(population_t *population, pair_t **tmp, int left, int right) {
+	int center;
+	
+	if (left < right) {
+		center = (left + right) / 2;
+		merge_sort(population, tmp, left, center);
+		merge_sort(population, tmp, center + 1, right);
+		merge(population, tmp, left, center, right);
+	}
+}
+
+
+
+/*
+ * Mutation
+ */
+
+void mutate_robby(robby_t *robby, double mutation_probability) {
+	int i;
+	action_t new_action;
+	
+	for (i = 0; i < robby->dna_size; i++) {
+		if (RANDOM_0_1() <= mutation_probability) {
+			do {
+				new_action = GENERATE_RANDOM_ACTION();
+			} while (robby->dna[i] == new_action);
+			robby->dna[i] = new_action;
+		}
+	}
+}
+
+void mutate_population(population_t *population, double mutation_probability) {
+	int i;
+	
+	for (i = 0; i < population->pairs_number; i++)
+		MUTATE_PAIR(population->pairs[i], mutation_probability);
+}
+
+
+
+/*
+ * Crossover
+
+
+void crossing_over_pair(pair_t *A1, pair_t *A2, pair_t *B1, pair_t *B2){
+    int cut_point= rand()%A1->robby_1->dna_size;
+
+    memcpy(B1->robby_1->dna,A1->robby_1->dna,cut_point);
+    memcpy(B1->robby_1->dna + cut_point,A2->robby_1->dna + cut_point,A1->robby_1->dna_size - cut_point);
+
+    memcpy(B2->robby_1->dna,A2->robby_1->dna,cut_point);
+    memcpy(B2->robby_1->dna + cut_point,A1->robby_1->dna + cut_point,A1->robby_1->dna_size - cut_point);
+
+    memcpy(B1->robby_2->dna,A1->robby_2->dna,cut_point);
+    memcpy(B1->robby_2->dna + cut_point,A2->robby_2->dna + cut_point,A1->robby_2->dna_size - cut_point);
+
+    memcpy(B2->robby_2->dna,A2->robby_2->dna,cut_point);
+    memcpy(B2->robby_2->dna + cut_point,A1->robby_2->dna + cut_point,A1->robby_2->dna_size - cut_point);
+
+}
+
+int get_chosed_index(int p,int size){
+        int i;
+        int k;
+        i=0;
+        k=0;
+        while(i<p){
+            i=i+size;
+            size--;
+            k++;
+        }
+        return k;
+}
+
+void crossing_over_population(population_t *A, population_t *B, float mutation_probability){
+    int i,j,k;
+    for(i=0;i<A->pairs_number;i=i+2){*/
+      /*A->pairs[i].fitness_value=rand()%100;*/
+      /*j=get_chosed_index(rand()%(A->pairs_number/2*(A->pairs_number+1)),A->pairs_number);
+      do{
+          k=get_chosed_index(rand()%(A->pairs_number/2*(A->pairs_number+1)),A->pairs_number);
+      }while(j==k);
+      crossing_over_pair(&(A->pairs[j]),&(A->pairs[k]),&(B->pairs[i]),&(B->pairs[i+1]));
+      mutate_pair(&(B->pairs[i]),mutation_probability);
+      mutate_pair(&(B->pairs[i+1]),mutation_probability);
     }
-    k++;
-  }
-  while (i<=q) {
-    /*B[k] = A[i];*/
-    B[k] = (A->pairs[i]);
-    i++;
-    k++;
-  }
-  while (j<=r) {
-    B[k] = (A->pairs[j]);
-    /*B[k] = A[j];*/
-    j++;
-    k++;
-  }
-  for (k=p; k<=r; k++){
-    /*A[k] = B[k-p];*/
-    (A->pairs[k]) = (B[k-p]);
-  }
-  free(B);
-  return;
+}*/
+
+
+
+/*
+ * Evolution
+ */
+
+void evolve(population_t *population, double mutation_probability) {
+	pair_t ** tmp_pairs;
+	
+	tmp_pairs = (pair_t**) malloc(population->pairs_number * sizeof(pair_t*));
+    merge_sort(population, tmp_pairs, 0, population->pairs_number - 1);
+	free(tmp_pairs);
+	
+    /*crossing_over_population(src,dst,mutation_probability);*/
+	mutate_population(population, mutation_probability);
+	
+	/*
+	population_t *tmp;
+	tmp = allocate_population(
+		population->pairs[0]->robby_1->view_type,
+		population->pairs_number
+	);
+	*/
 }
 
 
-void MergeSort(population_t *A, int p, int r) {
-  int q;
 
-  if (p<r) {
-    q = (p+r)/2;
-    MergeSort(A, p, q);
-    MergeSort(A, q+1, r);
-    Merge(A, p, q, r);
-  }
-  return;
-}
+/*
+ * DEBUG 
 
-void sort_by_fitness(population_t *A){
-  MergeSort(A, 0, A->pairs_number-1);
-}
+
 
 void print_population(population_t *A){
   int i;
@@ -115,79 +202,4 @@ void generate_random_fitness(population_t *A){
     A->pairs[i].fitness_value=rand()%100;
   }
 }
-
-
-void crossing_over_pair(pair_t *A1, pair_t *A2, pair_t *B1, pair_t *B2){
-    int cut_point= rand()%A1->robby_1->dna_size;
-
-    memcpy(B1->robby_1->dna,A1->robby_1->dna,cut_point);
-    memcpy(B1->robby_1->dna + cut_point,A2->robby_1->dna + cut_point,A1->robby_1->dna_size - cut_point);
-
-    memcpy(B2->robby_1->dna,A2->robby_1->dna,cut_point);
-    memcpy(B2->robby_1->dna + cut_point,A1->robby_1->dna + cut_point,A1->robby_1->dna_size - cut_point);
-
-    memcpy(B1->robby_2->dna,A1->robby_2->dna,cut_point);
-    memcpy(B1->robby_2->dna + cut_point,A2->robby_2->dna + cut_point,A1->robby_2->dna_size - cut_point);
-
-    memcpy(B2->robby_2->dna,A2->robby_2->dna,cut_point);
-    memcpy(B2->robby_2->dna + cut_point,A1->robby_2->dna + cut_point,A1->robby_2->dna_size - cut_point);
-
-}
-
-void mutate_pair(pair_t *pair,float mutation_probability){
-    int i;
-    for(i=0;i<pair->robby_1->dna_size;i++){
-        int p=rand();
-        if(p<=mutation_probability){
-            pair->robby_1->dna[i]=GENERATE_RANDOM_ACTION();
-        }
-        p=rand();
-        if(p<=mutation_probability){
-            pair->robby_2->dna[i]=GENERATE_RANDOM_ACTION();
-        }
-    }
-}
-
-int get_chosed_index(int p,int size){
-        int i;
-        int k;
-        i=0;
-        k=0;
-        while(i<p){
-            i=i+size;
-            size--;
-            k++;
-        }
-        return k;
-}
-
-/*
-* A: popolazione di partenza
-* B: popolazione di destinazione
-* mutation_probability: tasso di mutazione, ovvero quante mutazioni applicare al dna di A
-* La funzione prende in input una popolazione ordinata A e ne restituisce la popolazione da lei evoluta in B
 */
-void crossing_over_population(population_t *A, population_t *B, float mutation_probability){
-    int i,j,k;
-    for(i=0;i<A->pairs_number;i=i+2){
-      /*A->pairs[i].fitness_value=rand()%100;*/
-      j=get_chosed_index(rand()%(A->pairs_number/2*(A->pairs_number+1)),A->pairs_number);
-      do{
-          k=get_chosed_index(rand()%(A->pairs_number/2*(A->pairs_number+1)),A->pairs_number);
-      }while(j==k);
-      crossing_over_pair(&(A->pairs[j]),&(A->pairs[k]),&(B->pairs[i]),&(B->pairs[i+1]));
-      mutate_pair(&(B->pairs[i]),mutation_probability);
-      mutate_pair(&(B->pairs[i+1]),mutation_probability);
-    }
-}
-
-/*
-* src: popolazione di partenza
-* dst: popolazione di destinazione
-* mutation_probability: tasso di mutazione, ovvero quante mutazioni applicare al dna di A
-* La funzione prende in input una popolazione qualsiasi A e ne restituisce la popolazione da lei evoluta in B
-*/
-void evolve(population_t *src, population_t *dst, float mutation_probability){
-    sort_by_fitness(src);
-    crossing_over_population(src,dst,mutation_probability);
-}
