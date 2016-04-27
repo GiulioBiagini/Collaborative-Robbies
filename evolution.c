@@ -3,7 +3,7 @@
 #include <math.h>
 #include <string.h>
 
-#include "entity/view.h"
+#include "entity/action.h"
 #include "entity/robby.h"
 #include "simulation_const.h"
 #include "evolution.h"
