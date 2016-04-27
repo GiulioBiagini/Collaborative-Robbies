@@ -7,28 +7,7 @@
 #include "entity/view.h"
 #include "environment.h"
 #include "evolution.h"
-
-
-
-const int MAP_WIDTH = 10;
-
-const int MAP_HEIGHT = 10;
-
-const int CANS_NUMBER = 10;
-
-const int VIEW_TYPE = UNCOLLABORATIVE_CROSS_VIEW;
-
-const int PAIRS_NUMBER = 100;
-
-const int GENERATIONS_NUMBER = 100;
-
-const int SESSIONS_NUMBER = 200;
-
-const int ACTIONS_PER_SESSION_NUMBER = 200;
-
-const double MUTATION_PROBABILITY = 0.005;
-
-const int SEED = 10;
+#include "simulation_const.h"
 
 
 
@@ -38,22 +17,22 @@ const int SEED = 10;
 
 #define SEND_PAIR(pair, dest) {\
 	MPI_Send(\
-		(pair)->robby_1->dna, (pair)->robby_1->dna_size, MPI_CHAR,\
+		(pair)->robby_1, DNA_SIZE, MPI_CHAR,\
 		dest, TAG_SEND_RECV_PAIR, MPI_COMM_WORLD\
 	);\
 	MPI_Send(\
-		(pair)->robby_2->dna, (pair)->robby_2->dna_size, MPI_CHAR,\
+		(pair)->robby_2, DNA_SIZE, MPI_CHAR,\
 		dest, TAG_SEND_RECV_PAIR, MPI_COMM_WORLD\
 	);\
 }
 
 #define RECV_PAIR(pair, src) {\
 	MPI_Recv(\
-		(pair)->robby_1->dna, (pair)->robby_1->dna_size, MPI_CHAR,\
+		(pair)->robby_1, DNA_SIZE, MPI_CHAR,\
 		src, TAG_SEND_RECV_PAIR, MPI_COMM_WORLD, MPI_STATUS_IGNORE\
 	);\
 	MPI_Recv(\
-		(pair)->robby_2->dna, (pair)->robby_2->dna_size, MPI_CHAR,\
+		(pair)->robby_2, DNA_SIZE, MPI_CHAR,\
 		src, TAG_SEND_RECV_PAIR, MPI_COMM_WORLD, MPI_STATUS_IGNORE\
 	);\
 }
@@ -75,6 +54,8 @@ const int SEED = 10;
 
 
 int main(int argc, char **argv) {
+	int g;
+	int p;
 	int my_id;
 	int processes_number;
 	
@@ -82,91 +63,63 @@ int main(int argc, char **argv) {
 	MPI_Comm_rank(MPI_COMM_WORLD, &my_id);
 	MPI_Comm_size(MPI_COMM_WORLD, &processes_number);
 	
-	srand(SEED);
+	INIT_CONST();
 	
+	srand(SEED + my_id);
+	
+	/* MASTER */
 	if (my_id == 0) {
-		int g;
-		int p;
 		int dest;
-		population_t *population;
+		pair_t **population;
 		
 		/* allocate population and init with random dna */
-		population = allocate_population(VIEW_TYPE, PAIRS_NUMBER);
-		init_random_population(population);
+		population = allocate_population();
+		INIT_RANDOM_POPULATION(population);
+		printf("ciao\n");
+		
+		/* init evolution */
+		init_evolution();
 		
 		for (g = 0; g < GENERATIONS_NUMBER; g++) {
 			/* send pairs to processes for evaluation */
-			for (p = 0; p < population->pairs_number; p++) {
+			for (p = 0; p < PAIRS_NUMBER; p++) {
 				dest = (p % (processes_number - 1)) + 1;
-				SEND_PAIR(population->pairs[p], dest);
-#ifdef DEBUG_MPI
-				printf(
-					"%d - pair %d sent to process %d\n",
-					my_id, (p + 1), dest
-				);
-#endif
+				SEND_PAIR(population[p], dest);
 			}
 			/* receive fitness values from processes */
-			for (p = 0; p < population->pairs_number; p++) {
+			for (p = 0; p < PAIRS_NUMBER; p++) {
 				dest = (p % (processes_number - 1)) + 1;
-				RECV_FITNESS(&(population->pairs[p]->fitness_value), dest);
-#ifdef DEBUG_MPI
-				printf(
-					"%d - fitness of pair %d received from process %d (%f)\n",
-					my_id, (p + 1), dest, population->pairs[p]->fitness_value
-				);
-			}
-			/* print fitness values */
-			for (p = 0; p < population->pairs_number; p++) {
-#endif
+				RECV_FITNESS(&(population[p]->fitness_value), dest);
 				printf(
 					"GENERATION %d/%d, PAIR %d/%d, FITNESS: %f\n",
 					(g + 1), GENERATIONS_NUMBER,
 					(p + 1), PAIRS_NUMBER,
-					population->pairs[p]->fitness_value
+					population[p]->fitness_value
 				);
 			}
-			
 			/* evolve population */
-			evolve(population, MUTATION_PROBABILITY);
+			evolve(population);
 		}
+	/* SLAVE */
 	} else {
-		int g;
-		int p;
-		int s;
-		int a;
-		environment_t *env;
+		pair_t *pair;
+		
+		/* allocate pair */
+		pair = allocate_pair();
 		
 		/* allocate environment */
-		env = allocate_environment(VIEW_TYPE, MAP_WIDTH, MAP_HEIGHT, CANS_NUMBER);
+		/*init_environment(
+			MAP_WIDTH, MAP_HEIGHT, CANS_NUMBER,
+			SESSIONS_NUMBER, ACTIONS_PER_SESSION_NUMBER
+		);*/
 		
 		for (g = 0; g < GENERATIONS_NUMBER; g++) {
+			/* receive pair, evaluate it and send fitness value */
 			for (p = my_id; p <= PAIRS_NUMBER; p+= (processes_number - 1)) {
-				/* receive pair for evaluation */
-				RECV_PAIR(env->pair, 0);
-#ifdef DEBUG_MPI
-				printf(
-					"%d - pair %d received\n",
-					my_id, p
-				);
-#endif
-				/* evaluate pair */
-				env->pair->fitness_value = 0;
-				for (s = 0; s < SESSIONS_NUMBER; s++) {
-					init_random_environment(env);
-					for (a = 0; a < ACTIONS_PER_SESSION_NUMBER; a++)
-						execute_step(env);
-				}
-				env->pair->fitness_value /= SESSIONS_NUMBER;
-				
-				/* send fitness value */
-				SEND_FITNESS(&(env->pair->fitness_value), 0);
-#ifdef DEBUG_MPI
-				printf(
-					"%d - fitness of pair %d sent (%f)\n",
-					my_id, p, env->pair->fitness_value
-				);
-#endif
+				RECV_PAIR(pair, 0);
+				/*evaluate(pair);*/
+				pair->fitness_value = rand() % 100;
+				SEND_FITNESS(&(pair->fitness_value), 0);
 			}
 		}
 	}
