@@ -20,11 +20,11 @@ int DNA_SIZE;
 
 
 
-const int PAIRS_NUMBER = 10;
+const int PAIRS_NUMBER = 100;
 
 
 
-const int GENERATIONS_NUMBER = 3;
+const int GENERATIONS_NUMBER = 100;
 
 const int SESSIONS_NUMBER = 200;
 

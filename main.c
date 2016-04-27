@@ -2,9 +2,9 @@
 #include <unistd.h>
 #include <stdio.h>
 
-#include "mpi.h"
+#include <mpi.h>
 
-#include "entity/view.h"
+#include "entity/robby.h"
 #include "environment.h"
 #include "evolution.h"
 #include "simulation_const.h"
@@ -75,7 +75,6 @@ int main(int argc, char **argv) {
 		/* allocate population and init with random dna */
 		population = allocate_population();
 		INIT_RANDOM_POPULATION(population);
-		printf("ciao\n");
 		
 		/* init evolution */
 		init_evolution();
@@ -108,17 +107,13 @@ int main(int argc, char **argv) {
 		pair = allocate_pair();
 		
 		/* allocate environment */
-		/*init_environment(
-			MAP_WIDTH, MAP_HEIGHT, CANS_NUMBER,
-			SESSIONS_NUMBER, ACTIONS_PER_SESSION_NUMBER
-		);*/
+		init_environment();
 		
 		for (g = 0; g < GENERATIONS_NUMBER; g++) {
 			/* receive pair, evaluate it and send fitness value */
 			for (p = my_id; p <= PAIRS_NUMBER; p+= (processes_number - 1)) {
 				RECV_PAIR(pair, 0);
-				/*evaluate(pair);*/
-				pair->fitness_value = rand() % 100;
+				evaluate(pair);
 				SEND_FITNESS(&(pair->fitness_value), 0);
 			}
 		}

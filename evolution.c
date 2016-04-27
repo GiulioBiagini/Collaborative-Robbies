@@ -61,7 +61,7 @@ static pair_t **new_population;
 void generate_robby(action_t *parent_1, action_t *parent_2, action_t *child) {
 	int cut_point;
 	
-	cut_point = DNA_SIZE / 2;
+	cut_point = rand() % DNA_SIZE;
 	
 	memcpy(child, parent_1, cut_point);
 	memcpy(child + cut_point, parent_2 + cut_point, DNA_SIZE - cut_point);
@@ -72,18 +72,23 @@ void generate_robby(action_t *parent_1, action_t *parent_2, action_t *child) {
 	generate_robby((parent_1)->robby_2, (parent_2)->robby_2, (child)->robby_2);\
 }
 
-/* int get_chosed_index(int p,int size){
-        int i;
-        int k;
-        i=0;
-        k=0;
-        while(i<p){
-            i=i+size;
-            size--;
-            k++;
-        }
-        return k;
-} */
+pair_t *get_random_pair_weight(pair_t **population) {
+	int i;
+	int k;
+	float p;
+	int size;
+	
+	p = (rand() % (PAIRS_NUMBER + 1)) * (PAIRS_NUMBER / 2);
+	size = PAIRS_NUMBER;
+	i = 0;
+	k = 0;
+	while(i < p) {
+		i = i + size;
+		size--;
+		k++;
+	}
+	return population[k];
+}
 
 void generate_population(pair_t **population) {
 	int i;
@@ -92,9 +97,9 @@ void generate_population(pair_t **population) {
 	pair_t *parent_2;
 	
 	for (i = 0; i < PAIRS_NUMBER; i++) {
-		parent_1 = population[rand() % PAIRS_NUMBER];
+		parent_1 = get_random_pair_weight(population);
 		do {
-			parent_2 = population[rand() % PAIRS_NUMBER];
+			parent_2 = get_random_pair_weight(population);
 		} while (parent_1 == parent_2);
 		GENERATE_PAIR(parent_1, parent_2, new_population[i]);
 	}
