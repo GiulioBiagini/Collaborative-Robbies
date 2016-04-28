@@ -9,6 +9,10 @@
 #include "evolution.h"
 
 
+#define RANDOM_0_1() (\
+	(double) rand() / (double) RAND_MAX\
+)
+
 
 /*
  * Merge Sort
@@ -63,7 +67,7 @@ static int* weight;
 void generate_robby(action_t *parent_1, action_t *parent_2, action_t *child) {
 	int cut_point;
 
-	cut_point = rand() % DNA_SIZE;
+	cut_point = (RANDOM_0_1() * DNA_SIZE);
 
 	memcpy(child, parent_1, cut_point);
 	memcpy(child + cut_point, parent_2 + cut_point, DNA_SIZE - cut_point);
@@ -77,7 +81,7 @@ void generate_robby(action_t *parent_1, action_t *parent_2, action_t *child) {
 pair_t *get_random_pair_weight(pair_t **population) {
 	int p;
 
-	p = (rand() % ((PAIRS_NUMBER + 1) * (PAIRS_NUMBER / 2)));
+	p = (RANDOM_0_1()*((PAIRS_NUMBER + 1) * (PAIRS_NUMBER / 2)));
 	/*size = PAIRS_NUMBER;
 	i = 0;
 	k = -1;
@@ -131,9 +135,7 @@ void generate_population(pair_t **population) {
  * Mutation
  */
 
-#define RANDOM_0_1() (\
-	(double) rand() / (double) RAND_MAX\
-)
+
 
 void mutate_robby(action_t *robby) {
 	int i;
