@@ -16,6 +16,7 @@
 
 static pair_t **B;
 
+
 void merge(pair_t **A, int left, int center, int right) {
 	int i, j, k;
 
@@ -57,6 +58,7 @@ void merge_sort(pair_t **population, int left, int right) {
  */
 
 static pair_t **new_population;
+static int* weight;
 
 void generate_robby(action_t *parent_1, action_t *parent_2, action_t *child) {
 	int cut_point;
@@ -73,21 +75,18 @@ void generate_robby(action_t *parent_1, action_t *parent_2, action_t *child) {
 }
 
 pair_t *get_random_pair_weight(pair_t **population) {
-	int i;
-	int k;
-	float p;
-	int size;
+	int p;
 
-	p = (rand() % ((PAIRS_NUMBER + 1) * (PAIRS_NUMBER / 2)))+1;
-	size = PAIRS_NUMBER;
+	p = (rand() % ((PAIRS_NUMBER + 1) * (PAIRS_NUMBER / 2)));
+	/*size = PAIRS_NUMBER;
 	i = 0;
 	k = -1;
 	while(i < p) {
 		i = i + size;
 		size--;
 		k++;
-	}
-	return population[k];
+	}*/
+	return population[weight[p]];
 }
 
 void generate_population(pair_t **population) {
@@ -168,13 +167,30 @@ void mutate_robby(action_t *robby) {
  */
 
 void init_evolution() {
+	int i,j,k;
 	B = (pair_t**) malloc(PAIRS_NUMBER * sizeof(pair_t*));
 	new_population = allocate_population();
+	weight= (int*) malloc((PAIRS_NUMBER+1)*(PAIRS_NUMBER/2)*sizeof(int));
+	j=0;
+	/*DA VERIFICARE MA SEMBRA FUNZIONARE*/
+	for(i=0,k=0;i<(PAIRS_NUMBER+1)*(PAIRS_NUMBER/2);i++,k++){
+		weight[i]=j;
+		if(k==(PAIRS_NUMBER-j)){
+			k=0;
+			j++;
+		}
+	}
 }
 
 void evolve(pair_t **population) {
 	/* sort pairs according to their fitness values */
     merge_sort(population, 0, PAIRS_NUMBER - 1);
+
+	printf(
+		"FITNESS: %f\n",
+		population[0]->fitness_value
+	);
+
 	/* generate new pairs with crossover technique */
 	generate_population(population);
 	/* mutate pairs */
