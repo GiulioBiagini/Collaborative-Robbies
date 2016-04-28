@@ -10,12 +10,6 @@
 
 
 
-#define RANDOM_0_1() (\
-	(double) rand() / (double) RAND_MAX\
-)
-
-
-
 /*
  * Merge Sort
  */
@@ -131,6 +125,10 @@ void generate_population(pair_t **population) {
 /*
  * Mutation
  */
+
+#define RANDOM_0_1() (\
+	(double) rand() / (double) RAND_MAX\
+)
 
 void mutate_robby(action_t *robby) {
 	int i;
