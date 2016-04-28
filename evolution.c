@@ -9,9 +9,11 @@
 #include "evolution.h"
 
 
+
 #define RANDOM_0_1() (\
 	(double) rand() / (double) RAND_MAX\
 )
+
 
 
 /*
@@ -19,7 +21,6 @@
  */
 
 static pair_t **B;
-
 
 void merge(pair_t **A, int left, int center, int right) {
 	int i, j, k;
@@ -62,12 +63,15 @@ void merge_sort(pair_t **population, int left, int right) {
  */
 
 static pair_t **new_population;
-static int* weight;
+
+static int ranking_size;
+
+static int* ranking_weight;
 
 void generate_robby(action_t *parent_1, action_t *parent_2, action_t *child) {
 	int cut_point;
 
-	cut_point = (RANDOM_0_1() * DNA_SIZE);
+	cut_point = (rand() % DNA_SIZE);
 
 	memcpy(child, parent_1, cut_point);
 	memcpy(child + cut_point, parent_2 + cut_point, DNA_SIZE - cut_point);
@@ -78,20 +82,9 @@ void generate_robby(action_t *parent_1, action_t *parent_2, action_t *child) {
 	generate_robby((parent_1)->robby_2, (parent_2)->robby_2, (child)->robby_2);\
 }
 
-pair_t *get_random_pair_weight(pair_t **population) {
-	int p;
-
-	p = (RANDOM_0_1()*((PAIRS_NUMBER + 1) * (PAIRS_NUMBER / 2)));
-	/*size = PAIRS_NUMBER;
-	i = 0;
-	k = -1;
-	while(i < p) {
-		i = i + size;
-		size--;
-		k++;
-	}*/
-	return population[weight[p]];
-}
+#define GET_RANKING_PARENT(population) (\
+	population[ranking_weight[rand() % ranking_size]]\
+)
 
 void generate_population(pair_t **population) {
 	int i;
@@ -99,11 +92,10 @@ void generate_population(pair_t **population) {
 	pair_t *parent_1;
 	pair_t *parent_2;
 
-
 	for (i = 0; i < 10; i++) {
 		parent_1 = population[i];
 		do {
-			parent_2 = get_random_pair_weight(population);
+			parent_2 = GET_RANKING_PARENT(population);
 		} while (parent_1 == parent_2);
 		GENERATE_PAIR(parent_1, parent_2, new_population[i]);
 	}
@@ -111,15 +103,15 @@ void generate_population(pair_t **population) {
 	for (i = 10; i < 20; i++) {
 		parent_1 = population[i];
 		do {
-			parent_2 = get_random_pair_weight(population);
+			parent_2 = GET_RANKING_PARENT(population);
 		} while (parent_1 == parent_2);
 		GENERATE_PAIR(parent_2, parent_1, new_population[i]);
 	}
 
 	for (i = 20; i < PAIRS_NUMBER; i++) {
-		parent_1 = get_random_pair_weight(population);
+		parent_1 = GET_RANKING_PARENT(population);
 		do {
-			parent_2 = get_random_pair_weight(population);
+			parent_2 = GET_RANKING_PARENT(population);
 		} while (parent_1 == parent_2);
 		GENERATE_PAIR(parent_1, parent_2, new_population[i]);
 	}
@@ -134,8 +126,6 @@ void generate_population(pair_t **population) {
 /*
  * Mutation
  */
-
-
 
 void mutate_robby(action_t *robby) {
 	int i;
@@ -156,10 +146,11 @@ void mutate_robby(action_t *robby) {
 	mutate_robby((pair)->robby_2);\
 }
 
-#define MUTATE_POPULATION(population) {\
-	int i;\
-	for (i = 0; i < PAIRS_NUMBER; i++)\
-		MUTATE_PAIR((population)[i]);\
+void mutate_population(pair_t **population) {
+	int i;
+	
+	for (i = 0; i < PAIRS_NUMBER; i++)
+		MUTATE_PAIR(population[i]);
 }
 
 
@@ -169,32 +160,19 @@ void mutate_robby(action_t *robby) {
  */
 
 void init_evolution() {
-	int i,j,k;
+	int i, j, k;
+	
 	B = (pair_t**) malloc(PAIRS_NUMBER * sizeof(pair_t*));
+	
 	new_population = allocate_population();
-	weight= (int*) malloc((PAIRS_NUMBER+1)*(PAIRS_NUMBER/2)*sizeof(int));
-	j=0;
-	/*DA VERIFICARE MA SEMBRA FUNZIONARE*/
-	for(i=0,k=0;i<(PAIRS_NUMBER+1)*(PAIRS_NUMBER/2);i++,k++){
-		weight[i]=j;
-		if(k==(PAIRS_NUMBER-j)){
-			k=0;
+	
+	ranking_size = (PAIRS_NUMBER + 1) * (PAIRS_NUMBER / (double) 2);
+	ranking_weight = (int*) malloc(ranking_size * sizeof(int));
+	for (i = 0, j = 0, k = 0; i < ranking_size; i++, k++) {
+		if (k == (PAIRS_NUMBER - j)) {
+			k = 0;
 			j++;
 		}
+		ranking_weight[i] = j;
 	}
-}
-
-void evolve(pair_t **population) {
-	/* sort pairs according to their fitness values */
-    merge_sort(population, 0, PAIRS_NUMBER - 1);
-
-	printf(
-		"FITNESS: %f\n",
-		population[0]->fitness_value
-	);
-
-	/* generate new pairs with crossover technique */
-	generate_population(population);
-	/* mutate pairs */
-	MUTATE_POPULATION(population);
 }

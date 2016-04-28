@@ -9,7 +9,11 @@
 
 void init_evolution();
 
-void evolve(pair_t **population);
+void merge_sort(pair_t **population, int left, int right);
+
+void generate_population(pair_t **population);
+
+void mutate_population(pair_t **population);
 
 
 

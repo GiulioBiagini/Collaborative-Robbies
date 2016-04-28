@@ -24,7 +24,7 @@ const int PAIRS_NUMBER = 100;
 
 
 
-const int GENERATIONS_NUMBER = 100;
+const int GENERATIONS_NUMBER = 500;
 
 const int SESSIONS_NUMBER = 200;
 

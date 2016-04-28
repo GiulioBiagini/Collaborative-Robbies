@@ -256,12 +256,12 @@ void evaluate(pair_t *pair) {
 		for (a = 0; a < ACTIONS_PER_SESSION_NUMBER; a++) {
 			
 #ifdef DEBUG
-			for (y = 0; y < map_height; y++) {
-				for (x = 0; x < map_width; x++) {
+			for (y = 0; y < MAP_HEIGHT; y++) {
+				for (x = 0; x < MAP_WIDTH; x++) {
 					printf(
 						"|%c%c%c",
 						IS_SAME_POSITION(pos_x_1, pos_y_1, x, y) ? '1' : ' ',
-						PRINT_ITEM(GET_ITEM_INTO_MAP_1(x, y)),
+						PRINT_ITEM(GET_ITEM_INTO_MAP(x, y)),
 						IS_SAME_POSITION(pos_x_2, pos_y_2, x, y) ? '2' : ' '
 					);
 				}
@@ -273,6 +273,27 @@ void evaluate(pair_t *pair) {
 			UPDATE_VIEWS();
 			UPDATE_INDEXES();
 			UPDATE_ACTIONS(pair);
+			
+#ifdef DEBUG
+			printf("Robby 1: |");
+			for (i = 0; i < VIEW_SIZE; i++)
+				printf("%c|", PRINT_ITEM(view_1[i]));
+			printf(
+				(pair->robby_1[index_1] == RANDOM_ACTION) ?
+				" -> dna[%d] -> random: %s\n" : " -> dna[%d] -> %s\n",
+				index_1,
+				PRINT_ACTION(action_1)
+			);
+			printf("Robby 2: |");
+			for (i = 0; i < VIEW_SIZE; i++)
+				printf("%c|", PRINT_ITEM(view_2[i]));
+			printf(
+				(pair->robby_2[index_2] == RANDOM_ACTION) ?
+				" -> dna[%d] -> random: %s\n" : " -> dna[%d] -> %s\n",
+				index_2,
+				PRINT_ACTION(action_2)
+			);
+#endif
 			
 			/*  update robby 1 new position */
 			if (action_1 == MOVE_UP) {
@@ -311,18 +332,6 @@ void evaluate(pair_t *pair) {
 				new_pos_x_2 = pos_x_2;
 				new_pos_y_2 = pos_y_2;
 			}
-			
-#ifdef DEBUG
-	printf(tmp_robby == env->pair->robby_1 ? "Robby 1: |" : "Robby 2: |");
-	for (i = 0; i < tmp_robby->view_size; i++)
-		printf("%c|", PRINT_ITEM(tmp_robby->view[i]));
-	printf(
-		(tmp_robby->dna[*tmp_index] == RANDOM_ACTION) ?
-		" -> dna[%d] -> random: %s\n" : " -> dna[%d] -> %s\n",
-		*tmp_index,
-		PRINT_ACTION(*tmp_action)
-	);
-#endif
 			
 			/* evaluate robby 1 movement */
 			if (IS_MOVEMENT_ACTION(action_1)) {
@@ -369,12 +378,14 @@ void evaluate(pair_t *pair) {
 				} else if (action_1 != PICK_UP || !IS_SAME_POSITION(pos_x_1, pos_y_1, pos_x_2, pos_y_2))
 					pair->fitness_value -= 1;
 			}
+#ifdef DEBUG
+			printf("Fitness: %f\n", pair->fitness_value);
+#endif
 		}
+#ifdef DEBUG
+		printf("\n\n");
+#endif
 	}
 	
-	pair->fitness_value /= SESSIONS_NUMBER;
-			
-#ifdef DEBUG
-	printf("Fitness: %f\n", env->pair->fitness_value);
-#endif
+	pair->fitness_value = (double) pair->fitness_value / (double) SESSIONS_NUMBER;
 }

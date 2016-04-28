@@ -71,12 +71,8 @@ int main(int argc, char **argv) {
 	if (my_id == 0) {
 		int dest;
 		pair_t **population;
-		
-		/* allocate population and init with random dna */
 		population = allocate_population();
 		INIT_RANDOM_POPULATION(population);
-		
-		/* init evolution */
 		init_evolution();
 		
 		for (g = 0; g < GENERATIONS_NUMBER; g++) {
@@ -84,37 +80,46 @@ int main(int argc, char **argv) {
 			for (p = 0; p < PAIRS_NUMBER; p++) {
 				dest = (p % (processes_number - 1)) + 1;
 				SEND_PAIR(population[p], dest);
+#ifdef DEBUG_MPI
+				printf("pair %d sent to process %d\n", (p + 1), dest);
+#endif
 			}
 			/* receive fitness values from processes */
 			for (p = 0; p < PAIRS_NUMBER; p++) {
 				dest = (p % (processes_number - 1)) + 1;
 				RECV_FITNESS(&(population[p]->fitness_value), dest);
-				printf(
-					"GENERATION %d/%d, PAIR %d/%d, FITNESS: %f\n",
-					(g + 1), GENERATIONS_NUMBER,
-					(p + 1), PAIRS_NUMBER,
-					population[p]->fitness_value
-				);
+#ifdef DEBUG_MPI
+				printf("fitness of pair %d received from process %d\n", (p + 1), dest);
+#endif
 			}
 			/* evolve population */
-			evolve(population);
+			merge_sort(population, 0, PAIRS_NUMBER - 1);
+			printf(
+				"GENERATION %d/%d FITNESS: %f\n",
+				(g + 1), GENERATIONS_NUMBER,
+				population[0]->fitness_value
+			);
+			generate_population(population);
+			mutate_population(population);
 		}
 	/* SLAVE */
 	} else {
 		pair_t *pair;
-		
-		/* allocate pair */
 		pair = allocate_pair();
-		
-		/* allocate environment */
 		init_environment();
 		
 		for (g = 0; g < GENERATIONS_NUMBER; g++) {
 			/* receive pair, evaluate it and send fitness value */
 			for (p = my_id; p <= PAIRS_NUMBER; p+= (processes_number - 1)) {
 				RECV_PAIR(pair, 0);
+#ifdef DEBUG_MPI
+				printf("\t%d - pair %d received\n", my_id, p);
+#endif
 				evaluate(pair);
 				SEND_FITNESS(&(pair->fitness_value), 0);
+#ifdef DEBUG_MPI
+				printf("\t%d - pair %d evaluated and sent\n", my_id, p);
+#endif
 			}
 		}
 	}
