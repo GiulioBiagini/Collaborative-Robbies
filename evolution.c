@@ -71,7 +71,7 @@ static int* ranking_weight;
 void generate_robby(action_t *parent_1, action_t *parent_2, action_t *child) {
 	int cut_point;
 
-	cut_point = (rand() % DNA_SIZE);
+	cut_point = rand() % DNA_SIZE;
 
 	memcpy(child, parent_1, cut_point);
 	memcpy(child + cut_point, parent_2 + cut_point, DNA_SIZE - cut_point);
@@ -92,6 +92,7 @@ void generate_population(pair_t **population) {
 	pair_t *parent_1;
 	pair_t *parent_2;
 
+	/*
 	for (i = 0; i < 10; i++) {
 		parent_1 = population[i];
 		do {
@@ -107,8 +108,12 @@ void generate_population(pair_t **population) {
 		} while (parent_1 == parent_2);
 		GENERATE_PAIR(parent_2, parent_1, new_population[i]);
 	}
+	*/
 
-	for (i = 20; i < PAIRS_NUMBER; i++) {
+	for (i = 0; i < 3; i++)
+		GENERATE_PAIR(population[i], population[i], new_population[i]);
+
+	for (; i < PAIRS_NUMBER; i++) {
 		parent_1 = GET_RANKING_PARENT(population);
 		do {
 			parent_2 = GET_RANKING_PARENT(population);
