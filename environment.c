@@ -335,7 +335,7 @@ void evaluate(pair_t *pair) {
 				if (
 					(!IS_POSITION_INTO_MAP(new_pos_x_2, new_pos_y_2)) ||
 					(IS_COLLABORATIVE_VIEW &&
-					 IS_SAME_POSITION(new_pos_x_2, new_pos_y_2, new_pos_x_2, new_pos_y_2))
+					 IS_SAME_POSITION(new_pos_x_2, new_pos_y_2, new_pos_x_1, new_pos_y_1))
 				)
 					pair->fitness_value -= 5;
 				else {
