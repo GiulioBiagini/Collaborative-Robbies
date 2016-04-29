@@ -93,7 +93,7 @@ int main(int argc, char **argv) {
 			}
 			/* evolve population */
 			MERGE_SORT(population);
-			printf("G %d %d -> F %f\n", (g + 1), GENERATIONS_NUMBER, population[0]->fitness_value);
+			printf("%d -> %f\n", (g + 1), population[0]->fitness_value);
 			if (g < GENERATIONS_NUMBER - 1) {
 				crossover_population(population);
 				MUTATE_POPULATION(population);
