@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include "simulation_const.h"
 #include "entity/item.h"
 #include "entity/action.h"
 #include "entity/view.h"

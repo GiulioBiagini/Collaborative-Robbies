@@ -1,2 +1,1 @@
-Installare Open MPI:
-	sudo apt-get install openmpi-bin
+mpicc --ansi -Wall -pedantic entity/robby.c evolution/mergesort.c evolution/crossover.c evolution/mutation.c environment.c simulation_const.c main.c -o main -lm
