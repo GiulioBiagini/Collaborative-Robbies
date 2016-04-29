@@ -34,4 +34,4 @@ const double MUTATION_PROBABILITY = 0.005;
 
 
 
-const int SEED = 2;
+const int SEED = 10;
