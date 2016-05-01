@@ -80,6 +80,17 @@ static int pos_y_2;
 	GET_ITEM_INTO_MAP(pos_x, pos_y)\
 )
 
+#define UPDATE_POSITION(action, pos_x, pos_y) {\
+	if (action == MOVE_UP)\
+		pos_y--;\
+	else if (action == MOVE_DOWN)\
+		pos_y++;\
+	else if (action == MOVE_LEFT)\
+		pos_x--;\
+	else if (action == MOVE_RIGHT)\
+		pos_x++;\
+}
+
 
 
 /*
@@ -253,6 +264,7 @@ void evaluate(pair_t *pair) {
 	for (s = 0; s < SESSIONS_NUMBER; s++) {
 		init_random_map();
 		INIT_RANDOM_POSITIONS();
+		
 		/* for each action */
 		for (a = 0; a < ACTIONS_PER_SESSION_NUMBER; a++) {
 			
@@ -296,43 +308,13 @@ void evaluate(pair_t *pair) {
 			);
 #endif
 			
-			/*  update robby 1 new position */
-			if (action_1 == MOVE_UP) {
-				new_pos_x_1 = pos_x_1;
-				new_pos_y_1 = pos_y_1 - 1;
-			} else if (action_1 == MOVE_DOWN) {
-				new_pos_x_1 = pos_x_1;
-				new_pos_y_1 = pos_y_1 + 1;
-			} else if (action_1 == MOVE_LEFT) {
-				new_pos_x_1 = pos_x_1 - 1;
-				new_pos_y_1 = pos_y_1;
-			} else if (action_1 == MOVE_RIGHT) {
-				new_pos_x_1 = pos_x_1 + 1;
-				new_pos_y_1 = pos_y_1;
-			} else {
-				new_pos_x_1 = pos_x_1;
-				new_pos_y_1 = pos_y_1;
-			}
-			
-			/* update robby 2 new position */
-			if (action_2 == RANDOM_ACTION)
-				action_2 = GET_RANDOM_ACTION();
-			if (action_2 == MOVE_UP) {
-				new_pos_x_2 = pos_x_2;
-				new_pos_y_2 = pos_y_2 - 1;
-			} else if (action_2 == MOVE_DOWN) {
-				new_pos_x_2 = pos_x_2;
-				new_pos_y_2 = pos_y_2 + 1;
-			} else if (action_2 == MOVE_LEFT) {
-				new_pos_x_2 = pos_x_2 - 1;
-				new_pos_y_2 = pos_y_2;
-			} else if (action_2 == MOVE_RIGHT) {
-				new_pos_x_2 = pos_x_2 + 1;
-				new_pos_y_2 = pos_y_2;
-			} else {
-				new_pos_x_2 = pos_x_2;
-				new_pos_y_2 = pos_y_2;
-			}
+			/* update robbies new positions */
+			new_pos_x_1 = pos_x_1;
+			new_pos_y_1 = pos_y_1;
+			new_pos_x_2 = pos_x_2;
+			new_pos_y_2 = pos_y_2;
+			UPDATE_POSITION(action_1, new_pos_x_1, new_pos_y_1);
+			UPDATE_POSITION(action_2, new_pos_x_2, new_pos_y_2);
 			
 			/* evaluate robby 1 movement */
 			if (IS_MOVEMENT_ACTION(action_1)) {
@@ -353,7 +335,7 @@ void evaluate(pair_t *pair) {
 				if (
 					(!IS_POSITION_INTO_MAP(new_pos_x_2, new_pos_y_2)) ||
 					(IS_COLLABORATIVE_VIEW &&
-					 IS_SAME_POSITION(new_pos_x_2, new_pos_y_2, new_pos_x_2, new_pos_y_2))
+					 IS_SAME_POSITION(new_pos_x_2, new_pos_y_2, new_pos_x_1, new_pos_y_1))
 				)
 					pair->fitness_value -= 5;
 				else {

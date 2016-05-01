@@ -66,28 +66,14 @@ void crossover_population(pair_t **population) {
 	pair_t *parent_1;
 	pair_t *parent_2;
 	
-	/*
+	/* copy first pairs */
 	for (i = 0; i < 10; i++) {
-		parent_1 = population[i];
-		do {
-			parent_2 = GET_RANKING_PARENT(population);
-		} while (parent_1 == parent_2);
-		GENERATE_PAIR(parent_1, parent_2, new_population[i]);
+		memcpy(&(new_population[i]->robby_1), &(population[i]->robby_1), DNA_SIZE);
+		memcpy(&(new_population[i]->robby_2), &(population[i]->robby_2), DNA_SIZE);
 	}
 	
-	for (i = 10; i < 20; i++) {
-		parent_1 = population[i];
-		do {
-			parent_2 = GET_RANKING_PARENT(population);
-		} while (parent_1 == parent_2);
-		GENERATE_PAIR(parent_2, parent_1, new_population[i]);
-	}
-	
-	for (i = 0; i < 3; i++)
-		GENERATE_PAIR(population[i], population[i], new_population[i]);
-	*/
-	
-	for (i = 0; i < PAIRS_NUMBER; i++) {
+	/* crossover */
+	for (; i < PAIRS_NUMBER ; i++) {
 		parent_1 = GET_RANKING_PARENT(population);
 		while ((parent_2 = GET_RANKING_PARENT(population)) == parent_1)
 			;
