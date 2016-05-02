@@ -67,7 +67,7 @@ void crossover_population(pair_t **population) {
 	pair_t *parent_2;
 	
 	/* copy first pairs */
-	for (i = 0; i < 10; i++) {
+	for (i = 0; i < OLD_PAIRS_IN_NEW_GENERATION; i++) {
 		memcpy(&(new_population[i]->robby_1), &(population[i]->robby_1), DNA_SIZE);
 		memcpy(&(new_population[i]->robby_2), &(population[i]->robby_2), DNA_SIZE);
 	}

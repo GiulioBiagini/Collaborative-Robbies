@@ -27,6 +27,10 @@ extern int DNA_SIZE;
 
 extern const int PAIRS_NUMBER;
 
+extern const int OLD_PAIRS_IN_NEW_GENERATION;
+
+
+
 extern const int GENERATIONS_NUMBER;
 
 extern const int SESSIONS_NUMBER;

@@ -22,6 +22,8 @@ int DNA_SIZE;
 
 const int PAIRS_NUMBER = 100;
 
+const int OLD_PAIRS_IN_NEW_GENERATION = 0;
+
 
 
 const int GENERATIONS_NUMBER = 5000;
