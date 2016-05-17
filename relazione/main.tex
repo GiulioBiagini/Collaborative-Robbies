@@ -1,0 +1,42 @@
+\documentclass[a4paper,12pt,openright,twoside]{book}
+
+% libreria per scrivere in italiano
+\usepackage[italian]{babel}
+
+% libreria per accettare i caratteri utf-8
+\usepackage[utf8]{inputenc}
+
+% libreria per impostare il documento
+\usepackage{fancyhdr}
+\renewcommand{\chaptermark}[1]{\markboth{\thechapter.\ #1}{}}
+\renewcommand{\sectionmark}[1]{\markright{\thesection \ #1}{}}
+\rhead[\fancyplain{}{\bfseries\leftmark}]{\fancyplain{}{\bfseries\thepage}}
+\cfoot{}
+
+% per i collegamenti ipertestuali
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	citecolor=blue,
+	filecolor=blue,
+	urlcolor=blue
+}
+
+% per le immagini
+\usepackage{graphicx}
+
+
+
+% documento
+\begin{document}
+
+\include{0_titolo}
+\clearpage
+\newpage
+\tableofcontents
+\include{1_introduzione}
+\include{2_obiettivo}
+\include{3_risultati}
+
+\end{document}
