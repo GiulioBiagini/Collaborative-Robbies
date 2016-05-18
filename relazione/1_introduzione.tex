@@ -1,24 +1,51 @@
 \chapter{Introduzione}
-In questo capitolo andremo a richiamare alcuni cenni teorici di Intelligenza
-Artificiale che useremo per descrivere il comportamento dell'entità che abbiamo
-il compito di progettare, affinché possa compiere nel migliore dei modi il
-proprio dovere.
+In questo capitolo andremo a descrivere \textit{Robby: The Soda-Can-Collecting
+Robot}~\cite{biblio:robby}, il progetto a cui questo lavoro si ispira,
+riportando alcuni cenni teorici di Intelligenza Artificiale che useremo per
+descrivere in maniera più formale la struttura dell'intero progetto.
+
+\section{Robby: The Soda-Can-Collecting Robot}
+Robby è un robot il cui compito consiste nel muoversi in uno spazio sporco e
+cercare di ripulirlo. Lo spazio può essere visto in modo astratto come una
+griglia suddivisa in celle. Robby possiede solamente una vista parziale dello
+spazio nel quale si trova: è in grado di vedere cosa è presente nella cella a
+nord, in quella a sinistra, nella casella in cui si trova, in quella a destra ed
+in quella a sud rispetto alla propria posizione. Le celle possono essere
+``pulite'' (vuote), ``sporche'' (nelle quali è presente una lattina da
+raccogliere) oppure rappresentare un ostacolo (un muro).\newline
+Robby attua un'azione in base alla vista che ha in quel momento dell'ambiente.
+Se, ad esempio, vede una lattina nella cella a nord, un muro nella cella a
+sinistra e niente nella cella da lui occupata, in quella a destra e nella cella
+a sud, questo non si muoverà negli spazi vuoti, né tantomeno sbatterà contro il
+muro muovendosi a sinistra, ma si muoverà di un passo verso l'alto, in direzione
+della lattina, per poi raccoglierla. Le azioni che Robby può effettuare sono: la
+mossa verso nord, verso sinistra, verso destra e verso sud, può decidere di
+rimanere fermo, raccogliere una lattina oppure effettuare una mossa casuale
+scelta fra le precedenti. Tutte le mosse hanno l'effetto immaginato a parte la
+raccolta della lattina. Questa toglierà la lattina dalla mappa nella cella in
+cui il robot si trova, se presente, altrimenti lascerà l'ambiente
+invariato.\newline
+Inizialmente Robby possiede un dna casuale, ovvero, ad ogni vista è associata
+un'azione casuale. Robby è però in grado di apprendere come muoversi
+correttamente nell'ambiente e come raccogliere lattine. La sua evoluzione è
+infatti guidata da un Algoritmo Genetico.
 
 \section{Entità Intelligenti}
 Lo scopo dell'\textit{Intelligenza Artificiale} è quello di cercare di capire
 come le \textit{entità intelligenti} funzionano ed, in particolare, quello di
 cercare di costruire, creare, entità intelligenti.\newline
-Negli anni sono state date varie definizioni di entità ``intelligenti'': alcune
+Negli anni sono state date varie definizioni di entità intelligenti: alcune
 fanno paragoni con gli esseri umani, altre usano il principio della razionalità,
 alcune definiscono queste entità in base a come pensano, altre a come agiscono.
-Nel nostro particolare caso andremo a definire un'entità come intelligente se
+Nel nostro particolare caso, andremo a definire un'entità come intelligente se
 \textit{agisce in modo razionale}, ovvero se ``fa la cosa giusta''.\newline
 Affinché \textbf{Robby}, l'entità intelligente che abbiamo il compito di
-progettare, possa essere definita come tale, dovrà dunque ``fare la cosa
-giusta''. Siccome questa dovrà muoversi in uno spazio cercando di pulirlo,
-questo significherà, ad esempio, non sbattere contro i muri, raccogliere le
-lattine durante il proprio passaggio o non tentare di raccogliere lattine dove
-queste non ci sono.
+creare, possa essere definita intelligente, dovrà quindi ``fare la cosa
+giusta''. Intuitivamente, siccome il compito del robot sarà quello di muoversi
+in uno spazio cercando di pulirlo, ``fare la cosa giusta'' significherà, ad
+esempio, non sbattere contro i muri durante il proprio movimento, raccogliere le
+lattine durante il proprio passaggio e non tentare di raccogliere lattine dove
+queste non sono presenti.
 
 \section{Agenti Intelligenti}
 Un \textit{agente intelligente} è un'entità intelligente in grado di percepire
@@ -31,110 +58,58 @@ Il comportamento di un agente intelligente è descritto matematicamente da una
 \textit{funzione agente}, ovvero l'insieme di tutte le sequenze percettive
 e da tutte le relative azioni. L'implementazione di una funzione agente prende
 il nome di \textit{programma agente}.\newline
-Il nostro primo obiettivo, dunque, sarà quello di dotare \textbf{Robby} di
-sensori che gli permettano di percepire l'ambiente ed attuatori che faranno sì
-che esso potrà muoversi e compiere determinate azioni.\newline
-I sensori di cui Robby sarà dotato gli permetteranno di percepire lo spazio
-attorno, ovvero, la presenza muri, lattine o se esso è vuoto. Gli attuatori gli
-permetteranno di muoversi verso nord, verso sud, a destra, a sinistra e di
-rimanere fermo nella posizione in cui si trova. Robby avrà poi speciali
-attuatori che faranno sì che possa raccogliere lattine.\newline
-Il programma agente che specificherà al robot quale azione compiere in base alla
-vista che avrà in quel momento (percezione dell'ambiente) caratterizzerà il
-comportamento del robot stesso.
+Analizzando la definizione di agente intelligente, possiamo notare come
+\textbf{Robby} sia un'entità che appartenga a questa categoria: esso infatti
+è in grado di percepire l'ambiente tramite dei sensori che gli permettono di
+vedere il contenuto delle celle che lo circondano e possiede degli attuatori che
+gli consentono di muoversi e raccogliere lattine.\newline
+L'insieme di tutte le viste (percezioni) che Robby può avere dell'ambiente e le
+rispettive azioni sono descritte da una funzione agente. Il nostro compito sarà
+quello di fornirne un'implementazione attraverso la scrittura di un programma
+agente.
 
 \section{Agenti Razionali}
-Lo scopo dell'Intelligenza Artificiale, però, non è semplicemente quello di
-andare a creare agenti intelligenti, ovvero entità in grado di percepire
-l'ambiente ed attuarvi azioni, ma, piuttosto, creare \textit{agenti
-razionali}, ovvero entità intelligenti che ``facciano la cosa giusta''.\newline
-Questo significa che il programma agente per ogni sequenza percettiva produce
-un'azione che massimizza una determinata \textit{misura di prestazione}: se le
-azioni attuate portano l'ambiente ad attraversare una sequenza di stati che
-potranno essere definiti ``desiderabili'', allora il programma agente massimizza
-tale misura di prestazione.\newline
-Nel caso di \textbf{Robby}, la misura di prestazione da massimizzare sarà il
-numero di lattine che saranno mediamente raccolte in un dato ambiente.
+Il nostro obiettivo, però, non è semplicemente quello di creare agenti
+intelligenti, ovvero entità in grado di percepire l'ambiente e compiere azioni,
+ma, piuttosto, creare \textit{agenti razionali}, ovvero entità sì intelligenti,
+ma che ``facciano la cosa giusta''. Questo significa che il programma agente,
+per ogni sequenza percettiva, produce un'azione che va a massimizzare una
+determinata \textit{misura di prestazione}: se le azioni attuate dall'agente
+portano l'ambiente ad attraversare una sequenza di stati che può essere definita
+``desiderabile'', allora la misura di prestazione è massimizzata.\newline
+Nel caso di \textbf{Robby}, la misura di prestazione da massimizzare sarà sia il
+numero di lattine che debbono essere raccolte in un dato ambiente, sia il numero
+di passi impiegato per raccoglierle.
 
 \section{Agenti Reattivi Semplici}
 Esistono varie tipologie di programmi agente in base alle tipologie di agenti
 di cui questi hanno il compito di descrivere il comportamento. I più semplici di
 tutti sono gli \textit{Agenti Reattivi Semplici}, ovvero agenti che basano le
-proprie azioni solamente sulla percezione corrente: in base a quanto letto dagli
-input percettivi in un dato istante, è calcolata l'azione da compiere.\newline
-\textbf{Robby}, che sarà in grado di ``vedere'' una porzione dello spazio che lo
-circonda, attuerà delle azioni che saranno guidate solamente da quanto percepito
-in quel dato momento. Esso sarà dunque un agente reattivo semplice.
-
-\section{Ambiente}
-L'\textit{ambiente} nel quale gli agenti razionali si muovono possono essere di
-vario tipo in base alle caratteristiche che possiedono.\newline
-Lo spazio nel quale \textbf{Robby} dovrà muoversi sarà discretizzato in celle,
-ogni cella potrà essere occupata da un ostacolo (muro), da una lattina o potrà
-essere vuota. Le azioni di movimento permetteranno al robot di muoversi da una
-cella all'altra mentre, le lattine potranno essere raccolte solamente se il
-robot si troverà su una casella da esse occupata.\newline
-L'ambiente sarà \textit{parzialmente osservabile}, ovvero solo il contenuto di
-alcune celle potrà essere rilevato e \textit{stocastico}, in quanto è presente
-l'azione random che permetterà ai robot di poter attuare una delle azioni
-precedentemente elencate scelta casualmente.
+proprie azioni solamente sulla percezione corrente. Questi agenti, dunque,
+analizzano tutti gli input percettivi che provengono dai sensori in un dato
+istante e computano quale azione compiere.\newline
+\textbf{Robby} è un agente reattivo semplice in quanto la scelta dell'azione da
+attuare è guidata solamente dalla vista che ha in quel momento dell'ambiente.
 
 \section{Agenti in Grado di Apprendere}
-Esistono particolari tipologie di agenti che possono essere programmate in modo
-che siano \textit{in grado di apprendere}. Un agente, infatti, può basare la
-scelta delle proprie azioni su conoscenze che ha dell'ambiente che sono state
-inserite da un programmatore: in questo caso si dice che l'agente manca di
-autonomia. Al contrario, un \textit{agente autonomo} è in grado di apprendere
-per compensare la presenza di conoscenza parziale o erronea.\newline
-Un agente in grado di apprendere ha il vantaggio di poter operare in ambienti
-all'inizio sconosciuti, diventando col tempo via via più competente.\newline
-Un agente in grado di apprendere possiede oltre ad un \textit{elemento
-esecutivo}, che gli permette di selezionare le azioni da compiere, anche di un
-\textit{elemento di apprendimento}, responsabile del miglioramento interno, il
-quale usa le informazioni provenienti dall'\textit{elemento critico} riguardo le
+Esistono particolari tipologie di agenti che possono essere programmati in modo
+che siano \textit{in grado di apprendere}.\newline
+Un agente, infatti, può calcolare la scelta delle proprie azioni basandosi su
+conoscenze pregresse che ha dell'ambiente, che sono ad esempio state inserite a
+priori da un programmatore: in questo caso si dice che l'agente manca di
+autonomia. Al contrario un \textit{agente autonomo} è in grado di apprendere
+per compensare la presenza di conoscenza parziale o erronea. Un agente in grado
+di apprendere ha il vantaggio di poter operare in ambienti all'inizio
+sconosciuti, diventando col tempo via via più competente.\newline
+Questa tipologia di agenti possiedono, oltre ad un \textit{elemento esecutivo},
+che gli permette di selezionare le azioni da compiere, anche un \textit{elemento
+di apprendimento}, responsabile del miglioramento interno, il quale usa le
+informazioni provenienti dall'\textit{elemento critico} riguardo le
 prestazioni correnti dell'agente e determina se e come modificare l'elemento
-esecutivo affinché in futuro si comporti meglio ed un \textit{generatore di
-problemi} il cui scopo è quello di suggerire azioni che portino ad esperienze
-nuove e significative dalle quali apprendere.\newline
-Nel caso di \textbf{Robby}, quello che vogliamo non è solo un agente autonomo,
-ma anche un agente in grado di apprendere. Per fare questo ci appoggeremo ad
-\textit{Algoritmi Genetici}.
-
-\section{Algoritmi Genetici}
-Gli \textit{Algoritmi Genetici} sono algoritmi che sono spesso usati in quelle
-situazioni nelle quali risulta difficile andare a progettare una determinata
-strategia che ci permetta di arrivare ad una soluzione.\newline
-Questi algoritmi sono difatti usati per far sì che siano loro stessi ad evolvere
-il sistema in modo che esso arrivi autonomamente ad una soluzione.\newline
-Uno dei campi nei quali sono maggiormente impiegati, infatti, sono i
-\textit{Sistemi Complessi}.\newline
-Per far sì che \textbf{Robby} possa muoversi e pulire l'ambiente raccogliendo il
-maggior numero di lattine con il minor numero di mosse, non conoscendo a priori
-la posizione del robot stesso nella mappa, né delle lattine, non rimane che
-progettare un algoritmo genetico che permetta ai robot di apprendere una buona
-strategia.\newline
-Dapprima sono generati \textit{n} individui con un \textit{dna} casuale, ovvero,
-ad ogni possibile vista è associata una mossa casuale. Dopodiché si valuta
-ciascun robot per un numero \textit{p} di passi su di una mappa nella quale le
-posizioni delle lattine sono generate casualmente, così come la posizione del
-robot. Si ripete la valutazione su \textit{m} mappe per ogni robot assegnando,
-alla fine, un \textit{valore di fitness} medio a ciascuna entità. Questo valore
-è stabilito da una \textit{funzione di fitness} che valuta ogni mossa del robot:
-se questo muove contro un ostacolo viene punito con un valore negativo, se tenta
-di raccogliere una lattina dove essa non è presente viene altresì puntio,
-mentre, nel caso in cui una lattina sia raccolta viene premiato. Alla fine della
-fase di valutazione, i robot sono ordinati in base al valore di fitness, ed ha
-inizio la generazione della nuova popolazione: sono scelti due individui in base
-al valore di fitness o in base alla posizione nel ranking globale e viene
-attuato il \textit{crossover}. Questa metodologia consiste nella scelta di un
-punto casuale del dna dei due genitori e, unendo rispettivamente la prima metà
-del dna del primo genitore con la seconda metà del dna del secondo genitore
-viene generato il primo figlio ed unendo la seconda metà del dna del primo
-genitore con la prima metà del dna del secondo genitore viene originato il
-secondo figlio. Infine sono presi tutti i \textit{geni} (vista/azione) di ogni
-figlio e con una probabilità \textit{x} sono \textit{mutati}, cioè, alla vista
-è modificata in modo casuale l'azione corrispondente. Questo procedimento di
-generazione di una nuova generazione a partire dalla vecchia che viene poi a sua
-volta valutata, viene iterato \textit{g} volte. È così che, dopo svariate
-generazioni, i robot apprendono strategie di pulizia che permettono loro di
-arrivare molto vicino all'obiettivo.
+esecutivo affinché in futuro si comporti meglio. Infine, le entità in grado di
+apprendere possiedono un \textit{generatore di problemi}, il cui scopo è quello
+di suggerire azioni che portino ad esperienze nuove e significative dalle quali
+apprendere.\newline
+Nel caso di \textbf{Robby}, quello che vogliamo è un agente autonomo in grado
+di apprendere, ovvero un agente che non si basi su conoscenza pregressa da noi
+inserita. Per fare questo ci appoggeremo sugli \textit{Algoritmi Genetici}.
