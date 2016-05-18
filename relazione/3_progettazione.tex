@@ -1,40 +1,96 @@
 \chapter{Progettazione}
+In questo capitolo parleremo di come è stato implementato l'algrotimo genetico
+che ha permesso l'apprendimento di una strategia di pulizia alle coppie che
+saranno impegnate sulla mappa.
 
-\section{Algoritmi Genetici}
+\section{Algoritmi Genetici: schema generale}
 Gli \textit{Algoritmi Genetici} sono algoritmi spesso usati in tutte quelle
 situazioni nelle quali risulta difficile andare a progettare una determinata
-strategia che ci permetta di arrivare ad una soluzione.\newline
-Questi algoritmi sono difatti usati per far sì che siano loro stessi ad evolvere
-il sistema in modo che esso arrivi autonomamente ad una soluzione. Uno dei campi
-nei quali sono maggiormente impiegati, infatti, sono i \textit{Sistemi
-Complessi}.\newline
+strategia che ci permetta di arrivare ad una soluzione. Questi algoritmi sono
+difatti usati per far sì che siano loro stessi ad evolvere il sistema in modo
+che esso arrivi autonomamente ad una soluzione. Uno dei campi nei quali sono
+maggiormente impiegati, infatti, sono i \textit{Sistemi Complessi}.\newline
 Per far sì che \textbf{Robby} possa muoversi e pulire l'ambiente raccogliendo il
 maggior numero di lattine con il minor numero di mosse, non conoscendo a priori
 la posizione del robot stesso nella mappa, né delle lattine, non rimane che
 progettare un algoritmo genetico che permetta ai robot di apprendere una buona
 strategia.\newline
-Dapprima sono generati \textit{n} individui con un \textit{dna} casuale, ovvero,
-ad ogni possibile vista è associata una mossa casuale. Dopodiché si valuta
-ciascun robot per un numero \textit{p} di passi su di una mappa nella quale le
-posizioni delle lattine sono generate casualmente, così come la posizione del
-robot. Si ripete la valutazione su \textit{m} mappe per ogni robot assegnando,
-alla fine, un \textit{valore di fitness} medio a ciascuna entità. Questo valore
-è stabilito da una \textit{funzione di fitness} che valuta ogni mossa del robot:
-se questo muove contro un ostacolo viene punito con un valore negativo, se tenta
-di raccogliere una lattina dove essa non è presente viene altresì puntio,
-mentre, nel caso in cui una lattina sia raccolta viene premiato. Alla fine della
-fase di valutazione, i robot sono ordinati in base al valore di fitness, ed ha
-inizio la generazione della nuova popolazione: sono scelti due individui in base
-al valore di fitness o in base alla posizione nel ranking globale e viene
-attuato il \textit{crossover}. Questa metodologia consiste nella scelta di un
-punto casuale del dna dei due genitori e, unendo rispettivamente la prima metà
-del dna del primo genitore con la seconda metà del dna del secondo genitore
-viene generato il primo figlio ed unendo la seconda metà del dna del primo
-genitore con la prima metà del dna del secondo genitore viene originato il
-secondo figlio. Infine sono presi tutti i \textit{geni} (vista/azione) di ogni
-figlio e con una probabilità \textit{x} sono \textit{mutati}, cioè, alla vista
-è modificata in modo casuale l'azione corrispondente. Questo procedimento di
-generazione di una nuova generazione a partire dalla vecchia che viene poi a sua
-volta valutata, viene iterato \textit{g} volte. È così che, dopo svariate
-generazioni, i robot apprendono strategie di pulizia che permettono loro di
-arrivare molto vicino all'obiettivo.
+La struttura utilizzata nel paper di riferimento~\cite{biblio:robby} è la
+seguente:
+\begin{itemize}
+	\item dapprima sono generati \textit{POPULATION\_SIZE} individui con un dna
+	casuale, ovvero, ad ogni possibile vista è associata una mossa scelta a caso
+	fra quelle possibili;
+	\item dopodiché, per \textit{NUM\_GENERATIONS}:
+	\begin{itemize}
+		\item viene calcolato il \textit{valore di fitness} per ogni individuo
+		assegnando un punteggio 10 nel caso in cui un robot raccolga una
+		lattina, -1 se il robot tenta di raccogliere una lattina in una cella
+		dove questa non sia presente e -5 punti se il robot tenta di muoversi in
+		una casella occupata da un ostacolo (muro). Questa operazione viene
+		effettuata per \textit{NUM\_ACTIONS\_PER\_SESSIONS} passi e ripetuta per
+		\textit{SESSIONS\_NUMBER} diverse sessioni. Ogni sessione prevede la
+		generazione di una mappa nella quale le lattine sono posizionate
+		casualmente nelle celle (ogni cella ha la medesima probabilità di
+		ospitarne una) così come la posizione del robot è scelta casualmente.
+		La mappa ha dimensione 10x10 con 10 lattine. Alla fine, ogni robot
+		ottiene un valore di fitness mediato sul numero di sessioni. Il numero
+		di azioni su ogni mappa è fissato a 200, così come il numero di
+		sessioni;
+		\item si procede poi ordinando gli individui in base al proprio valore
+		di fitness;
+		\item sono scelti due individui nella popolazione con una probabilità
+		che varia linearmente in base all'ordinamento (l'individuo con il
+		maggiore valore di fitness avrà probabilità più alta di essere scelto
+		rispetto al secondo e così via\dots) e viene applicato il
+		\textit{crossover}. Questo procedimento genererà due nuovi figli ed è
+		ripetuto fino alla generazione della nuova popolazione;
+		\item una volta ottenuta la nuova generazione, ogni gene (azione
+		corrispondente ad una vista) può essere mutato con una probabilità pari
+		a \textit{MUTATION\_PROBABILITY}: 0.5\%.
+	\end{itemize}
+\end{itemize}
+
+\section{Collaborazione}
+Siccome il nostro obiettivo è quello di studiare la collaborazione fra più
+robot, nella mappa saranno presenti contemporaneamente 2 agenti. Questo farà sì
+che la grandezza POPULATION\_SIZE non indichi il numero di robot nellpopolazione ma il numero di coppie. Dunque, il numero di entità sarà pari al
+popolazione ma il numero di coppie. Dunque, il numero di entità sarà pari al
+doppio.
+
+\section{Funzione di Fitness}
+La presenza di due robot nella mappa comporta anche la modifica dei come la
+funzione di fitness valuta gli individui. Il valore di fitness non riguarderà un
+singolo agente, ma la coppia.\newline
+Nel caso in cui i due robot abbiano la possibilità di vedersi, poi, sarà
+assegnato un valore negativo di -5 punti anche nel caso le due entità cerchino
+di occupare la stessa cella, scontrandosi, così come avviene nel caso in cui un
+robot tenti di muoversi contro il muro. Nel caso in cui non si vedono ed
+entrambi occupano la stessa cella nella quale è presente una lattina e cercano
+di raccoglierla, il secondo robot non prenderà punteggio negativo in quanto la
+lattina è già stata raccolta dal primo. Non si avrà però neanche l'incremento
+del valore di fitness di 20 punti (10 per l'azione di raccolta del primo e 10
+per l'azione di raccolta del secondo). In un caso simile sarà incrementato il
+valore di fitness di soli 10 punti in quanto entrambi hanno fatto l'azione
+corretta ma solo una lattina è stata raccolta.
+
+\section{Selezione dei Genitori}
+La tecnica da noi usata per generare la nuova popolazione non è esattamente
+quella descritta nel paper. Difatti, a seconda delle varie simulazioni, saranno
+copiati alcuni individui dalla vecchia alla nuova generazione senza passare
+tramite il crossover.
+
+\section{Crossover}
+La tecnica di crossover da noi usata è quella descritta nel paper, ovvero: è
+scelto un punto di taglio casuale nel dna dei due genitori per generare i figli.
+Avendo però delle coppie la strategia cambia lievemente: sono scelte due coppie
+come genitori dove, il primo Robby della prima coppia ed il primo Robby della
+seconda generano il primo figlio, mentre il secondo Robby della prima coppia ed
+il secondo della seconda coppia generano il secondo figlio. Per ognuno dei due
+figli, il punto di taglio nel dna dei genitori varia.
+
+\section{Mutazione Genetica}
+La mutazione genetica è fatta nella maniera standard, mutando i geni dei due
+robot generati in accordo con una percentuale fissata. Anche nel caso in cui
+siano copiati degli individui dalla vecchia alla nuova generazione (senza dunque
+l'uso del crossover), questi subiranno mutazioni.

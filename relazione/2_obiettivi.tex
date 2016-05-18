@@ -1,39 +1,38 @@
 \chapter{Obiettivi}
 In questo capitolo sono descritti gli obiettivi di questo lavoro. In
-particolare, quello che ci interessa non è tanto realizzare un sistema nel quale
-un'entità si muove in un ambiete e cerca di ripulirlo dalle lattine, imparando
-come fare grazie all'implementazione di un algoritmo genetico, ma studiare come,
-inserendo due entità nell'ambiente, queste si influenzino a vicenda. Lo scopo
-principale, dunque, è analizzare se può esservi \textbf{collaborazione}
-spontanea o meno fra le due entità.
+particolare, quello che ci interessa non è tanto re-implementare il lavoro
+proposto da Melanie Mitchell~\cite{biblio:robby}, quanto piuttosto realizzare un
+sistema che ci permetta di studiare come, inserendo più entità nell'ambiente,
+queste si influenzino a vicenda.\newline
+Lo scopo principale, dunque, è analizzare se può esservi \textbf{collaborazione
+spontanea} o meno fra le entità che si trovano a nella stessa mappa.
 
 \section{Entità Invisibili - Vista a Croce}
-Con la prima prova che andremo a fare, tenteremo di stabilire quali sono le
-performance di due robot che si muovono sulla mappa senza vedersi, ovvero
-ignorando le mosse dell'altro robot. Sarà dunque ammesso trovarsi nella stessa
-cella e, nel caso in cui entrambi raccolgano una lattina posizionata in uno
-stesso posto, il secondo a raccogliere non riceverà un punteggio
-negativo.\newline
-I due robot avranno vista a croce, ovvero potranno vedere la casella a nord,
-quella a sinistra, quella nella quale si trovano, quella a destra e quella a
-sud.
+Come prima cosa andremo a cercare di stabilire quali sono le performance di due
+agenti che si muovono sulla mappa senza vedersi, ovvero ignorando la posizione
+dell'altro robot. Sarà dunque ammesso trovarsi nella stessa cella e raccogliere
+la stessa lattina.\newline
+I due robot avranno vista a croce, ovvero come quella descritta nel capitolo
+introduttivo: potranno vedere la casella a nord, quella a sinistra, quella nella
+quale si trovano, quella a destra e quella a sud.\newline
+I risultati ottenuti saranno poi usati come ``caso base'', per fare un confronto
+con le simulazioni lanciate successivamente.
 
 \section{Entità Invisibili - Vista Quadrata}
-Come nel caso precedente, le due entità non saranno in grado di vedersi ma
-avranno una percezione maggiore della mappa nella quale si trovano: potranno
-infatti vedere uno spazio di 3x3 celle dove il robot occupa la posizione
-centrale (seconda riga e seconda colonna).\newline
+In questo secondo test, così come nel caso precedente, le due entità non saranno
+in grado di vedersi ma avranno una percezione maggiore della mappa nella quale
+si troveranno. Potranno infatti vedere uno spazio di 3x3 celle dove il robot
+occupa la posizione centrale (seconda riga e seconda colonna).\newline
 Questa prova ci permetterà di capire se potendo vedere una porzione di mappa
-maggiore, i robot sono avvantaggiati nella pulizia della stessa, ovvero, se
-disponendo di più ``risorse'' raggiungono un obiettivo che massimizza
-maggiormente la misura di prestazione, sia essa la raccolta di un numero
+maggiore, i robot saranno avvantaggiati nella pulizia della stessa, ovvero, se
+disponendo di più risorse (sensori più potenti) saranno in grado di massimizzare
+maggiormente la misura di prestazione: sia essa la raccolta di un numero
 maggiore di lattine, sia essa la raccolta dello stesso numero di lattine ma con
 un numero minore di passi.
 
 \section{Entità Visibili - Vista a Croce}
-Con quest'ultima prova vedremo cosa succede dando la possibilità ai due robot
-di vedersi. In questo caso, sarà punita la presenza di entrambi nella stessa
-casella. I due robot dovranno dunque imparare a non tentare di occupare la
-setssa cella.\newline
+Con quest'ultima simulazione vedremo cosa succede dando la possibilità ai due
+robot di vedersi. In questo caso non sarà tollerata la compresenza nella
+medesima cella.\newline
 Vedremo così se i due robot impareranno a collaborare o se invece la presenza
-di uno sotacolerò l'altro, raggiungendo valori minori della funzione di fitness.
+di uno ostacolerà l'altro.
