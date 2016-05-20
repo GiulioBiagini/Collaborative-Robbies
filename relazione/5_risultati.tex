@@ -8,9 +8,19 @@ e raccogliendo tutte e 10 le lattine.
 
 
 
-\section{Entità Invisibili - Vista a Croce}
+\section{Vista a Croce Non Collaborativa}
+Con la vista a croce non collaborativa i robot non possono vedere il proprio
+compagno sulla mappa. Le celle che sono in grado di percepire sono quella a
+nord, quella a sinistra, quella nella quale si trovano, quella a destra e quella
+a sud.
 
 \subsection{100 Coppie, 0 Vecchi}
+\begin{figure}[ht]
+	\centering
+	\includegraphics[scale=0.7,angle=90]{imgs/uncollaborative_cross_100_pairs_0_5_vecchi.png}
+	\caption{Vista a croce non collaborativa, 100 coppie}
+	\label{figure:uncoll_cross_100_0_5}
+\end{figure}
 La prima simulazione è stata effettuata usando lo schema dell'algoritmo genetico
 descritto precedentemente, con un numero di coppie pari a 100, ovvero 200 robot.
 In 5000 generazioni il valore di fitness, dopo un primo incremento, si è sempre
@@ -20,20 +30,14 @@ nuovi individui mediante l'utilizzo del crossover, abbiamo deciso di copiare
 alcuni degli individui vecchi nella nuova generazione, adottando una strategia
 élitaria.
 
+\clearpage
+
 \subsection{100 Coppie, da 1 a 5 Vecchi}
-\begin{figure}[ht]
-	\centering
-	\includegraphics[scale=0.7,angle=90]{imgs/uncollaborative_cross_100_pairs_0_5_vecchi.png}
-	\caption{Vista a croce non collaborativa, 100 coppie}
-	\label{figure:uncoll_cross_100_0_5}
-\end{figure}
 La Figura~\ref{figure:uncoll_cross_100_0_5} mostra i valori di 6 simulazioni
 nelle quali abbiamo mantenuto da 0 (tutti gli individui generati tramite l'uso
 del crossover) a 5 coppie (le migliori) dalla vecchia alla nuova generazione.
 Come è possibile notare, più sono gli individui che vengono mantenuti da una
 generazione all'altra, più alto è il valore di fitness raggiunto.
-
-\clearpage
 
 \subsection{100 Coppie, da 10 a 35 Vecchie}
 \begin{figure}[ht]
@@ -62,6 +66,8 @@ passate nella nuova generazione aumenta, il valore di fitness inizia a scendere,
 fino a mostrare cali importanti con 80 e 90 coppie. Mantenendo nella nuova
 generazione 40, 50 e 60 coppie, comunque i valori di fitness rimangono fra i 90
 ed i 95 punti.
+
+\clearpage
 
 \subsection{200 Coppie, da 10 a 180 Vecchie}
 \begin{figure}[ht]
@@ -114,7 +120,7 @@ generazioni.
 \begin{figure}[ht]
 	\centering
 	\includegraphics[scale=0.7,angle=90]{imgs/uncollaborative_cross_200_pairs_70_120_vecchi_solo_nuovi_mutati.png}
-	\caption{Vista a croce non collaborativa, 200 coppie}
+	\caption{Vista a croce non collaborativa, 200 coppie, vecchie non mutate}
 	\label{figure:uncoll_cross_200_70_120_vecchi_non_mutati}
 \end{figure}
 Abbiamo poi effettuato un'ultima simulazione nella quale abbiamo ripreso il
@@ -135,6 +141,58 @@ fitness.
 
 
 
-\section{Entità Invisibili - Vista Quadrata}
+\section{Vista Quadrata Non Collaborativa}
+Questo tipo di vista, così come la precedente, non permette ai robot di
+percepire la presenza degli altri robot sulla mappa. A differenza di quella a
+croce, però, questa fa sì che i robot possano vedere un numero di celle
+maggiore. Sono infatti visibili anche le caselle in alto a sinistra, in alto a
+destra, in basso a sinistra ed in basso a destra, trasformando quella che prima
+era una croce in un quadrato di 3x3 celle. Come nel caso precedente, il robot
+occupa la posizione centrale (seconda riga e seconda colonna).
 
-\subsection{200 Coppie, 
+\subsection{200 Coppie, da 70 a 120 Vecchie}
+\begin{figure}[ht]
+	\centering
+	\includegraphics[scale=0.7,angle=90]{imgs/uncollaborative_square_200_pairs_70_120_vecchi.png}
+	\caption{Vista quadrata non collaborativa, 200 coppie}
+	\label{figure:uncoll_square_200_70_120_vecchi_non_mutati}
+\end{figure}
+Forti dei risultati ottenuti con le simulazioni precedenti, abbiamo ripetuto le
+prove tenendo da 10 a 180 vecchie coppie nella nuova generazione, ampliando
+però la vista dei robot, dando loro la possibilità di vedere una porzione di
+mappa di 3x3 celle.\newline
+Sorprendentemente, i risultati ottenuti con la vista a croce non si sono però
+ripresentati. Come mostrato in Figura
+\ref{figure:uncoll_square_200_70_120_vecchi_non_mutati}, infatti, i valori di
+fitness raramente hanno superato gli 85 punti. Questo risultato ci ha
+particolarmente sorpresi in quanto, a rigor di logica, le entità impegnate nel
+ripulire la mappa, potendo vedere di più, avrebbero almeno dovuto eguagliare i
+risultati della vista a croce. Abbiamo così pensato che questa situazione si sia
+presentata a causa di un tuning dei parametri non ottimale.
+
+\subsection{200 Coppie, da 10 a 180 Vecchie, Mutazione 0.2\%}
+\begin{figure}[ht]
+	\centering
+	\includegraphics[scale=0.7,angle=90]{imgs/uncollaborative_square_200_pairs_10_60_vecchi_02_mutazione.png}
+	\caption{Vista quadrata non collaborativa, 200 coppie, mutazione 0.2\%}
+	\label{figure:uncoll_square_200_10_70_vecchi_non_mutati_02}
+\end{figure}
+\begin{figure}[ht]
+	\centering
+	\includegraphics[scale=0.7,angle=90]{imgs/uncollaborative_square_200_pairs_70_120_vecchi_02_mutazione.png}
+	\caption{Vista quadrata non collaborativa, 200 coppie, mutazione 0.2\%}
+	\label{figure:uncoll_square_200_70_120_vecchi_non_mutati_02}
+\end{figure}
+\begin{figure}[ht]
+	\centering
+	\includegraphics[scale=0.7,angle=90]{imgs/uncollaborative_square_200_pairs_130_180_vecchi_02_mutazione.png}
+	\caption{Vista quadrata non collaborativa, 200 coppie, mutazione 0.2\%}
+	\label{figure:uncoll_square_200_130_180_vecchi_non_mutati_02}
+\end{figure}
+Effettuando diverse prove modificando la percentuale di mutazione dallo 0.5\%
+al 0.4\%, 0.3\%, 0.2\% e 0.1\%, abbiamo notato come via via le performance
+miglioravano. Probabilmente, essendo il dna dei robot con vista quadrata molto
+maggiore rispetto al dna dei Robby con vista a corce, mutare con una probabilità
+dello 0.5\% introduceva troppa variabilità nei geni 
+
+\clearpage

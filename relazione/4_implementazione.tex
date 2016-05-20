@@ -1,8 +1,59 @@
 \chapter{Implementazione}
-TODO
+In questo capitolo andremo a presentare gli strumenti utilizzati
+nell'implementazione del codice. Spiegheremo anche come compilare ed eseguire lo
+stesso, riportando come sono stati ottenuti i risultati delle simulazioni
+presentati nel capitolo successivo.
 
-\section{ANSI C}
-TODO
 
-\section{MPI}
-TODO -> parlare dei seed
+
+\section{ANSI C ed MPI}
+Il codice è stato scritto in \textbf{ANSI C} utilizzando la libreria
+\textbf{MPI}, un'interfaccia per il \textit{Message Passing} open source. Grazie
+ad essa l'eseguibile può essere inviato a più computer che ne eseguono
+un'istanza. Ad ogni elaboratore è asseganto un id che può essere sfruttato in
+modo da dare alla macchina un comportamento specifico.\newline
+Nell'architettura da noi realizzata questi id sono usati per assegnare un
+\textit{seed} ad ogni istanza del programma in esecuzione su ogni computer: si
+parte con seed 10 e si sommano gli id. È così che il l'istanza del programma
+eseguita dall'elaboratore con id 0 avrà seed 10, l'istanza del programma
+eseguita dal computer con id 1 avrà seed 11 e così via\dots\newline
+Le simulazioni da noi eseguite sono state lanciate con 11 elaboratori.
+
+
+
+\section{Installazione}
+Il programma è stato implementato e fatto eseguire su di un'architettura con
+sistema operativo \textit{Debian stable 8.4}. Per compilarlo ed eseguirlo usando
+MPI, è stato necessario installare il pacchetto \textit{mpich}.
+
+
+
+\section{Compilazione}
+La compilazione del sorgente avviene tramite il comando \textit{mpicc} a cui
+abbiamo passato i flag \textit{--ansi}, \textit{-Wall}, \textit{-pedantic} e
+\textit{-lm} per il linking della libreria matematica.
+
+
+
+\section{Esecuzione}
+L'esecuzione è lanciata tramite il comando \textit{mpirun} specificando con il
+flag \textit{-np} il numero di processi da lanciare: 11 nel nostro caso. Questo
+dato è molto importante al fine di ripetere le simulazioni da noi effettuate, in
+quanto ogni processo esegue un'istanza del programma con un seed diverso dagli
+altri, ovvero: \textit{SEED + id}, dove SEED è pari a 10.
+
+
+
+\section{Architettura}
+Il processo con id 0 agisce da master mentre gli altri 10 processi, con id da 1
+a 10 appunto, agiscono da slave. Il master genera la popolazione iniziale e,
+per ogni generazione, la divide in parti uguali ed invia ad ogni slave una parte
+di coppie che devono essere valutate. Se ad esempio abbiamo una popolazione
+formata da 200 coppie, ogni slave dovrà valutarne 20. Ogni slave valuta le
+coppie a lui assegnate e risponde al master con i relativi valori di fitness.
+Una volta ottenuti tutti i valori di fitness, il master ordina le coppie in base
+a tali valori ed evolve la popolazione.\newline
+Così facendo abbiamo notevolmente incrementato le prestazioni del nostro
+programma. Esso infatti risulta essere distribuito ed esegue in parallelo 11
+istanze, nonché 10 valutazioni di POPULATION\_SIZE/10 coppie. La velocità di
+esecuzione è stata notevolmente aumentata.
