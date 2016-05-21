@@ -30,8 +30,6 @@ nuovi individui mediante l'utilizzo del crossover, abbiamo deciso di copiare
 alcuni degli individui vecchi nella nuova generazione, adottando una strategia
 élitaria.
 
-\clearpage
-
 \subsection{100 Coppie, da 1 a 5 Vecchi}
 La Figura~\ref{figure:uncoll_cross_100_0_5} mostra i valori di 6 simulazioni
 nelle quali abbiamo mantenuto da 0 (tutti gli individui generati tramite l'uso
@@ -116,7 +114,7 @@ generazioni.
 
 \clearpage
 
-\subsection{200 Coppie, da 70 a 120 Vecchie, Non Mutate}
+\subsection{200 Coppie, da 70 a 120 Vecchie Non Mutate}
 \begin{figure}[ht]
 	\centering
 	\includegraphics[scale=0.7,angle=90]{imgs/uncollaborative_cross_200_pairs_70_120_vecchi_solo_nuovi_mutati.png}
@@ -150,49 +148,51 @@ destra, in basso a sinistra ed in basso a destra, trasformando quella che prima
 era una croce in un quadrato di 3x3 celle. Come nel caso precedente, il robot
 occupa la posizione centrale (seconda riga e seconda colonna).
 
-\subsection{200 Coppie, da 70 a 120 Vecchie}
+\subsection{200 Coppie, da 70 a 120 Vecchie Non Mutate}
 \begin{figure}[ht]
 	\centering
-	\includegraphics[scale=0.7,angle=90]{imgs/uncollaborative_square_200_pairs_70_120_vecchi.png}
-	\caption{Vista quadrata non collaborativa, 200 coppie}
+	\includegraphics[scale=0.7,angle=90]{imgs/uncollaborative_square_200_pairs_70_120_vecchi_solo_nuovi_mutati.png}
+	\caption{Vista quadrata non collaborativa, 200 coppie, vecchie non mutate}
 	\label{figure:uncoll_square_200_70_120_vecchi_non_mutati}
 \end{figure}
-Forti dei risultati ottenuti con le simulazioni precedenti, abbiamo ripetuto le
-prove tenendo da 10 a 180 vecchie coppie nella nuova generazione, ampliando
-però la vista dei robot, dando loro la possibilità di vedere una porzione di
-mappa di 3x3 celle.\newline
-Sorprendentemente, i risultati ottenuti con la vista a croce non si sono però
-ripresentati. Come mostrato in Figura
-\ref{figure:uncoll_square_200_70_120_vecchi_non_mutati}, infatti, i valori di
-fitness raramente hanno superato gli 85 punti. Questo risultato ci ha
+Forti dei risultati ottenuti con le simulazioni precedenti, abbiamo evoluto una
+popolazione di 200 coppie tenendo, di volta in volta, da 70 a 120 coppie della
+vecchia generazione nella nuova, mutando solamente i nuovi individui generati
+con il crossover.\newline
+I risultati sono mostrati in Figura
+\ref{figure:uncoll_square_200_70_120_vecchi_non_mutati}. Questo risultato ci ha
 particolarmente sorpresi in quanto, a rigor di logica, le entità impegnate nel
-ripulire la mappa, potendo vedere di più, avrebbero almeno dovuto eguagliare i
-risultati della vista a croce. Abbiamo così pensato che questa situazione si sia
-presentata a causa di un tuning dei parametri non ottimale.
+ripulire la mappa, potendo vedere di più, avrebbero dovuto migliorare i
+risultati della vista a croce. Così non è stato, anche se i risultati
+precedentemente ottenuti sono stati uguagliati. Non ci rimane che concludere
+che una vista più grande non permette di migliorare le prestazioni che tengono
+conto del numero di lattine raccolte.
 
-\subsection{200 Coppie, da 10 a 180 Vecchie, Mutazione 0.2\%}
-\begin{figure}[ht]
-	\centering
-	\includegraphics[scale=0.7,angle=90]{imgs/uncollaborative_square_200_pairs_10_60_vecchi_02_mutazione.png}
-	\caption{Vista quadrata non collaborativa, 200 coppie, mutazione 0.2\%}
-	\label{figure:uncoll_square_200_10_70_vecchi_non_mutati_02}
-\end{figure}
-\begin{figure}[ht]
-	\centering
-	\includegraphics[scale=0.7,angle=90]{imgs/uncollaborative_square_200_pairs_70_120_vecchi_02_mutazione.png}
-	\caption{Vista quadrata non collaborativa, 200 coppie, mutazione 0.2\%}
-	\label{figure:uncoll_square_200_70_120_vecchi_non_mutati_02}
-\end{figure}
-\begin{figure}[ht]
-	\centering
-	\includegraphics[scale=0.7,angle=90]{imgs/uncollaborative_square_200_pairs_130_180_vecchi_02_mutazione.png}
-	\caption{Vista quadrata non collaborativa, 200 coppie, mutazione 0.2\%}
-	\label{figure:uncoll_square_200_130_180_vecchi_non_mutati_02}
-\end{figure}
-Effettuando diverse prove modificando la percentuale di mutazione dallo 0.5\%
-al 0.4\%, 0.3\%, 0.2\% e 0.1\%, abbiamo notato come via via le performance
-miglioravano. Probabilmente, essendo il dna dei robot con vista quadrata molto
-maggiore rispetto al dna dei Robby con vista a corce, mutare con una probabilità
-dello 0.5\% introduceva troppa variabilità nei geni 
+
 
 \clearpage
+
+
+
+\section{Viste Non Collaborative a Confronto}
+Nelle sezioni precedenti abbiamo visto come evolvendo una popolazione formata da
+200 coppie dove ne è mantenuto un certo numero dalla vecchia alla nuova
+generazione senza apportarvi modifiche, siano raggiunti in media i 95 punti
+fitness. Abbiamo anche visto come, dotare i robot di una vista più grande non
+permetta loro di ottenere un punteggio maggiore, cioè, raccogliere più
+lattine.\newline
+In questa sezione sono messe a confronto le due viste analizzando se, con un
+numero di passi minore, quella quadrata 3x3 permetta di raccogliere più lattine
+rispetto a quella a croce. Dunque, non se sono raccolte più lattine in generale,
+ma se sono raccolte più velocemente (con un numero di passi minore).\newline
+Per quanto riguarda le strategie evolutive, saranno mantenute quelle che hanno
+dato i migliori risultati, ovvero, usando 200 coppie e tenendone invariate dalla
+vecchia alla nuova generazione da 70 a 120. Il numero di sessioni usate per
+assegnare un valore di fitness medio alla coppia saranno sempre 200, ma verranno
+usate solo 40 azioni (per sessione) anziché 200.
+
+\subsection{croce}
+TODO
+
+\subsection{quadrata}
+TODO
