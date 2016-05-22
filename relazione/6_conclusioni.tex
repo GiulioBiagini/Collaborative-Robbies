@@ -1,1 +1,50 @@
 \chapter{Conclusioni}
+Come abbiamo visto nel capitolo precedente, lasciare agire due robot su una
+mappa di 10x10 caselle nella quale sono state sparse 10 lattine, permette di
+ottenere ottimi risultati, con un punteggio medio di fitness pari a 95 su 200
+diverse sessioni. Questo significa, in media, raccogliere tutte e 10 le lattine
+nella metà dei casi e 9 nell'altra.\newline
+Abbiamo poi visto come la strategia evolutiva migliore sia quella élitaria,
+ovvero, permettere ad un certo numero di robot di passare da una generazione
+all'altra e come, non mutando questi individui, siano raggiunti valori ancora
+migliori. La percentuale di coppie da lasciare invariata da una generazione alla
+successiva è stata poi stimata fra il 10\% ed il 60\%, valori confermati su
+popolazioni di 100 e 200 individui.\newline
+Usare una vista più grande, per quanto riguarda la non collaborazione (ovvero
+impedire ai robot di vedersi sulla mappa), non ha portato i robot né a
+raccogliere in media più lattine, quindi a totalizzare un punteggio di fitness
+maggiore, né a raccogliere lattine più velocemente (almeno per quanto riguarda
+il lasciarli agire per un numero di passi pari al 30\% ed al 40\% di quelli
+necessari ad esplorare tutta la mappa: 10x10 = 100 caselle).\newline
+Infine, lasciare che i robot possano vedersi sulla mappa ha evidenziato, almeno
+per quanto riguarda la strategia evolutiva da noi individuata, come questo possa
+rivelarsi un fattore che ostacola l'azione dei due.\newline
+Occore in ultima analisi sottolineare come, variando anche in piccola parte
+alcuni dei parametri che regolano l'evoluzione, questo porti a grossi
+cambiamenti nell'apprendimento dei robot. È dunque possibile che possano
+esistere combinazioni di valori che portino anche le coppie che usano viste
+``collaborative'' ad ottenere risultati migliori. Ad oggi, però, non siamo
+ancora stati in grado di trovarli, o meglio, variare anche la percentuale di
+mutazione sembra non essere la strada giusta.
+
+
+
+\section{Sviluppi Futuri}
+Lasciamo come sviluppi futuri la possibilità di ricercare nuove strategie
+evolutive che permettano, se esistono, di evolvere i robot che usano viste
+collaborative in modo da ottenere valori di fitness maggiori.\newline
+Interessante sarebbe anche introdurre nuove strategie di cooperazione. Con
+questo lavoro, infatti, ci siamo solamente dedicati a gettare le basi nello
+studio di come possano più entità collaborare nell'azione comune su una mappa.
+Abbiamo infatti analizzato le performance di un caso base, quello che usa una
+vista a croce nella quale la possibilità di vedere gli altri robot non esiste,
+in relazione all'uso di una vista nella quale i due Robby possono vedersi. Ciò
+non vieta l'implementazione di ulteriori meccanismi di collaborazione, magari
+più complessi, che vedano ad esempio lo scambio di informazioni tra le varie
+entità, come la posizione assoluta o relativa nella mappa, o di scambiarsi la
+vista, e così via\dots\newline
+Infine, comunichiamo ad eventuali interessati che il nostro codice lascia la
+possibilità di usare anche una vista quadrata collaborativa, da noi non usata
+per le varie prove. Potrebbe essere interessante analizzare se l'uso di tale
+vista replichi i risultati ottenuti nella non collaborazione, ovvero, dove usare
+una vista più grande non da alcun vantaggio.

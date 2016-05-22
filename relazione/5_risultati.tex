@@ -200,28 +200,11 @@ collaborativa.\newline
 Sorprendentemente, però, nonostante sia stato lasciato più tempo ai robot di
 evolvere, portando il numero di generazioni da 5000 a 10000, i valori di fitness
 si sono mantenuti attorno ad 80. La Figura~\ref{figure:cross_c_200_70_120_non}
-riassume i risultati di tali simulazioni.
-
-\subsection{200 Coppie, da 70 a 120 Vecchie, Mutazione 0.2\%}
-\begin{figure}[ht]
-	\centering
-	\includegraphics[scale=0.7,angle=90]{imgs/cross_c_200_pairs_70_120_old_02_mutation.png}
-	\caption{Vista a croce collaborativa, 200 coppie, mutazione 0.2\%}
-	\label{figure:cross_c_200_70_120_mutation_02}
-\end{figure}
-Prima di concludere che dare la possibilità ai robot di vedere i compagni
-muoversi sulla mappa li porti a peggiorare le performance, abbiamo provato
-altre strategie evolutive.\newline
-Figura~\ref{figure:cross_c_200_70_120_mutation_02} mostra i risultati ottenuti
-con una di queste che ha permesso di raggiungere valori di fitness molto
-elevati. Il numero di coppie nella popolazione è stato mantenuto pari a 200, le
-coppie passate dalla vecchia alla nuova generazione sono rimaste da 70 a 120
-dove anche i vecchi robot hanno però subito la mutazione (tecnica già usata
-inizialmente per evolvere gli individui con vista a croce non collaborativa).
-Abbassando la percentuale di mutazione dallo 0.5\% al 0.2\%, l'evoluzione è
-notevolmente migliorata.\newline
-Anche per una volta è stato dimostrato come, variando anche di poco alcuni
-parametri che regolano l'evoluzione, questa viene profondamente influenzata.
+riassume i risultati di tali simulazioni.\newline
+Oltre a queste simulazioni ne abbiamo fatte di altre, tenendo ad esempio da 10
+a 180 coppie vecchie nelle nuove generazioni, sia mutandole che non mutandole e
+variando la percentuale di mutazione dallo 0.5\% al 0.1\% (con scatti di 0.1\%),
+ma nemmeno modificando questo parametro l'evoluzione è andata meglio.
 
 
 
@@ -229,17 +212,18 @@ parametri che regolano l'evoluzione, questa viene profondamente influenzata.
 
 
 
-\section{Viste a Confronto}
+\section{Viste Non Collaborative a Confronto}
 Nelle sezioni precedenti abbiamo visto come evolvendo una popolazione formata da
 200 coppie dove ne è mantenuto un certo numero dalla vecchia alla nuova
 generazione senza apportarvi modifiche, siano raggiunti in media i 95 punti
-fitness. Abbiamo anche visto come, dotare i robot di una vista più grande non
+fitness. Abbiamo anche visto come dotare i robot di una vista più grande non
 permetta loro di ottenere un punteggio maggiore, cioè, raccogliere in media più
 lattine.\newline
-In questa sezione sono messe a confronto le due viste analizzando se, con un
-numero di passi minore, quella quadrata 3x3 permetta di raccogliere più lattine
-rispetto a quella a croce. Dunque, non se sono raccolte più lattine in generale,
-ma se sono raccolte più velocemente (con un numero di passi minore).\newline
+In questa sezione sono messe a confronto le due viste non collaborative
+analizzando se, con un numero di passi minore, quella quadrata 3x3 permetta
+almeno di raccogliere lattine più velocemente rispetto a quella a croce. Dunque,
+non se sono raccolte più lattine in generale, ma se sono raccolte più
+velocemente (con un numero di passi minore).\newline
 Per quanto riguarda le strategie evolutive, saranno mantenute quelle che hanno
 dato i migliori risultati, ovvero, usando 200 coppie e tenendone invariate dalla
 vecchia alla nuova generazione da 70 a 120. Il numero di sessioni usate per
@@ -259,15 +243,14 @@ usate solo 30 e 40 azioni (per sessione) anziché 200.
 	\caption{Vista quadrata non collaborativa, 200 coppie, vecchie non mutate, 40 azioni}
 	\label{figure:square_nc_200_70_120_non_40_actions}
 \end{figure}
-\begin{figure}[ht]
-	\centering
-	\includegraphics[scale=0.7,angle=90]{imgs/cross_c_200_pairs_70_120_old_02_mutation_40_actions.png}
-	\caption{Vista a croce collaborativa, 200 coppie, mutazione 0.2\%, 40 azioni}
-	\label{figure:cross_c_200_70_120_mutation_02_40_actions}
-\end{figure}
-TODO
-
-\clearpage
+Le Figure~\ref{figure:cross_nc_200_70_120_non_40_actions} e
+\ref{figure:square_nc_200_70_120_non_40_actions} mostrano gli andamenti delle
+evoluzioni usando solamente 40 azioni per sessione. Nel caso in cui sia usata
+una vista a croce, i valori di fitness si aggirano attorno ad 85 punti, mentre,
+usando una vista quadrata sono toccati i 90 punti.\newline
+La vista quadrata sembra iniziare a mostrare la sua superiorità, ma per
+confermarlo occorre vedere cosa succede lasciando ai robot ancora meno azioni
+per l'apprendimento.
 
 \subsection{30 Azioni}
 \begin{figure}[ht]
@@ -282,10 +265,7 @@ TODO
 	\caption{Vista quadrata non collaborativa, 200 coppie, vecchie non mutate, 30 azioni}
 	\label{figure:square_nc_200_70_120_non_30_actions}
 \end{figure}
-\begin{figure}[ht]
-	\centering
-	\includegraphics[scale=0.7,angle=90]{imgs/cross_c_200_pairs_70_120_old_02_mutation_30_actions.png}
-	\caption{Vista a croce collaborativa, 200 coppie, mutazione 0.2\%, 30 azioni}
-	\label{figure:cross_c_200_70_120_mutation_02_30_actions}
-\end{figure}
-TODO
+Le Figure~\ref{figure:cross_nc_200_70_120_non_30_actions} e
+\ref{figure:square_nc_200_70_120_non_30_actions} mostrano come evolve il sistema
+impiegando solamente 30 passi. Entrambe le viste si stabilizzano sui 75 punti
+fitness.
