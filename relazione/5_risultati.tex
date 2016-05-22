@@ -14,13 +14,7 @@ compagno sulla mappa. Le celle che sono in grado di percepire sono quella a
 nord, quella a sinistra, quella nella quale si trovano, quella a destra e quella
 a sud.
 
-\subsection{100 Coppie, 0 Vecchi}
-\begin{figure}[ht]
-	\centering
-	\includegraphics[scale=0.7,angle=90]{imgs/uncollaborative_cross_100_pairs_0_5_vecchi.png}
-	\caption{Vista a croce non collaborativa, 100 coppie}
-	\label{figure:uncoll_cross_100_0_5}
-\end{figure}
+\subsection{100 Coppie}
 La prima simulazione è stata effettuata usando lo schema dell'algoritmo genetico
 descritto precedentemente, con un numero di coppie pari a 100, ovvero 200 robot.
 In 5000 generazioni il valore di fitness, dopo un primo incremento, si è sempre
@@ -30,21 +24,27 @@ nuovi individui mediante l'utilizzo del crossover, abbiamo deciso di copiare
 alcuni degli individui vecchi nella nuova generazione, adottando una strategia
 élitaria.
 
-\subsection{100 Coppie, da 1 a 5 Vecchi}
-La Figura~\ref{figure:uncoll_cross_100_0_5} mostra i valori di 6 simulazioni
-nelle quali abbiamo mantenuto da 0 (tutti gli individui generati tramite l'uso
-del crossover) a 5 coppie (le migliori) dalla vecchia alla nuova generazione.
-Come è possibile notare, più sono gli individui che vengono mantenuti da una
+\subsection{100 Coppie, da 1 a 5 Vecchie}
+\begin{figure}[ht]
+	\centering
+	\includegraphics[scale=0.7,angle=90]{imgs/cross_nc_100_pairs_0_5_old.png}
+	\caption{Vista a croce non collaborativa, 100 coppie}
+	\label{figure:cross_nc_100_0_5}
+\end{figure}
+La Figura~\ref{figure:cross_nc_100_0_5} mostra i valori di 6 simulazioni nelle
+quali abbiamo mantenuto da 0 (tutti gli individui generati tramite l'uso del
+crossover) a 5 coppie (le migliori) dalla vecchia alla nuova generazione. Come è
+possibile notare, più sono gli individui che vengono mantenuti da una
 generazione all'altra, più alto è il valore di fitness raggiunto.
 
 \subsection{100 Coppie, da 10 a 35 Vecchie}
 \begin{figure}[ht]
 	\centering
-	\includegraphics[scale=0.7,angle=90]{imgs/uncollaborative_cross_100_pairs_10_35_vecchi.png}
+	\includegraphics[scale=0.7,angle=90]{imgs/cross_nc_100_pairs_10_35_old.png}
 	\caption{Vista a croce non collaborativa, 100 coppie}
-	\label{figure:uncoll_cross_100_10_35}
+	\label{figure:cross_nc_100_10_35}
 \end{figure}
-In Figura~\ref{figure:uncoll_cross_100_10_35} abbiamo proseguito con il
+In Figura~\ref{figure:cross_nc_100_10_35} abbiamo proseguito con il
 ragionamento, copiando nella vecchia generazione da 10 a 35 coppie,
 incrementando l'intervallo da 1 a 5. I valori di fitness si mantengono tutti fra
 i 90 ed i 95 punti.
@@ -52,14 +52,14 @@ i 90 ed i 95 punti.
 \subsection{100 Coppie, da 40 a 90 Vecchie}
 \begin{figure}[ht]
 	\centering
-	\includegraphics[scale=0.7,angle=90]{imgs/uncollaborative_cross_100_pairs_40_90_vecchi.png}
+	\includegraphics[scale=0.7,angle=90]{imgs/cross_nc_100_pairs_40_90_old.png}
 	\caption{Vista a croce non collaborativa, 100 coppie}
-	\label{figure:uncoll_cross_100_40_90}
+	\label{figure:cross_nc_100_40_90}
 \end{figure}
 A questo punto ci siamo chiesti quando le performance sarebbero crollate ed
 abbiamo ulteriormente iterato il procedimento mantenendo da 40 a 90 coppie,
 procedendo per intervalli di 10. Come è mostarto in Figura
-\ref{figure:uncoll_cross_100_40_90}, man mano che il numero di coppie vecchie
+\ref{figure:cross_nc_100_40_90}, man mano che il numero di coppie vecchie
 passate nella nuova generazione aumenta, il valore di fitness inizia a scendere,
 fino a mostrare cali importanti con 80 e 90 coppie. Mantenendo nella nuova
 generazione 40, 50 e 60 coppie, comunque i valori di fitness rimangono fra i 90
@@ -70,21 +70,21 @@ ed i 95 punti.
 \subsection{200 Coppie, da 10 a 180 Vecchie}
 \begin{figure}[ht]
 	\centering
-	\includegraphics[scale=0.7,angle=90]{imgs/uncollaborative_cross_200_pairs_10_60_vecchi.png}
+	\includegraphics[scale=0.7,angle=90]{imgs/cross_nc_200_pairs_10_60_old.png}
 	\caption{Vista a croce non collaborativa, 200 coppie}
-	\label{figure:uncoll_cross_200_10_60}
+	\label{figure:cross_nc_200_10_60}
 \end{figure}
 \begin{figure}[ht]
 	\centering
-	\includegraphics[scale=0.7,angle=90]{imgs/uncollaborative_cross_200_pairs_70_120_vecchi.png}
+	\includegraphics[scale=0.7,angle=90]{imgs/cross_nc_200_pairs_70_120_old.png}
 	\caption{Vista a croce non collaborativa, 200 coppie}
-	\label{figure:uncoll_cross_200_70_120}
+	\label{figure:cross_nc_200_70_120}
 \end{figure}
 \begin{figure}[ht]
 	\centering
-	\includegraphics[scale=0.7,angle=90]{imgs/uncollaborative_cross_200_pairs_130_180_vecchi.png}
+	\includegraphics[scale=0.7,angle=90]{imgs/cross_nc_200_pairs_130_180_old.png}
 	\caption{Vista a croce non collaborativa, 200 coppie}
-	\label{figure:uncoll_cross_200_130_180}
+	\label{figure:cross_nc_200_130_180}
 \end{figure}
 Avendo notato come la modifica di un semplice parametro (il numero di coppie
 vecchie da mantenere nella nuova popolazione) possa influenzare in maniera
@@ -92,11 +92,11 @@ significativa l'evoluzione, abbiamo deciso di ripetere lo stesso procedimento
 aumentando il numero di coppie che formano la popolazione da 100 a 200. Così
 facendo abbiamo sperato, avendo più varietà genetica all'inizio, di poter
 raggiungere valori di fitness più alti.\newline
-La Figura~\ref{figure:uncoll_cross_200_10_60} mostra l'andamento dell'evoluzione
-tenendo da 10 a 60 coppie, la Figura~\ref{figure:uncoll_cross_200_70_120} da 70
-a 120 e, infine, la Figura~\ref{figure:uncoll_cross_200_130_180} grafica
-l'andamento dei valori di fitness tenendo da 130 a 180 coppie vecchie nella
-nuova generazione.\newline
+La Figura~\ref{figure:cross_nc_200_10_60} mostra l'andamento dell'evoluzione
+tenendo da 10 a 60 coppie, la Figura~\ref{figure:cross_nc_200_70_120} da 70 a
+120 e, infine, la Figura~\ref{figure:cross_nc_200_130_180} grafica l'andamento
+dei valori di fitness tenendo da 130 a 180 coppie vecchie nella nuova
+generazione.\newline
 Per quanto riguarda il raggiungimento di valori di fitness più alti, partire
 con una popolazione più grande (di dimensione doppia) non ha dato i risultati
 sperati. Se però si notano le velocità con cui le varie curve crescono verso i
@@ -117,9 +117,9 @@ generazioni.
 \subsection{200 Coppie, da 70 a 120 Vecchie Non Mutate}
 \begin{figure}[ht]
 	\centering
-	\includegraphics[scale=0.7,angle=90]{imgs/uncollaborative_cross_200_pairs_70_120_vecchi_solo_nuovi_mutati.png}
+	\includegraphics[scale=0.7,angle=90]{imgs/cross_nc_200_pairs_70_120_old_not_mutated.png}
 	\caption{Vista a croce non collaborativa, 200 coppie, vecchie non mutate}
-	\label{figure:uncoll_cross_200_70_120_vecchi_non_mutati}
+	\label{figure:cross_nc_200_70_120_non}
 \end{figure}
 Abbiamo poi effettuato un'ultima simulazione nella quale abbiamo ripreso il
 numero di coppie dalla vecchia alla nuova generazione che meglio si sono
@@ -127,11 +127,10 @@ comportate (che hanno raggiunto i valori di fitness più elevati) con popolazion
 di dimensione 200 coppie, dove però le mutazioni genetiche sono state applicate
 solo ai nuovi individui generati e non più anche ai vecchi.\newline
 I risultati sono riportati in Figura
-\ref{figure:uncoll_cross_200_70_120_vecchi_non_mutati}. Confrontando questo
-grafico con quello di Figura~\ref{figure:uncoll_cross_200_70_120}, si nota come
-la velocità nella crescita sia paragonabile ma, non mutando le vecchie coppie, i
-valori di fitness siano tutti più elevati, non scendendo mai sotto i 95 punti
-fitness.
+\ref{figure:cross_nc_200_70_120_non}. Confrontando questo grafico con quello di
+Figura~\ref{figure:cross_nc_200_70_120}, si nota come la velocità nella crescita
+sia paragonabile ma, non mutando le vecchie coppie, i valori di fitness siano
+tutti più elevati, non scendendo mai sotto i 95 punti fitness.
 
 
 
@@ -151,26 +150,38 @@ occupa la posizione centrale (seconda riga e seconda colonna).
 \subsection{200 Coppie, da 70 a 120 Vecchie Non Mutate}
 \begin{figure}[ht]
 	\centering
-	\includegraphics[scale=0.7,angle=90]{imgs/uncollaborative_square_200_pairs_70_120_vecchi_solo_nuovi_mutati.png}
+	\includegraphics[scale=0.7,angle=90]{imgs/square_nc_200_pairs_70_120_old_not_mutated.png}
 	\caption{Vista quadrata non collaborativa, 200 coppie, vecchie non mutate}
-	\label{figure:uncoll_square_200_70_120_vecchi_non_mutati}
+	\label{figure:square_nc_200_70_120_non}
 \end{figure}
 Forti dei risultati ottenuti con le simulazioni precedenti, abbiamo evoluto una
 popolazione di 200 coppie tenendo, di volta in volta, da 70 a 120 coppie della
 vecchia generazione nella nuova, mutando solamente i nuovi individui generati
 con il crossover.\newline
 I risultati sono mostrati in Figura
-\ref{figure:uncoll_square_200_70_120_vecchi_non_mutati}. Questo risultato ci ha
-particolarmente sorpresi in quanto, a rigor di logica, le entità impegnate nel
-ripulire la mappa, potendo vedere di più, avrebbero dovuto migliorare i
-risultati della vista a croce. Così non è stato, anche se i risultati
-precedentemente ottenuti sono stati uguagliati. Non ci rimane che concludere
-che una vista più grande non permette di migliorare le prestazioni che tengono
-conto del numero di lattine raccolte.
+\ref{figure:square_nc_200_70_120_non}. Questo risultato ci ha particolarmente
+sorpresi in quanto, a rigor di logica, le entità impegnate nel ripulire la
+mappa, potendo vedere di più, avrebbero dovuto migliorare i risultati della
+vista a croce. Così non è stato, anche se i risultati precedentemente ottenuti
+sono stati uguagliati. Non ci rimane che concludere che una vista più grande non
+permette di migliorare le prestazioni che tengono conto del numero di lattine
+raccolte.
 
 
 
 \clearpage
+
+
+
+\section{Vista a Croce Collaborativa}
+Questo tipo di vista è del tutto simile alla croce non collaborativa, con la
+differenza, però, che è possibile vedere l'altro robot sulla mappa. Dunque, nel
+caso in cui un robot si trovi in una casella facente parte della vista di un
+Robby, questo vedrà tale cella come occupata da un robot, sia nel caso questa
+sia vuota, sia nel caso vi sia una lattina.
+
+\subsection{200 Coppie, da 70 a 120 Vecchie Non Mutate}
+TODO
 
 
 
@@ -179,7 +190,7 @@ Nelle sezioni precedenti abbiamo visto come evolvendo una popolazione formata da
 200 coppie dove ne è mantenuto un certo numero dalla vecchia alla nuova
 generazione senza apportarvi modifiche, siano raggiunti in media i 95 punti
 fitness. Abbiamo anche visto come, dotare i robot di una vista più grande non
-permetta loro di ottenere un punteggio maggiore, cioè, raccogliere più
+permetta loro di ottenere un punteggio maggiore, cioè, raccogliere in media più
 lattine.\newline
 In questa sezione sono messe a confronto le due viste analizzando se, con un
 numero di passi minore, quella quadrata 3x3 permetta di raccogliere più lattine
@@ -189,10 +200,10 @@ Per quanto riguarda le strategie evolutive, saranno mantenute quelle che hanno
 dato i migliori risultati, ovvero, usando 200 coppie e tenendone invariate dalla
 vecchia alla nuova generazione da 70 a 120. Il numero di sessioni usate per
 assegnare un valore di fitness medio alla coppia saranno sempre 200, ma verranno
-usate solo 40 azioni (per sessione) anziché 200.
+usate solo 30 e 40 azioni (per sessione) anziché 200.
 
-\subsection{croce}
+\subsection{40 Azioni}
 TODO
 
-\subsection{quadrata}
+\subsection{30 Azioni}
 TODO

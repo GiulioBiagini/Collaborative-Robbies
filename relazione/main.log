@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2015/dev/Debian) (preloaded format=pdflatex 2015.11.17)  21 MAY 2016 17:07
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2015/dev/Debian) (preloaded format=pdflatex 2015.11.17)  22 MAY 2016 14:24
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -596,18 +596,16 @@ Underfull \vbox (badness 1248) has occurred while \output is active []
 
  (./5_risultati.tex
 Capitolo 5.
+<imgs/cross_nc_100_pairs_0_5_old.png, id=284, 931.98187pt x 408.02437pt>
+File: imgs/cross_nc_100_pairs_0_5_old.png Graphic file (type png)
 
-<imgs/uncollaborative_cross_100_pairs_0_5_vecchi.png, id=274, 931.98187pt x 408
-.02437pt>
-File: imgs/uncollaborative_cross_100_pairs_0_5_vecchi.png Graphic file (type pn
-g)
- <use imgs/uncollaborative_cross_100_pairs_0_5_vecchi.png>
-Package pdftex.def Info: imgs/uncollaborative_cross_100_pairs_0_5_vecchi.png us
-ed on input line 20.
+<use imgs/cross_nc_100_pairs_0_5_old.png>
+Package pdftex.def Info: imgs/cross_nc_100_pairs_0_5_old.png used on input line
+ 30.
 (pdftex.def)             Requested size: 652.38287pt x 285.61511pt.
 
 
-LaTeX Warning: Float too large for page by 87.21619pt on input line 23.
+LaTeX Warning: Float too large for page by 87.21619pt on input line 33.
 
 
 Underfull \vbox (badness 2213) has occurred while \output is active []
@@ -617,67 +615,59 @@ Underfull \vbox (badness 2213) has occurred while \output is active []
 
 
 ]
-<imgs/uncollaborative_cross_100_pairs_10_35_vecchi.png, id=280, 931.98187pt x 4
-08.02437pt>
-File: imgs/uncollaborative_cross_100_pairs_10_35_vecchi.png Graphic file (type 
-png)
- <use imgs/uncollaborative_cross_100_pairs_10_35_vecchi.png>
-Package pdftex.def Info: imgs/uncollaborative_cross_100_pairs_10_35_vecchi.png 
-used on input line 43.
+<imgs/cross_nc_100_pairs_10_35_old.png, id=291, 931.98187pt x 408.02437pt>
+File: imgs/cross_nc_100_pairs_10_35_old.png Graphic file (type png)
+
+<use imgs/cross_nc_100_pairs_10_35_old.png>
+Package pdftex.def Info: imgs/cross_nc_100_pairs_10_35_old.png used on input li
+ne 43.
 (pdftex.def)             Requested size: 652.38287pt x 285.61511pt.
 
 
 LaTeX Warning: Float too large for page by 87.21619pt on input line 46.
 
+<imgs/cross_nc_100_pairs_40_90_old.png, id=293, 931.98187pt x 408.02437pt>
+File: imgs/cross_nc_100_pairs_40_90_old.png Graphic file (type png)
 
-<imgs/uncollaborative_cross_100_pairs_40_90_vecchi.png, id=282, 931.98187pt x 4
-08.02437pt>
-File: imgs/uncollaborative_cross_100_pairs_40_90_vecchi.png Graphic file (type 
-png)
- <use imgs/uncollaborative_cross_100_pairs_40_90_vecchi.png>
-Package pdftex.def Info: imgs/uncollaborative_cross_100_pairs_40_90_vecchi.png 
-used on input line 55.
+<use imgs/cross_nc_100_pairs_40_90_old.png>
+Package pdftex.def Info: imgs/cross_nc_100_pairs_40_90_old.png used on input li
+ne 55.
 (pdftex.def)             Requested size: 652.38287pt x 285.61511pt.
 
 
 LaTeX Warning: Float too large for page by 87.21619pt on input line 58.
 
-[18] [19 <./imgs/uncollaborative_cross_100_pairs_0_5_vecchi.png (PNG copy)>]
-[20 <./imgs/uncollaborative_cross_100_pairs_10_35_vecchi.png (PNG copy)>]
-[21 <./imgs/uncollaborative_cross_100_pairs_40_90_vecchi.png (PNG copy)>]
-<imgs/uncollaborative_cross_200_pairs_10_60_vecchi.png, id=305, 931.98187pt x 4
-08.02437pt>
-File: imgs/uncollaborative_cross_200_pairs_10_60_vecchi.png Graphic file (type 
-png)
- <use imgs/uncollaborative_cross_200_pairs_10_60_vecchi.png>
-Package pdftex.def Info: imgs/uncollaborative_cross_200_pairs_10_60_vecchi.png 
-used on input line 73.
+[18] [19 <./imgs/cross_nc_100_pairs_0_5_old.png (PNG copy)>] [20 <./imgs/cross_
+nc_100_pairs_10_35_old.png (PNG copy)>] [21 <./imgs/cross_nc_100_pairs_40_90_ol
+d.png (PNG copy)>]
+<imgs/cross_nc_200_pairs_10_60_old.png, id=315, 931.98187pt x 408.02437pt>
+File: imgs/cross_nc_200_pairs_10_60_old.png Graphic file (type png)
+
+<use imgs/cross_nc_200_pairs_10_60_old.png>
+Package pdftex.def Info: imgs/cross_nc_200_pairs_10_60_old.png used on input li
+ne 73.
 (pdftex.def)             Requested size: 652.38287pt x 285.61511pt.
 
 
 LaTeX Warning: Float too large for page by 87.21619pt on input line 76.
 
+<imgs/cross_nc_200_pairs_70_120_old.png, id=316, 931.98187pt x 408.02437pt>
+File: imgs/cross_nc_200_pairs_70_120_old.png Graphic file (type png)
 
-<imgs/uncollaborative_cross_200_pairs_70_120_vecchi.png, id=306, 931.98187pt x 
-408.02437pt>
-File: imgs/uncollaborative_cross_200_pairs_70_120_vecchi.png Graphic file (type
- png)
- <use imgs/uncollaborative_cross_200_pairs_70_120_vecchi.png>
-Package pdftex.def Info: imgs/uncollaborative_cross_200_pairs_70_120_vecchi.png
- used on input line 79.
+<use imgs/cross_nc_200_pairs_70_120_old.png>
+Package pdftex.def Info: imgs/cross_nc_200_pairs_70_120_old.png used on input l
+ine 79.
 (pdftex.def)             Requested size: 652.38287pt x 285.61511pt.
 
 
 LaTeX Warning: Float too large for page by 87.21619pt on input line 82.
 
+<imgs/cross_nc_200_pairs_130_180_old.png, id=317, 931.98187pt x 408.02437pt>
+File: imgs/cross_nc_200_pairs_130_180_old.png Graphic file (type png)
 
-<imgs/uncollaborative_cross_200_pairs_130_180_vecchi.png, id=307, 931.98187pt x
- 408.02437pt>
-File: imgs/uncollaborative_cross_200_pairs_130_180_vecchi.png Graphic file (typ
-e png)
- <use imgs/uncollaborative_cross_200_pairs_130_180_vecchi.png>
-Package pdftex.def Info: imgs/uncollaborative_cross_200_pairs_130_180_vecchi.pn
-g used on input line 85.
+<use imgs/cross_nc_200_pairs_130_180_old.png>
+Package pdftex.def Info: imgs/cross_nc_200_pairs_130_180_old.png used on input 
+line 85.
 (pdftex.def)             Requested size: 652.38287pt x 285.61511pt.
 
 
@@ -685,17 +675,16 @@ LaTeX Warning: Float too large for page by 87.21619pt on input line 88.
 
 [22
 
-] [23 <./imgs/uncollaborative_cross_200_pairs_10_60_vecchi.png (PNG copy)>]
-[24 <./imgs/uncollaborative_cross_200_pairs_70_120_vecchi.png (PNG copy)>]
-[25 <./imgs/uncollaborative_cross_200_pairs_130_180_vecchi.png (PNG copy)>]
-<imgs/uncollaborative_cross_200_pairs_70_120_vecchi_solo_nuovi_mutati.png, id=3
-31, 931.98187pt x 408.02437pt>
-File: imgs/uncollaborative_cross_200_pairs_70_120_vecchi_solo_nuovi_mutati.png 
-Graphic file (type png)
-
-<use imgs/uncollaborative_cross_200_pairs_70_120_vecchi_solo_nuovi_mutati.png>
-Package pdftex.def Info: imgs/uncollaborative_cross_200_pairs_70_120_vecchi_sol
-o_nuovi_mutati.png used on input line 120.
+] [23 <./imgs/cross_nc_200_pairs_10_60_old.png (PNG copy)>] [24 <./imgs/cross_n
+c_200_pairs_70_120_old.png (PNG copy)>] [25 <./imgs/cross_nc_200_pairs_130_180_
+old.png (PNG copy)>]
+<imgs/cross_nc_200_pairs_70_120_old_not_mutated.png, id=341, 931.98187pt x 408.
+02437pt>
+File: imgs/cross_nc_200_pairs_70_120_old_not_mutated.png Graphic file (type png
+)
+ <use imgs/cross_nc_200_pairs_70_120_old_not_mutated.png>
+Package pdftex.def Info: imgs/cross_nc_200_pairs_70_120_old_not_mutated.png use
+d on input line 120.
 (pdftex.def)             Requested size: 652.38287pt x 285.61511pt.
 
 
@@ -703,24 +692,23 @@ LaTeX Warning: Float too large for page by 87.21619pt on input line 123.
 
 [26
 
-] [27 <./imgs/uncollaborative_cross_200_pairs_70_120_vecchi_solo_nuovi_mutati.p
-ng (PNG copy)>]
-<imgs/uncollaborative_square_200_pairs_70_120_vecchi_solo_nuovi_mutati.png, id=
-343, 931.98187pt x 408.02437pt>
-File: imgs/uncollaborative_square_200_pairs_70_120_vecchi_solo_nuovi_mutati.png
- Graphic file (type png)
-
-<use imgs/uncollaborative_square_200_pairs_70_120_vecchi_solo_nuovi_mutati.png>
-Package pdftex.def Info: imgs/uncollaborative_square_200_pairs_70_120_vecchi_so
-lo_nuovi_mutati.png used on input line 154.
+] [27 <./imgs/cross_nc_200_pairs_70_120_old_not_mutated.png (PNG copy)>]
+<imgs/square_nc_200_pairs_70_120_old_not_mutated.png, id=353, 931.98187pt x 408
+.02437pt>
+File: imgs/square_nc_200_pairs_70_120_old_not_mutated.png Graphic file (type pn
+g)
+ <use imgs/square_nc_200_pairs_70_120_old_not_mutated.png>
+Package pdftex.def Info: imgs/square_nc_200_pairs_70_120_old_not_mutated.png us
+ed on input line 153.
 (pdftex.def)             Requested size: 652.38287pt x 285.61511pt.
 
-LaTeX Warning: Float too large for page by 87.21619pt on input line 157.
+
+LaTeX Warning: Float too large for page by 87.21619pt on input line 156.
 
 [28
 
-] [29 <./imgs/uncollaborative_square_200_pairs_70_120_vecchi_solo_nuovi_mutati.
-png (PNG copy)>]) [30
+] [29 <./imgs/square_nc_200_pairs_70_120_old_not_mutated.png (PNG copy)>])
+[30
 
 ]
 \openout2 = `6_conclusioni.aux'.
@@ -753,13 +741,13 @@ Package atveryend Info: Empty hook `AfterLastShipout' on input line 46.
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 46.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 46.
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 196E4E1B034B5756E9F61182D945DE11;2606.
+(rerunfilecheck)             Checksum: 147AB14B48BCEB99010285B3981FB3A2;2772.
  ) 
 Here is how much of TeX's memory you used:
- 6540 strings out of 493105
- 94792 string characters out of 6137071
- 190737 words of memory out of 5000000
- 9790 multiletter control sequences out of 15000+600000
+ 6544 strings out of 493105
+ 94090 string characters out of 6137071
+ 190740 words of memory out of 5000000
+ 9792 multiletter control sequences out of 15000+600000
  12410 words of font info for 43 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  29i,9n,43p,769b,484s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -771,10 +759,10 @@ xmf-dist/fonts/type1/public/amsfonts/cm/cmsl12.pfb></usr/share/texlive/texmf-di
 st/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fon
 ts/type1/public/amsfonts/cm/cmti12.pfb></usr/share/texlive/texmf-dist/fonts/typ
 e1/public/amsfonts/cm/cmtt12.pfb>
-Output written on main.pdf (33 pages, 512253 bytes).
+Output written on main.pdf (33 pages, 512509 bytes).
 PDF statistics:
- 423 PDF objects out of 1000 (max. 8388607)
- 368 compressed objects within 4 object streams
- 83 named destinations out of 1000 (max. 500000)
- 345 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 434 PDF objects out of 1000 (max. 8388607)
+ 379 compressed objects within 4 object streams
+ 85 named destinations out of 1000 (max. 500000)
+ 361 words of extra memory for PDF output out of 10000 (max. 10000000)
 
