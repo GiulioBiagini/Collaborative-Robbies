@@ -4,7 +4,9 @@ simulazioni. Quando non meglio specificato, i parametri sono stati mantenuti
 come indicato nel capitolo relativo alla progettazione.\newline
 Visto il nostro assegnamento dei valori di fitness, il punteggio massimo è 100
 punti, ottenuto non entrando mai nei muri, non scontrandosi mai con altri robot
-e raccogliendo tutte e 10 le lattine.
+e raccogliendo tutte e 10 le lattine. Il punteggio più basso possibile è -5
+moltiplicato per il numero di azioni che gli agenti possono compiere,
+moltiplicato a sua volta per 2 (per ogni agente sulla mappa).
 
 
 
@@ -16,7 +18,8 @@ a sud.
 
 \subsection{100 Coppie}
 La prima simulazione è stata effettuata usando lo schema dell'algoritmo genetico
-descritto precedentemente, con un numero di coppie pari a 100, ovvero 200 robot.
+descritto precedentemente, con un numero di coppie pari a 100, ovvero 200
+robot.\newline
 In 5000 generazioni il valore di fitness, dopo un primo incremento, si è sempre
 mantenuto attorno al valore 0. Questo ci ha fatto supporre che la strategia di
 evoluzione da noi adottata dovesse essere modificata. Anziché generare tutti i
@@ -45,9 +48,9 @@ generazione all'altra, più alto è il valore di fitness raggiunto.
 	\label{figure:cross_nc_100_10_35}
 \end{figure}
 In Figura~\ref{figure:cross_nc_100_10_35} abbiamo proseguito con il
-ragionamento, copiando nella vecchia generazione da 10 a 35 coppie,
-incrementando l'intervallo da 1 a 5. I valori di fitness si mantengono tutti fra
-i 90 ed i 95 punti.
+ragionamento, copiando nella nuova generazione da 10 a 35 coppie, incrementando
+l'intervallo da 1 a 5. I valori di fitness si mantengono tutti fra i 90 ed i 95
+punti.
 
 \subsection{100 Coppie, da 40 a 90 Vecchie}
 \begin{figure}[ht]
@@ -58,12 +61,12 @@ i 90 ed i 95 punti.
 \end{figure}
 A questo punto ci siamo chiesti quando le performance sarebbero crollate ed
 abbiamo ulteriormente iterato il procedimento mantenendo da 40 a 90 coppie,
-procedendo per intervalli di 10. Come è mostarto in Figura
-\ref{figure:cross_nc_100_40_90}, man mano che il numero di coppie vecchie
-passate nella nuova generazione aumenta, il valore di fitness inizia a scendere,
-fino a mostrare cali importanti con 80 e 90 coppie. Mantenendo nella nuova
-generazione 40, 50 e 60 coppie, comunque i valori di fitness rimangono fra i 90
-ed i 95 punti.
+procedendo per intervalli di 10.\newline
+Come è mostarto in Figura~\ref{figure:cross_nc_100_40_90}, man mano che il
+numero di coppie vecchie passate nella nuova generazione aumenta, il valore di
+fitness inizia a scendere, fino a mostrare cali importanti con 80 e 90 coppie.
+Mantenendo nella nuova generazione 40, 50 e 60 coppie, comunque i valori di
+fitness rimangono fra i 90 ed i 95 punti.
 
 \clearpage
 
@@ -130,7 +133,7 @@ I risultati sono riportati in Figura
 \ref{figure:cross_nc_200_70_120_non}. Confrontando questo grafico con quello di
 Figura~\ref{figure:cross_nc_200_70_120}, si nota come la velocità nella crescita
 sia paragonabile ma, non mutando le vecchie coppie, i valori di fitness siano
-tutti più elevati, non scendendo mai sotto i 95 punti fitness.
+tutti più elevati: questi, infatti, non scendendo mai sotto i 95 punti.
 
 
 
@@ -140,7 +143,7 @@ tutti più elevati, non scendendo mai sotto i 95 punti fitness.
 
 \section{Vista Quadrata Non Collaborativa}
 Questo tipo di vista, così come la precedente, non permette ai robot di
-percepire la presenza degli altri robot sulla mappa. A differenza di quella a
+percepire la presenza degli altri Robby sulla mappa. A differenza di quella a
 croce, però, questa fa sì che i robot possano vedere un numero di celle
 maggiore. Sono infatti visibili anche le caselle in alto a sinistra, in alto a
 destra, in basso a sinistra ed in basso a destra, trasformando quella che prima
@@ -161,11 +164,10 @@ con il crossover.\newline
 I risultati sono mostrati in Figura
 \ref{figure:square_nc_200_70_120_non}. Questo risultato ci ha particolarmente
 sorpresi in quanto, a rigor di logica, le entità impegnate nel ripulire la
-mappa, potendo vedere di più, avrebbero dovuto migliorare i risultati della
-vista a croce. Così non è stato, anche se i risultati precedentemente ottenuti
-sono stati uguagliati. Non ci rimane che concludere che una vista più grande non
-permette di migliorare le prestazioni che tengono conto del numero di lattine
-raccolte.
+mappa, potendo vedere di più, avrebbero dovuto migliorare i risultati ottenuti
+precedentemente, ma così non è stato. Non ci rimane che concludere che una vista
+più grande non permette di migliorare le prestazioni che tengono conto del
+numero di lattine raccolte.
 
 
 
@@ -177,15 +179,57 @@ raccolte.
 Questo tipo di vista è del tutto simile alla croce non collaborativa, con la
 differenza, però, che è possibile vedere l'altro robot sulla mappa. Dunque, nel
 caso in cui un robot si trovi in una casella facente parte della vista di un
-Robby, questo vedrà tale cella come occupata da un robot, sia nel caso questa
-sia vuota, sia nel caso vi sia una lattina.
+Robby, questo vedrà tale cella come occupata da un robot, sia nel caso in cui
+questa sia vuota che nel caso in cui vi sia una lattina. Più semplicemente: la
+posizione di un robot in una cella oscura la presenza di un'eventuale lattina ad
+un altro robot che osserva tale casella.
 
 \subsection{200 Coppie, da 70 a 120 Vecchie Non Mutate}
-TODO
+\begin{figure}[ht]
+	\centering
+	\includegraphics[scale=0.7,angle=90]{imgs/cross_c_200_pairs_70_120_old_not_mutated.png}
+	\caption{Vista a croce collaborativa, 200 coppie, vecchie non mutate}
+	\label{figure:cross_c_200_70_120_non}
+\end{figure}
+Dopo aver verificato che il metodo che ha portato i robot con vista non
+collaborativa (sia essa a croce o quadrata) ad evolvere nel migliore dei modi 
+stato quello che ha adoperato una popolazione formata da 200 coppie mantenendo
+dalle vecchie alle nuove generazioni dal 10 al 60\% degli individui, ci siamo
+dedicati a riutilizzarlo anche nell'evoluzione dei robot con vista a croce
+collaborativa.\newline
+Sorprendentemente, però, nonostante sia stato lasciato più tempo ai robot di
+evolvere, portando il numero di generazioni da 5000 a 10000, i valori di fitness
+si sono mantenuti attorno ad 80. La Figura~\ref{figure:cross_c_200_70_120_non}
+riassume i risultati di tali simulazioni.
+
+\subsection{200 Coppie, da 70 a 120 Vecchie, Mutazione 0.2\%}
+\begin{figure}[ht]
+	\centering
+	\includegraphics[scale=0.7,angle=90]{imgs/cross_c_200_pairs_70_120_old_02_mutation.png}
+	\caption{Vista a croce collaborativa, 200 coppie, mutazione 0.2\%}
+	\label{figure:cross_c_200_70_120_mutation_02}
+\end{figure}
+Prima di concludere che dare la possibilità ai robot di vedere i compagni
+muoversi sulla mappa li porti a peggiorare le performance, abbiamo provato
+altre strategie evolutive.\newline
+Figura~\ref{figure:cross_c_200_70_120_mutation_02} mostra i risultati ottenuti
+con una di queste che ha permesso di raggiungere valori di fitness molto
+elevati. Il numero di coppie nella popolazione è stato mantenuto pari a 200, le
+coppie passate dalla vecchia alla nuova generazione sono rimaste da 70 a 120
+dove anche i vecchi robot hanno però subito la mutazione (tecnica già usata
+inizialmente per evolvere gli individui con vista a croce non collaborativa).
+Abbassando la percentuale di mutazione dallo 0.5\% al 0.2\%, l'evoluzione è
+notevolmente migliorata.\newline
+Anche per una volta è stato dimostrato come, variando anche di poco alcuni
+parametri che regolano l'evoluzione, questa viene profondamente influenzata.
 
 
 
-\section{Viste Non Collaborative a Confronto}
+\clearpage
+
+
+
+\section{Viste a Confronto}
 Nelle sezioni precedenti abbiamo visto come evolvendo una popolazione formata da
 200 coppie dove ne è mantenuto un certo numero dalla vecchia alla nuova
 generazione senza apportarvi modifiche, siano raggiunti in media i 95 punti
@@ -203,7 +247,45 @@ assegnare un valore di fitness medio alla coppia saranno sempre 200, ma verranno
 usate solo 30 e 40 azioni (per sessione) anziché 200.
 
 \subsection{40 Azioni}
+\begin{figure}[ht]
+	\centering
+	\includegraphics[scale=0.7,angle=90]{imgs/cross_nc_200_pairs_70_120_old_not_mutated_40_actions.png}
+	\caption{Vista a croce non collaborativa, 200 coppie, vecchie non mutate, 40 azioni}
+	\label{figure:cross_nc_200_70_120_non_40_actions}
+\end{figure}
+\begin{figure}[ht]
+	\centering
+	\includegraphics[scale=0.7,angle=90]{imgs/square_nc_200_pairs_70_120_old_not_mutated_40_actions.png}
+	\caption{Vista quadrata non collaborativa, 200 coppie, vecchie non mutate, 40 azioni}
+	\label{figure:square_nc_200_70_120_non_40_actions}
+\end{figure}
+\begin{figure}[ht]
+	\centering
+	\includegraphics[scale=0.7,angle=90]{imgs/cross_c_200_pairs_70_120_old_02_mutation_40_actions.png}
+	\caption{Vista a croce collaborativa, 200 coppie, mutazione 0.2\%, 40 azioni}
+	\label{figure:cross_c_200_70_120_mutation_02_40_actions}
+\end{figure}
 TODO
 
+\clearpage
+
 \subsection{30 Azioni}
+\begin{figure}[ht]
+	\centering
+	\includegraphics[scale=0.7,angle=90]{imgs/cross_nc_200_pairs_70_120_old_not_mutated_30_actions.png}
+	\caption{Vista a croce non collaborativa, 200 coppie, vecchie non mutate, 30 azioni}
+	\label{figure:cross_nc_200_70_120_non_30_actions}
+\end{figure}
+\begin{figure}[ht]
+	\centering
+	\includegraphics[scale=0.7,angle=90]{imgs/square_nc_200_pairs_70_120_old_not_mutated_30_actions.png}
+	\caption{Vista quadrata non collaborativa, 200 coppie, vecchie non mutate, 30 azioni}
+	\label{figure:square_nc_200_70_120_non_30_actions}
+\end{figure}
+\begin{figure}[ht]
+	\centering
+	\includegraphics[scale=0.7,angle=90]{imgs/cross_c_200_pairs_70_120_old_02_mutation_30_actions.png}
+	\caption{Vista a croce collaborativa, 200 coppie, mutazione 0.2\%, 30 azioni}
+	\label{figure:cross_c_200_70_120_mutation_02_30_actions}
+\end{figure}
 TODO
