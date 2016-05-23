@@ -10,12 +10,17 @@ all'altra e come, non mutando questi individui, siano raggiunti valori ancora
 migliori. La percentuale di coppie da lasciare invariata da una generazione alla
 successiva è stata poi stimata fra il 10\% ed il 60\%, valori confermati su
 popolazioni di 100 e 200 individui.\newline
+Usare una popolazione più grande non consente di ottenere, con questa strategia
+evolutiva, grossi miglioramenti, se non il raggiungimento dei valori di
+fitness più grandi impiegando un numero di passi minore, grazie ad una varietà
+genica maggiore.\newline
 Usare una vista più grande, per quanto riguarda la non collaborazione (ovvero
-impedire ai robot di vedersi sulla mappa), non ha portato i robot né a
+impedendo ai robot di vedersi sulla mappa), non ha portato i robot né a
 raccogliere in media più lattine, quindi a totalizzare un punteggio di fitness
-maggiore, né a raccogliere lattine più velocemente (almeno per quanto riguarda
+maggiore, né a raccogliere lattine più velocemente, almeno per quanto riguarda
 il lasciarli agire per un numero di passi pari al 30\% ed al 40\% di quelli
-necessari ad esplorare tutta la mappa: 10x10 = 100 caselle).\newline
+necessari ad esplorare tutta la mappa: 10x10 = 100 caselle, ovvero 30 e 40
+passi.\newline
 Infine, lasciare che i robot possano vedersi sulla mappa ha evidenziato, almeno
 per quanto riguarda la strategia evolutiva da noi individuata, come questo possa
 rivelarsi un fattore che ostacola l'azione dei due.\newline
@@ -42,9 +47,12 @@ in relazione all'uso di una vista nella quale i due Robby possono vedersi. Ciò
 non vieta l'implementazione di ulteriori meccanismi di collaborazione, magari
 più complessi, che vedano ad esempio lo scambio di informazioni tra le varie
 entità, come la posizione assoluta o relativa nella mappa, o di scambiarsi la
-vista, e così via\dots\newline
-Infine, comunichiamo ad eventuali interessati che il nostro codice lascia la
-possibilità di usare anche una vista quadrata collaborativa, da noi non usata
-per le varie prove. Potrebbe essere interessante analizzare se l'uso di tale
-vista replichi i risultati ottenuti nella non collaborazione, ovvero, dove usare
-una vista più grande non da alcun vantaggio.
+vista, e così via\dots Ci teniamo comunque a sottolineare come l'azione
+indpendente di due robot consente di raggiungere ottimi risultati (95 punti
+fitess su 100 disponibili), il ché fissa un livello da superare molto alto per
+eventuali strategie evolutive.\newline
+Infine, comunichiamo ad eventuali interessati che il nostro codice
+\cite{biblio:git} lascia la possibilità di usare anche una vista quadrata
+collaborativa, da noi non usata per le varie prove. Potrebbe essere interessante
+analizzare se l'uso di tale vista replichi i risultati ottenuti nella non
+collaborazione, ovvero, dove usare una vista più grande non da alcun vantaggio.

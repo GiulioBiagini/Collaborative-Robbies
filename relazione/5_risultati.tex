@@ -4,7 +4,8 @@ simulazioni. Quando non meglio specificato, i parametri sono stati mantenuti
 come indicato nel capitolo relativo alla progettazione.\newline
 Visto il nostro assegnamento dei valori di fitness, il punteggio massimo è 100
 punti, ottenuto non entrando mai nei muri, non scontrandosi mai con altri robot
-e raccogliendo tutte e 10 le lattine. Il punteggio più basso possibile è -5
+(dove questo è possibile, ovvero quando si usano viste collaborative) e
+raccogliendo tutte e 10 le lattine. Il punteggio più basso possibile è -5
 moltiplicato per il numero di azioni che gli agenti possono compiere,
 moltiplicato a sua volta per 2 (per ogni agente sulla mappa).
 
@@ -103,9 +104,9 @@ generazione.\newline
 Per quanto riguarda il raggiungimento di valori di fitness più alti, partire
 con una popolazione più grande (di dimensione doppia) non ha dato i risultati
 sperati. Se però si notano le velocità con cui le varie curve crescono verso i
-valori di fitness più grandi (il numero di generazioni che impiegano a superare,
-ad esempio, gli 80/85 punti di fitness), ci si rende conto come avere una
-popolazione formata da 200 coppie incrementi di molto le performance.\newline
+valori di fitness più grandi (il numero di generazioni che impiegano), ci si
+rende conto di come avere una popolazione formata da 200 coppie incrementi le
+performance.\newline
 Questo esperimento ci ha poi permesso di identificare una costante, ovvero, che
 i valori di fitness più alti sono raggiunti mantenendo una percentuale
 di coppie vecchie da una generazione all'altra che va dal 10\% al 60\%. Con una
@@ -167,7 +168,11 @@ sorpresi in quanto, a rigor di logica, le entità impegnate nel ripulire la
 mappa, potendo vedere di più, avrebbero dovuto migliorare i risultati ottenuti
 precedentemente, ma così non è stato. Non ci rimane che concludere che una vista
 più grande non permette di migliorare le prestazioni che tengono conto del
-numero di lattine raccolte.
+numero di lattine raccolte.\newline
+Esaminando i risultati ottenuti, ci si accorge poi di come un dna più grande
+impieghi più tempo ad evolvere per raggiungere i valori di fitness più grandi.
+Il numero di generzioni impiegato a tale scopo, infatti, risulta essere
+maggiore.
 
 
 
@@ -193,7 +198,7 @@ un altro robot che osserva tale casella.
 \end{figure}
 Dopo aver verificato che il metodo che ha portato i robot con vista non
 collaborativa (sia essa a croce o quadrata) ad evolvere nel migliore dei modi 
-stato quello che ha adoperato una popolazione formata da 200 coppie mantenendo
+è stato quello che ha adoperato una popolazione formata da 200 coppie mantenendo
 dalle vecchie alle nuove generazioni dal 10 al 60\% degli individui, ci siamo
 dedicati a riutilizzarlo anche nell'evoluzione dei robot con vista a croce
 collaborativa.\newline
@@ -268,4 +273,8 @@ per l'apprendimento.
 Le Figure~\ref{figure:cross_nc_200_70_120_non_30_actions} e
 \ref{figure:square_nc_200_70_120_non_30_actions} mostrano come evolve il sistema
 impiegando solamente 30 passi. Entrambe le viste si stabilizzano sui 75 punti
-fitness.
+fitness.\newline
+Ancora una volta sono evidenziate le diverse velocità di apprendimento degli
+individui che usano le due viste ed ancora una volta non resta che concludere
+l'assoluta uguaglianza prestazionale di entrambe, sia nel numero di lattine
+raccolte che nel numero di passi impiegato per farlo.
